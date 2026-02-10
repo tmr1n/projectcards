@@ -11,7 +11,7 @@ export default function Home() {
 				<br />
 				пробных тестов и учебных активностей.
 			</p>
-			<ButtonMain text={'Зарегистрироваться бесплатно'}></ButtonMain>
+			<ButtonMain className='py-3' text={'Зарегистрироваться бесплатно'} />
 		</div>
 	)
 }

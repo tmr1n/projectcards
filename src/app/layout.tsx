@@ -20,7 +20,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
 	title: 'New cards era!',
 	description:
-		'Now you can learn any material with interactive cards, practice tests and learning activities.'
+		'Now you can learn any material with interactive cards, practice tests and learning activities.',
+	icons: {
+		icon: '/images/Title-logo.svg'
+	}
 }
 
 export default function RootLayout({
