@@ -1,0 +1,22 @@
+{
+	"trailingComma": "none",
+	"tabWidth": 2,
+	"useTabs": true,
+	"semi": false,
+	"singleQuote": true,
+	"jsxSingleQuote": true,
+	"arrowParens": "avoid",
+	"plugins": ["@ianvs/prettier-plugin-sort-imports"],
+	"importOrder": [
+		"<THIRD_PARTY_MODULES>",
+		"^@/hooks/(.*)",
+		"^@/components/(.*)",
+		"^@/layout/(.*)",
+		"^@/screens/(.*)",
+		"^.*\\.module\\.scss$",
+		"^../(.*)",
+		"^./(.*)"
+	],
+	"importOrderSeparation": true,
+	"importOrderSortSpecifiers": true
+}
