@@ -1,5 +1,6 @@
 'use client'
 
+//TODO Начинать декомпозицию.
 import cn from 'clsx'
 import Image from 'next/image'
 import { useForm, type SubmitHandler } from 'react-hook-form'
