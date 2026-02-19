@@ -38,7 +38,7 @@ export default function Registration({}: Inputs) {
 			<div className='w-[50%] bg-white flex items-center justify-center p-8'>
 				<form
 					onSubmit={handleSubmit(onSubmit)}
-					className='w-full max-w-sm space-y-4'
+					className='w-full max-w-sm space-y-4 '
 				>
 					<h2 className='text-2xl font-bold mb-6'>Регистрация</h2>
 
@@ -70,6 +70,30 @@ export default function Registration({}: Inputs) {
 							)}
 							placeholder='andrew123'
 						/>
+
+						<label className='block mb-2 text-sm font-semibold text-[#586380] transition-colors duration-300 ease-in-out font-nunito'>
+							Пароль
+						</label>
+						<input
+							className={cn(
+								'w-full h-12.5 px-4 py-3.5 border-2 border-transparent rounded-lg bg-[#f8f9fa] text-[16px] text-[#2d3748] leading-5.5 transition-all duration-300 ease-in-out',
+								'placeholder:text-[#8e9aaf]',
+								'focus:border-[#007bff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,123,255,0.1)] focus:outline-none'
+							)}
+							placeholder='••••••••'
+						/>
+						<label className='block mb-2 text-sm font-semibold text-[#586380] transition-colors duration-300 ease-in-out font-nunito'>
+							Повторите пароль
+						</label>
+						<input
+							className={cn(
+								'w-full h-12.5 px-4 py-3.5 border-2 border-transparent rounded-lg bg-[#f8f9fa] text-[16px] text-[#2d3748] leading-5.5 transition-all duration-300 ease-in-out',
+								'placeholder:text-[#8e9aaf]',
+								'focus:border-[#007bff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,123,255,0.1)] focus:outline-none'
+							)}
+							placeholder='••••••••'
+						/>
+
 						{errors.exampleRequired && (
 							<span className='text-red-500 text-sm mt-1'>
 								{errors.exampleRequired.message}
@@ -77,14 +101,16 @@ export default function Registration({}: Inputs) {
 						)}
 					</div>
 
-					{/* Кнопка отправки */}
-					{/* <button
+					<ButtonSubmit
+						variant='primary'
+						text={'Зарегистрироваться '}
 						type='submit'
-						className='w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition'
-					>
-						Зарегистрироваться
-					</button> */}
-					<ButtonSubmit text={'Зарегистрироваться '}></ButtonSubmit>
+					></ButtonSubmit>
+
+					<ButtonSubmit
+						variant='secondary'
+						text={'Уже есть учетная запись? Войти'}
+					></ButtonSubmit>
 				</form>
 			</div>
 		</div>
