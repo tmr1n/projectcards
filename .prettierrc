@@ -18,5 +18,8 @@
 		"^./(.*)"
 	],
 	"importOrderSeparation": true,
-	"importOrderSortSpecifiers": true
+	"importOrderSortSpecifiers": true,
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": false
+	}
 }
