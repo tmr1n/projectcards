@@ -10,7 +10,7 @@ export function PasswordInput({ label }: IPasswordInputProps) {
 	const [showPassword, setShowPassword] = useState(false)
 
 	return (
-		<div>
+		<div className='mt-4'>
 			<label className='block mb-2 text-sm font-semibold text-[#586380] transition-colors duration-300 ease-in-out font-nunito'>
 				{label}
 			</label>
@@ -18,7 +18,7 @@ export function PasswordInput({ label }: IPasswordInputProps) {
 				<input
 					type={showPassword ? 'text' : 'password'}
 					className={cn(
-						'w-full h-12.5 px-4 py-3.5 pr-12 border-2 border-transparent rounded-lg bg-[#f8f9fa] text-[16px] text-[#2d3748] leading-5.5 transition-all duration-300 ease-in-out',
+						'w-full h-12.5 px-4 py-3.5  pr-12 border-2 border-transparent rounded-lg bg-[#f8f9fa] text-[16px] text-[#2d3748] leading-5.5 transition-all duration-300 ease-in-out',
 						'placeholder:text-[#8e9aaf]',
 						'focus:border-[#007bff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,123,255,0.1)] focus:outline-none'
 					)}
