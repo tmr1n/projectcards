@@ -3,6 +3,7 @@
 //TODO Начинать декомпозицию.
 import Image from 'next/image'
 import { Form } from '@/components/form/Form'
+import { NavBar } from '@/components/NavBar'
 
 interface Inputs {}
 
@@ -21,7 +22,15 @@ export default function Registration({}: Inputs) {
 					height={113}
 				/>
 			</div>
-			<Form example={''} exampleRequired={''}></Form>
+
+			<div className=' w-[50%] overflow-y-auto flex flex-col   '>
+				<div className='flex flex-row gap-8 justify-start max-w-lg w-full mx-auto mt-8 '>
+					<NavBar text='Зарегистрироваться'></NavBar>
+					<NavBar text='Вход'></NavBar>
+				</div>
+
+				<Form example={''} exampleRequired={''}></Form>
+			</div>
 		</div>
 	)
 }
