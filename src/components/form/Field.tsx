@@ -7,7 +7,7 @@ interface IFieldProps {
 
 export function Field({ placeholder, label }: IFieldProps) {
 	return (
-		<div className='mt-4'>
+		<div className='mt-8'>
 			<label className='block mb-2 text-sm font-semibold text-[#586380] transition-colors duration-300 ease-in-out font-nunito'>
 				{label}
 			</label>

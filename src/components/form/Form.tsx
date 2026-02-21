@@ -24,12 +24,7 @@ export function Form({}: IFormProps) {
 				onSubmit={handleSubmit(onSubmit)}
 				className='w-full max-w-lg space-y-4 '
 			>
-				{/* <div className='flex flex-row justify-start gap-8 '>
-					<NavBar text='Зарегистрироваться'></NavBar>
-					<NavBar text='Вход'></NavBar>
-				</div> */}
-
-				<Field label='Email' placeholder='Введите email'></Field>
+				<Field label='Email' placeholder='user@mail.com'></Field>
 
 				<Field label='Имя пользователя' placeholder='andrew123'></Field>
 

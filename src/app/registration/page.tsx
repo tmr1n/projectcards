@@ -1,13 +1,16 @@
 'use client'
 
-//TODO Начинать декомпозицию.
+import { X } from 'lucide-react'
 import Image from 'next/image'
+import { useState } from 'react'
 import { Form } from '@/components/form/Form'
 import { NavBar } from '@/components/NavBar'
 
 interface Inputs {}
 
 export default function Registration({}: Inputs) {
+	const [tab, setTab] = useState<'register' | 'login'>('register')
+
 	return (
 		<div className='flex flex-row h-screen'>
 			<div className="w-[50%] bg-[url('/images/Registration-img.png')] bg-cover bg-center flex flex-col justify-between p-8">
@@ -23,13 +26,29 @@ export default function Registration({}: Inputs) {
 				/>
 			</div>
 
-			<div className=' w-[50%] overflow-y-auto flex flex-col   '>
-				<div className='flex flex-row gap-8 justify-start max-w-lg w-full mx-auto mt-8 '>
-					<NavBar text='Зарегистрироваться'></NavBar>
-					<NavBar text='Вход'></NavBar>
+			<div className='w-[50%] overflow-y-auto flex flex-col'>
+				<div className='flex justify-end p-4'>
+					<X
+						color='#586380'
+						size={32}
+						strokeWidth={1.5}
+						className='hover:scale-110 hover:opacity-80 duration-300 cursor-pointer'
+					/>
+				</div>
+				<div className='flex flex-row gap-8 justify-start max-w-lg w-full mx-auto '>
+					<NavBar
+						text='Зарегистрироваться'
+						active={tab === 'register'}
+						onClick={() => setTab('register')}
+					/>
+					<NavBar
+						text='Вход'
+						active={tab === 'login'}
+						onClick={() => setTab('login')}
+					/>
 				</div>
 
-				<Form example={''} exampleRequired={''}></Form>
+				<Form example={''} exampleRequired={''} />
 			</div>
 		</div>
 	)

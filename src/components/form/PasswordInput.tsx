@@ -10,7 +10,7 @@ export function PasswordInput({ label }: IPasswordInputProps) {
 	const [showPassword, setShowPassword] = useState(false)
 
 	return (
-		<div className='mt-4'>
+		<div className='mt-8'>
 			<label className='block mb-2 text-sm font-semibold text-[#586380] transition-colors duration-300 ease-in-out font-nunito'>
 				{label}
 			</label>
