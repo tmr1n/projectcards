@@ -3,13 +3,14 @@
 import { X } from 'lucide-react'
 import Image from 'next/image'
 import { useState } from 'react'
-import { Form } from '@/components/form/Form'
+import { LoginForm } from '@/components/LoginForm'
 import { NavBar } from '@/components/NavBar'
+import { RegistrationForm } from '@/components/RegistrationForm'
 
-interface Inputs {}
+interface IRegistration {}
 
-export default function Registration({}: Inputs) {
-	const [tab, setTab] = useState<'register' | 'login'>('register')
+export default function Registration({}: IRegistration) {
+	const [tab, setTab] = useState<'register' | 'login'>('login')
 
 	return (
 		<div className='flex flex-row h-screen'>
@@ -48,7 +49,11 @@ export default function Registration({}: Inputs) {
 					/>
 				</div>
 
-				<Form example={''} exampleRequired={''} />
+				{tab === 'register' ? (
+					<RegistrationForm example={''} exampleRequired={''} />
+				) : (
+					<LoginForm example={''} exampleRequired={''} />
+				)}
 			</div>
 		</div>
 	)

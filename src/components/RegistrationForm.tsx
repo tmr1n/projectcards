@@ -3,21 +3,22 @@ import { useForm, type SubmitHandler } from 'react-hook-form'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
 import { Field } from '@/components/form/Field'
 import { PasswordInput } from '@/components/form/PasswordInput'
-import { Checkbox } from './Checkbox'
+import { Checkbox } from './form/Checkbox'
 
-interface IFormProps {
+interface IRegistrationFormProps {
 	example: string
 	exampleRequired: string
 }
 
-export function Form({}: IFormProps) {
+export function RegistrationForm({}: IRegistrationFormProps) {
 	const {
 		register,
 		handleSubmit,
 		watch,
 		formState: { errors }
-	} = useForm<IFormProps>()
-	const onSubmit: SubmitHandler<IFormProps> = data => console.log(data)
+	} = useForm<IRegistrationFormProps>()
+	const onSubmit: SubmitHandler<IRegistrationFormProps> = data =>
+		console.log(data)
 
 	return (
 		<div className=' bg-white flex items-center justify-center pb-8 pr-8 pl-8 '>
