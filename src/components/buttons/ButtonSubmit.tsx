@@ -6,7 +6,7 @@ const buttonStyles = cva(
 		'block w-full h-[65px] px-[0.875rem] py-[0.375rem]',
 		'text-center text-base font-semibold',
 		'border-0 rounded-[50px]',
-		'transition-colors duration-300 ease-in-out'
+		'transition-colors duration-300 ease-in-out cursor-pointer'
 	],
 	{
 		variants: {

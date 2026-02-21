@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
 import { Field } from '@/components/form/Field'
@@ -36,9 +37,28 @@ export function Form({}: IFormProps) {
 					</span>
 				)}
 
-				<div className='pb-2 pt-2'>
-					<Checkbox text='Я хочу получать новости, рекламные сообщения, обновления и советы о том, как использовать LangCards'></Checkbox>
-					<Checkbox text='Я принимаю положения, которые содержат Условия предоставления услуг и Политику конфиденциальности LangCards'></Checkbox>
+				<div className='pb-2 pt-4'>
+					<Checkbox text='Я хочу получать новости, рекламные сообщения, обновления и советы о том, как использовать LangCards' />
+					<Checkbox
+						text={
+							<>
+								Я принимаю положения, которые содержат{' '}
+								<Link
+									href='/terms'
+									className='underline text-blue-600 hover:text-blue-800'
+								>
+									Условия предоставления услуг
+								</Link>{' '}
+								и{' '}
+								<Link
+									href='/privacy'
+									className='underline text-blue-600 hover:text-blue-800'
+								>
+									Политику конфиденциальности LangCards
+								</Link>
+							</>
+						}
+					/>
 				</div>
 
 				<ButtonSubmit
