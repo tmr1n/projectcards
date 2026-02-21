@@ -48,7 +48,8 @@ export default function Registration({}: IRegistration) {
 						onClick={() => setTab('login')}
 					/>
 				</div>
-
+				{/* //хуйня в том, что это другой href, поэтому по умолчанию не переключает
+				navBar */}
 				{tab === 'register' ? (
 					<RegistrationForm example={''} exampleRequired={''} />
 				) : (

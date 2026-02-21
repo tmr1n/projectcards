@@ -49,7 +49,8 @@ export default function Login({}: ILogin) {
 						onClick={() => setTab('login')}
 					/>
 				</div>
-
+				{/* //хуйня в том, что это другой href, поэтому по умолчанию не переключает
+				navBar */}
 				{tab === 'login' ? (
 					<LoginForm example={''} exampleRequired={''} />
 				) : (

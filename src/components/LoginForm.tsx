@@ -38,12 +38,14 @@ export function LoginForm({}: ILoginFormProps) {
 					text={'Продолжить с Yandex'}
 				></ButtonSubmit>
 
-				<Field
-					label='Email или имя пользователя'
-					placeholder='user@mail.com'
-				></Field>
+				<div className='pb-4'>
+					<Field
+						label='Email или имя пользователя'
+						placeholder='user@mail.com'
+					></Field>
 
-				<PasswordInput label='Пароль'></PasswordInput>
+					<PasswordInput label='Пароль'></PasswordInput>
+				</div>
 
 				{errors.exampleRequired && (
 					<span className='text-red-500 text-sm mt-1'>
