@@ -5,7 +5,7 @@ interface ICheckbox {
 	text: string | ReactNode
 }
 
-//поменять галочки!
+// TODO: Поменять галочки
 
 export function Checkbox({ text }: ICheckbox) {
 	const id = useId()
