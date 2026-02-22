@@ -19,7 +19,7 @@ export function Checkbox({ text }: ICheckbox) {
 				<input id={id} type='checkbox' className='sr-only peer' />
 				<span
 					aria-hidden
-					className='w-5 h-5 border-2 border-gray-300 rounded-sm bg-white flex-shrink-0 relative mt-0.5 transition-all duration-200 ease-in-out
+					className='w-5 h-5  border-2 border-gray-300 rounded-sm bg-white flex-shrink-0 relative mt-0.5 transition-all duration-200 ease-in-out
 						peer-checked:bg-purple-500 peer-checked:border-purple-500 group-hover:border-gray-400
 						peer-focus-visible:ring-4 peer-focus-visible:ring-purple-200/40
 						peer-checked:[&>svg]:opacity-100'
