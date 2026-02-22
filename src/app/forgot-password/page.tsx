@@ -16,12 +16,14 @@ export default function page({}: Props) {
 						color='#586380'
 						size={32}
 						strokeWidth={1.5}
+						href='/login'
 						className='hover:scale-110 hover:opacity-80 duration-300 cursor-pointer'
 					/>
 					<X
 						color='#586380'
 						size={32}
 						strokeWidth={1.5}
+						href='/'
 						className='hover:scale-110 hover:opacity-80 duration-300 cursor-pointer'
 					/>
 				</div>

@@ -13,7 +13,7 @@ export function Header() {
 					height={76}
 				/>
 			</Link>
-			<ButtonMain text={'Вход'}></ButtonMain>
+			<ButtonMain text={'Вход'} href='/login'></ButtonMain>
 		</header>
 	)
 }
