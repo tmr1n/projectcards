@@ -25,17 +25,21 @@ const buttonStyles = cva(
 type ButtonSubmitProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
 	VariantProps<typeof buttonStyles> & {
 		text: string
+		icon?: React.ReactNode
 	}
 
 export function ButtonSubmit({
 	text,
+	icon,
 	variant,
 	className,
 	...props
 }: ButtonSubmitProps) {
 	return (
-		<div className='flex justify-center'>
+		//задать правильно центр для иконки и текста, сейчас текст чуть ниже
+		<div className='flex justify-center items-center flex-row'>
 			<button className={cn(buttonStyles({ variant }), className)} {...props}>
+				<span className='inline-flex text-xl pr-1'>{icon}</span>
 				{text}
 			</button>
 		</div>

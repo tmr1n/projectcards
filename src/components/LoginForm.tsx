@@ -1,4 +1,7 @@
 import { useForm, type SubmitHandler } from 'react-hook-form'
+import { FaYandex } from 'react-icons/fa'
+import { FcGoogle } from 'react-icons/fc'
+import { TiVendorMicrosoft } from 'react-icons/ti'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
 import { Field } from '@/components/form/Field'
 import { PasswordInput } from '@/components/form/PasswordInput'
@@ -26,16 +29,19 @@ export function LoginForm({}: ILoginFormProps) {
 				<ButtonSubmit
 					variant='secondary'
 					text={'Продолжить с Google'}
+					icon={<FcGoogle />}
 				></ButtonSubmit>
 
 				<ButtonSubmit
 					variant='secondary'
 					text={'Продолжить с Microsoft'}
+					icon={<TiVendorMicrosoft />}
 				></ButtonSubmit>
 
 				<ButtonSubmit
 					variant='secondary'
 					text={'Продолжить с Yandex'}
+					icon={<FaYandex />}
 				></ButtonSubmit>
 
 				<div className='pb-4'>
