@@ -5,6 +5,7 @@ import { TiVendorMicrosoft } from 'react-icons/ti'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
 import { Field } from '@/components/form/Field'
 import { PasswordInput } from '@/components/form/PasswordInput'
+import { LineComponent } from './form/Line'
 
 interface ILoginFormProps {
 	example: string
@@ -44,13 +45,18 @@ export function LoginForm({}: ILoginFormProps) {
 					icon={<FaYandex />}
 				></ButtonSubmit>
 
+				<LineComponent text='или адрес эл. почты'></LineComponent>
+
 				<div className='pb-4'>
 					<Field
-						label='Email или имя пользователя'
-						placeholder='user@mail.com'
+						textLabel='Email или имя пользователя'
+						placeholder='Введите адрес эл. почты или имя пользователя'
 					></Field>
 
-					<PasswordInput label='Пароль'></PasswordInput>
+					<div className='flex justify-between'>
+						<PasswordInput textLabel='Пароль'></PasswordInput>
+						<span>Забыли пароль?</span>
+					</div>
 				</div>
 
 				{errors.exampleRequired && (

@@ -1,16 +1,15 @@
 import cn from 'clsx'
+import { LabelComponent } from './LabelComponent'
 
 interface IFieldProps {
 	placeholder?: string
-	label: string
+	textLabel: string
 }
 
-export function Field({ placeholder, label }: IFieldProps) {
+export function Field({ placeholder, textLabel }: IFieldProps) {
 	return (
 		<div className='mt-8'>
-			<label className='block mb-2 text-sm font-semibold text-[#586380] transition-colors duration-300 ease-in-out font-nunito'>
-				{label}
-			</label>
+			<LabelComponent text={textLabel}></LabelComponent>
 			<input
 				className={cn(
 					'w-full h-12.5 px-4 py-3.5 border-2 border-transparent rounded-lg bg-[#f8f9fa] text-[16px] text-[#2d3748] leading-5.5 transition-all duration-300 ease-in-out',

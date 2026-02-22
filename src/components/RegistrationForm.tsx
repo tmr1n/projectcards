@@ -26,12 +26,12 @@ export function RegistrationForm({}: IRegistrationFormProps) {
 				onSubmit={handleSubmit(onSubmit)}
 				className='w-full max-w-lg space-y-4 '
 			>
-				<Field label='Email' placeholder='user@mail.com'></Field>
+				<Field textLabel='Email' placeholder='user@mail.com'></Field>
 
-				<Field label='Имя пользователя' placeholder='andrew123'></Field>
+				<Field textLabel='Имя пользователя' placeholder='andrew123'></Field>
 
-				<PasswordInput label='Пароль'></PasswordInput>
-				<PasswordInput label='Повторите пароль'></PasswordInput>
+				<PasswordInput textLabel='Пароль'></PasswordInput>
+				<PasswordInput textLabel='Повторите пароль'></PasswordInput>
 				{errors.exampleRequired && (
 					<span className='text-red-500 text-sm mt-1'>
 						{errors.exampleRequired.message}

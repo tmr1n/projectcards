@@ -1,19 +1,18 @@
 import cn from 'clsx'
 import { Eye, EyeOff } from 'lucide-react'
 import { useState } from 'react'
+import { LabelComponent } from '@/components/form/LabelComponent'
 
 interface IPasswordInputProps {
-	label: string
+	textLabel: string
 }
 
-export function PasswordInput({ label }: IPasswordInputProps) {
+export function PasswordInput({ textLabel }: IPasswordInputProps) {
 	const [showPassword, setShowPassword] = useState(false)
 
 	return (
 		<div className='mt-8'>
-			<label className='block mb-2 text-sm font-semibold text-[#586380] transition-colors duration-300 ease-in-out font-nunito'>
-				{label}
-			</label>
+			<LabelComponent text={textLabel}></LabelComponent>
 			<div className='relative'>
 				<input
 					type={showPassword ? 'text' : 'password'}

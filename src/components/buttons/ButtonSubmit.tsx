@@ -36,11 +36,12 @@ export function ButtonSubmit({
 	...props
 }: ButtonSubmitProps) {
 	return (
-		//задать правильно центр для иконки и текста, сейчас текст чуть ниже
 		<div className='flex justify-center items-center flex-row'>
 			<button className={cn(buttonStyles({ variant }), className)} {...props}>
-				<span className='inline-flex text-xl pr-1'>{icon}</span>
-				{text}
+				<div className='flex items-center justify-center'>
+					<span className='inline-flex text-xl pr-1'>{icon}</span>
+					{text}
+				</div>
 			</button>
 		</div>
 	)
