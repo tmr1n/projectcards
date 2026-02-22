@@ -1,10 +1,12 @@
+import Link from 'next/link'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { FaYandex } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
 import { TiVendorMicrosoft } from 'react-icons/ti'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
-import { Field } from '@/components/form/Field'
+import { Input } from '@/components/form/Input'
 import { PasswordInput } from '@/components/form/PasswordInput'
+import { LabelComponent } from './form/LabelComponent'
 import { LineComponent } from './form/Line'
 
 interface ILoginFormProps {
@@ -25,7 +27,7 @@ export function LoginForm({}: ILoginFormProps) {
 		<div className=' bg-white flex items-center justify-center p-8 '>
 			<form
 				onSubmit={handleSubmit(onSubmit)}
-				className='w-full max-w-lg space-y-4 '
+				className='w-full max-w-lg flex flex-col gap-4'
 			>
 				<ButtonSubmit
 					variant='secondary'
@@ -47,16 +49,28 @@ export function LoginForm({}: ILoginFormProps) {
 
 				<LineComponent text='или адрес эл. почты'></LineComponent>
 
-				<div className='pb-4'>
-					<Field
-						textLabel='Email или имя пользователя'
-						placeholder='Введите адрес эл. почты или имя пользователя'
-					></Field>
+				<div className='space-y-2'>
+					<LabelComponent text={'Email или имя пользователя'}></LabelComponent>
+					<Input placeholder='Введите адрес эл. почты или имя пользователя'></Input>
+				</div>
 
-					<div className='flex justify-between'>
-						<PasswordInput textLabel='Пароль'></PasswordInput>
-						<span>Забыли пароль?</span>
+				<div className='space-y-2 pb-2'>
+					<div className='flex items-center justify-between'>
+						<LabelComponent text='Пароль'></LabelComponent>
+						<LabelComponent
+							text={
+								<>
+									<Link
+										href='/forgot-password'
+										className='font-bold text-blue-600 hover:text-blue-800'
+									>
+										Забыли пароль?
+									</Link>
+								</>
+							}
+						></LabelComponent>
 					</div>
+					<PasswordInput />
 				</div>
 
 				{errors.exampleRequired && (

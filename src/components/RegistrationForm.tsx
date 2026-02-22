@@ -1,9 +1,10 @@
 import Link from 'next/link'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
-import { Field } from '@/components/form/Field'
+import { Input } from '@/components/form/Input'
 import { PasswordInput } from '@/components/form/PasswordInput'
 import { Checkbox } from './form/Checkbox'
+import { LabelComponent } from './form/LabelComponent'
 
 interface IRegistrationFormProps {
 	example: string
@@ -21,17 +22,31 @@ export function RegistrationForm({}: IRegistrationFormProps) {
 		console.log(data)
 
 	return (
-		<div className=' bg-white flex items-center justify-center pb-8 pr-8 pl-8 '>
+		<div className=' bg-white flex items-center justify-center pb-8 pr-8 pl-8 mt-8 '>
 			<form
 				onSubmit={handleSubmit(onSubmit)}
-				className='w-full max-w-lg space-y-4 '
+				className='w-full max-w-lg flex flex-col gap-4'
 			>
-				<Field textLabel='Email' placeholder='user@mail.com'></Field>
+				<div className='space-y-2'>
+					<LabelComponent text={'Email'}></LabelComponent>
+					<Input placeholder='user@mail.com'></Input>
+				</div>
 
-				<Field textLabel='Имя пользователя' placeholder='andrew123'></Field>
+				<div className='space-y-2'>
+					<LabelComponent text={'Имя пользователя'}></LabelComponent>
+					<Input placeholder='andrew123'></Input>
+				</div>
 
-				<PasswordInput textLabel='Пароль'></PasswordInput>
-				<PasswordInput textLabel='Повторите пароль'></PasswordInput>
+				<div className='space-y-2'>
+					<LabelComponent text={'Пароль'}></LabelComponent>
+					<PasswordInput />
+				</div>
+
+				<div className='space-y-2'>
+					<LabelComponent text={'Повторите пароль'}></LabelComponent>
+					<PasswordInput />{' '}
+				</div>
+
 				{errors.exampleRequired && (
 					<span className='text-red-500 text-sm mt-1'>
 						{errors.exampleRequired.message}

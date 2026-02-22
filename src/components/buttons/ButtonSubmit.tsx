@@ -13,7 +13,7 @@ const buttonStyles = cva(
 			variant: {
 				primary: 'bg-blue-600 text-white hover:bg-[#7342bc]',
 				secondary:
-					'font-medium bg-white text-gray-600 border-solid border-2 border-[#dcdcdc] hover:bg-[#f0f0f0] border-[#bfbfbf]'
+					'font-medium bg-white text-gray-600 border-solid border-2 border-[#eaeaea] hover:bg-[#f0f0f0] border-[#bfbfbf]'
 			}
 		},
 		defaultVariants: {
