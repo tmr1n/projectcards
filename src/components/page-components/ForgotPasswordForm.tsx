@@ -1,7 +1,7 @@
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
-import { Input } from '@/components/form/Input'
-import { LabelComponent } from './form/LabelComponent'
+import { Input } from '@/components/form-components/Input'
+import { LabelComponent } from '../form-components/LabelComponent'
 
 interface IForgotPasswordFormProps {
 	example: string

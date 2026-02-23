@@ -4,10 +4,10 @@ import { FaYandex } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
 import { TiVendorMicrosoft } from 'react-icons/ti'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
-import { Input } from '@/components/form/Input'
-import { PasswordInput } from '@/components/form/PasswordInput'
-import { LabelComponent } from './form/LabelComponent'
-import { LineComponent } from './form/Line'
+import { Input } from '@/components/form-components/Input'
+import { PasswordInput } from '@/components/form-components/PasswordInput'
+import { LabelComponent } from '../form-components/LabelComponent'
+import { LineComponent } from '../form-components/Line'
 
 interface ILoginFormProps {
 	example: string

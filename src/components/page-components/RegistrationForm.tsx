@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
-import { Input } from '@/components/form/Input'
-import { PasswordInput } from '@/components/form/PasswordInput'
-import { Checkbox } from './form/Checkbox'
-import { LabelComponent } from './form/LabelComponent'
+import { Input } from '@/components/form-components/Input'
+import { PasswordInput } from '@/components/form-components/PasswordInput'
+import { Checkbox } from '../form-components/Checkbox'
+import { LabelComponent } from '../form-components/LabelComponent'
 
 interface IRegistrationFormProps {
 	example: string
