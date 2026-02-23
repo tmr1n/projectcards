@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { CloseButton } from '@/components/buttons/CloseButton'
 import { AuthPageLayout } from '@/components/layouts/AuthPageLayout'
 import { LoginForm } from '@/components/page-components/LoginForm'
 import { NavBar } from '@/components/page-components/NavBar'
@@ -15,6 +16,7 @@ export default function Login({}: ILogin) {
 	return (
 		<AuthPageLayout
 			sideText='Самый лучший способ учиться, чтобы сохранить прогресс.'
+			topButtons={<CloseButton href='/' />}
 			navigationTabs={
 				<>
 					<NavBar
