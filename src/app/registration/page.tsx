@@ -1,14 +1,12 @@
 'use client'
 
-import { useState } from 'react'
 import { CloseButton } from '@/components/buttons/CloseButton'
 import { AuthPageLayout } from '@/components/layouts/AuthPageLayout'
-import { LoginForm } from '@/components/page-components/LoginForm'
 import { NavBar } from '@/components/page-components/NavBar'
 import { RegistrationForm } from '@/components/page-components/RegistrationForm'
 
 export default function Registration() {
-	const [tab, setTab] = useState<'register' | 'login'>('login')
+	// const [tab, setTab] = useState<'register' | 'login'>('login')
 
 	return (
 		<AuthPageLayout
@@ -20,24 +18,12 @@ export default function Registration() {
 			}
 			navigationTabs={
 				<>
-					<NavBar
-						text='Зарегистрироваться'
-						active={tab === 'register'}
-						onClick={() => setTab('register')}
-					/>
-					<NavBar
-						text='Вход'
-						active={tab === 'login'}
-						onClick={() => setTab('login')}
-					/>
+					<NavBar text='Зарегистрироваться' href='/registration' />
+					<NavBar text='Вход' href='/login' />
 				</>
 			}
 		>
-			{tab === 'register' ? (
-				<RegistrationForm example='' exampleRequired='' />
-			) : (
-				<LoginForm example='' exampleRequired='' />
-			)}
+			<RegistrationForm example={''} exampleRequired={''} />
 		</AuthPageLayout>
 	)
 }

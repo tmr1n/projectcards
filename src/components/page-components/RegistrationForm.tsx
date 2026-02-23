@@ -81,11 +81,13 @@ export function RegistrationForm({}: IRegistrationFormProps) {
 					variant='primary'
 					text={'Зарегистрироваться'}
 					type='submit'
+					href=''
 				></ButtonSubmit>
 
 				<ButtonSubmit
 					variant='secondary'
 					text={'Уже есть учетная запись? Войти'}
+					href='/login'
 				></ButtonSubmit>
 			</form>
 		</div>

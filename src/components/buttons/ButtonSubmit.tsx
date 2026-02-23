@@ -1,4 +1,5 @@
 import { cva, type VariantProps } from 'class-variance-authority'
+import Link from 'next/link'
 import { cn } from '@/utils/utils' // обычно cn = twMerge(clsx())
 
 const buttonStyles = cva(
@@ -26,6 +27,7 @@ type ButtonSubmitProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
 	VariantProps<typeof buttonStyles> & {
 		text: string
 		icon?: React.ReactNode
+		href: string
 	}
 
 export function ButtonSubmit({
@@ -33,16 +35,19 @@ export function ButtonSubmit({
 	icon,
 	variant,
 	className,
+	href,
 	...props
 }: ButtonSubmitProps) {
 	return (
-		<div className='flex justify-center items-center flex-row'>
-			<button className={cn(buttonStyles({ variant }), className)} {...props}>
-				<div className='flex items-center justify-center'>
-					<span className='inline-flex text-xl pr-1'>{icon}</span>
-					{text}
-				</div>
-			</button>
-		</div>
+		<Link href={href}>
+			<div className='flex justify-center items-center flex-row'>
+				<button className={cn(buttonStyles({ variant }), className)} {...props}>
+					<div className='flex items-center justify-center'>
+						<span className='inline-flex text-xl pr-1'>{icon}</span>
+						{text}
+					</div>
+				</button>
+			</div>
+		</Link>
 	)
 }

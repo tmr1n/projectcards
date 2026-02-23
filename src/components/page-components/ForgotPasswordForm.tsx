@@ -44,6 +44,7 @@ export function ForgotPasswordForm({}: IForgotPasswordFormProps) {
 					variant='primary'
 					text={'Отправить ссылку для сброса'}
 					type='submit'
+					href=''
 				></ButtonSubmit>
 			</form>
 		</div>
