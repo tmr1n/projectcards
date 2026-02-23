@@ -13,7 +13,11 @@ export default function Registration() {
 	return (
 		<AuthPageLayout
 			sideText='Самый лучший способ учиться, чтобы сохранить прогресс.'
-			topButtons={<CloseButton href='/' />}
+			topButtons={
+				<div className='flex justify-end gap-4'>
+					<CloseButton href='/' />
+				</div>
+			}
 			navigationTabs={
 				<>
 					<NavBar

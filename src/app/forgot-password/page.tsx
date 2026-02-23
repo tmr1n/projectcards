@@ -10,7 +10,7 @@ export default function ForgotPassword() {
 		<AuthPageLayout
 			sideText='У вас всё получится!'
 			topButtons={
-				<div className='flex gap-4'>
+				<div className='flex justify-between gap-4'>
 					<BackButton href='/login' />
 					<CloseButton href='/' />
 				</div>

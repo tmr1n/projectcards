@@ -20,9 +20,7 @@ export function AuthPageLayout({
 		<div className='flex flex-row h-screen'>
 			<FirstSideComponent text={sideText} />
 			<div className='w-[50%] overflow-y-auto flex flex-col'>
-				{topButtons && (
-					<div className='flex justify-between p-4'>{topButtons}</div>
-				)}
+				{topButtons && <div className='p-4'>{topButtons}</div>}
 
 				{navigationTabs && (
 					<div className='flex flex-row gap-8 justify-start max-w-lg w-full mx-auto'>
