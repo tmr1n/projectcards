@@ -11,7 +11,11 @@ export default function Home() {
 				<br />
 				пробных тестов и учебных активностей.
 			</p>
-			<ButtonMain text={'Зарегистрироваться бесплатно'} href='/registration'></ButtonMain>
+			<ButtonMain
+				text={'Зарегистрироваться бесплатно'}
+				href='/registration'
+			></ButtonMain>
 		</div>
 	)
 }
+//Ну, я пытался, но вообще не оказалось времени. Но я пытался.
