@@ -12,7 +12,7 @@ interface INavBarProps {
 }
 
 const navBarStyles = cva(
-	'bg-transparent border-0 p-0 focus:outline-none cursor-pointer text-2xl font-bold font-nunito',
+	'bg-transparent border-0 p-0 focus:outline-none cursor-pointer text-xl md:text-2xl font-bold font-nunito',
 	{
 		variants: {
 			state: {

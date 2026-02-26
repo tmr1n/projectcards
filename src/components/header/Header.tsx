@@ -24,7 +24,7 @@ export function Header() {
 				</Link>
 			</div>
 
-			<div className='flex-1 flex justify-center mx-4  md:hidden'>
+			<div className='flex-1 flex justify-center mx-4 md:hidden'>
 				<Link href='/' className='gap-2 '>
 					<Image
 						src='/images/Logo-adaptive.svg'

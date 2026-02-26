@@ -23,7 +23,7 @@ export function AuthPageLayout({
 				{topButtons && <div className='p-4'>{topButtons}</div>}
 
 				{navigationTabs && (
-					<div className='flex flex-row gap-8 justify-start max-w-lg w-full mx-auto'>
+					<div className='flex flex-row gap-8 justify-center max-w-lg w-full mx-auto'>
 						{navigationTabs}
 					</div>
 				)}
