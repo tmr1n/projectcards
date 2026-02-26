@@ -6,7 +6,7 @@ interface IFirstSideComponentProps {
 
 export function FirstSideComponent({ text }: IFirstSideComponentProps) {
 	return (
-		<div className="w-[50%] bg-[url('/images/Registration-img.png')] bg-cover bg-center flex flex-col justify-between p-8">
+		<div className="hidden md:w-[50%] md:bg-[url('/images/Registration-img.png')] md:bg-cover md:bg-center md:flex md:flex-col md:justify-between md:p-8">
 			<p className='text-[2.75rem] max-w-sm font-nunito wrap-break-word text-[#333333] font-bold leading-[1.3]'>
 				{text}
 			</p>

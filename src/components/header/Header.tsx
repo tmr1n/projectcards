@@ -5,7 +5,7 @@ import { ButtonMain } from '../buttons/ButtonMain'
 
 export function Header() {
 	return (
-		<header className='flex px-2 py-2 items-center   md:justify-between'>
+		<header className='flex px-2 py-2 items-center md:justify-between'>
 			<div className='cursor-pointer md:hidden'>
 				<Menu color='black' size={32} />
 			</div>

@@ -19,7 +19,7 @@ export function AuthPageLayout({
 	return (
 		<div className='flex flex-row h-screen'>
 			<FirstSideComponent text={sideText} />
-			<div className='w-[50%] overflow-y-auto flex flex-col'>
+			<div className='w-full md:w-[50%] overflow-y-auto flex flex-col'>
 				{topButtons && <div className='p-4'>{topButtons}</div>}
 
 				{navigationTabs && (
