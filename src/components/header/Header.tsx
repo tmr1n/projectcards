@@ -32,7 +32,7 @@ export function Header() {
 		>
 			<div className='flex items-center justify-between max-w-7xl mx-auto'>
 				{/* Бургер */}
-				<div className='md:hidden w-12 h-12 flex-shrink-0'>
+				<div className='md:hidden w-12 h-12 shrink-0'>
 					<Variants />
 				</div>
 
@@ -57,7 +57,7 @@ export function Header() {
 				</div>
 
 				{/* Кнопка */}
-				<div className='flex-shrink-0 ml-auto'>
+				<div className='shrink-0 ml-auto'>
 					<ButtonMain text='Вход' href='/login' />
 				</div>
 			</div>

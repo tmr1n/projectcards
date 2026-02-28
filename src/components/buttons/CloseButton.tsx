@@ -11,7 +11,7 @@ interface CloseButtonProps {
 export function CloseButton({ href, onClick }: CloseButtonProps) {
 	if (href) {
 		return (
-			<Link href={href} aria-label='закрыть'>
+			<Link href={href} aria-label='закрыть' className='close-button'>
 				<X
 					color='#586380'
 					size={32}
@@ -26,7 +26,7 @@ export function CloseButton({ href, onClick }: CloseButtonProps) {
 		<button
 			onClick={onClick}
 			aria-label='закрыть'
-			className='hover:scale-110 hover:opacity-80 duration-300'
+			className='close-button hover:scale-110 hover:opacity-80 duration-300'
 		>
 			<X color='#586380' size={32} strokeWidth={1.5} />
 		</button>
