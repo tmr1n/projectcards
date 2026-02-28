@@ -149,28 +149,25 @@ const MenuToggle = ({ toggle }: { toggle: () => void }) => (
  */
 
 const container: React.CSSProperties = {
-	display: 'flex',
-	justifyContent: 'flex-start',
-	alignItems: 'stretch',
-	flex: 1,
-	maxWidth: '100%',
-
-	backgroundColor: 'var(--accent)',
-	borderRadius: 20,
-	overflow: 'hidden'
+	position: 'relative',
+	width: 48, // только кнопка бургера
+	height: 48
 }
 
 const nav: React.CSSProperties = {
-	width: 300
+	position: 'fixed', // ← вылазит за пределы хидера
+	top: '20px', // ← под padding-top хидера
+	left: '16px', // ← отступ слева (px-4 в header = 16px)
+	width: 300,
+	height: '100vh', // ← вся высота экрана
+	zIndex: 1000
 }
 
 const background: React.CSSProperties = {
 	backgroundColor: '#f5f5f5',
 	position: 'absolute',
-	top: 0,
-	left: 0,
-	bottom: 0,
-	width: 300
+	inset: 0, // ← покрывает весь nav
+	borderRadius: 20
 }
 
 const toggleContainer: React.CSSProperties = {
@@ -180,21 +177,27 @@ const toggleContainer: React.CSSProperties = {
 	MozUserSelect: 'none',
 	cursor: 'pointer',
 	position: 'absolute',
-	top: 18,
-	left: 15,
-	width: 50,
-	height: 50,
+	top: 0, // ← центрируем в контейнере 48x48
+	left: 0,
+	width: 48,
+	height: 48,
 	borderRadius: '50%',
-	background: 'transparent'
+	background: 'transparent',
+	display: 'flex',
+	alignItems: 'center',
+	justifyContent: 'center'
 }
 
 const list: React.CSSProperties = {
 	listStyle: 'none',
-	padding: 25,
+	padding: '25px 50px 25px 0', // ← padding справа меньше
 	margin: 0,
 	position: 'absolute',
 	top: 80,
-	width: 230
+	right: 0, // ← прижимаем к правому краю nav
+	width: 280,
+	height: 'calc(100% - 105px)', // ← заполняем остаток высоты
+	overflowY: 'auto'
 }
 
 const listItem: React.CSSProperties = {
