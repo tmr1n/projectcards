@@ -45,3 +45,5 @@ export function AnimatedPage({ children }: AnimatedPageProps) {
 		</AnimatePresence>
 	)
 }
+
+//декомпозировать
