@@ -3,6 +3,7 @@ import { useForm, type SubmitHandler } from 'react-hook-form'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
 import { Input } from '@/components/form-components/Input'
 import { PasswordInput } from '@/components/form-components/PasswordInput'
+import { ButtonLink } from '../buttons/ButtonLink'
 import { Checkbox } from '../form-components/Checkbox'
 import { LabelComponent } from '../form-components/LabelComponent'
 
@@ -77,18 +78,14 @@ export function RegistrationForm({}: IRegistrationFormProps) {
 					/>
 				</div>
 
-				<ButtonSubmit
-					variant='primary'
-					text={'Зарегистрироваться'}
-					type='submit'
-					href=''
-				></ButtonSubmit>
+				<ButtonSubmit variant='primary' text={'Зарегистрироваться'} href='' />
 
-				<ButtonSubmit
+				{/* //linkbutton */}
+				<ButtonLink
 					variant='secondary'
 					text={'Уже есть учетная запись? Войти'}
 					href='/login'
-				></ButtonSubmit>
+				/>
 			</form>
 		</div>
 	)

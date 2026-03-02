@@ -6,6 +6,7 @@ import { TiVendorMicrosoft } from 'react-icons/ti'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
 import { Input } from '@/components/form-components/Input'
 import { PasswordInput } from '@/components/form-components/PasswordInput'
+import { ButtonLink } from '../buttons/ButtonLink'
 import { LabelComponent } from '../form-components/LabelComponent'
 import { LineComponent } from '../form-components/Line'
 
@@ -34,21 +35,21 @@ export function LoginForm({}: ILoginFormProps) {
 					text={'Продолжить с Google'}
 					icon={<FcGoogle />}
 					href=''
-				></ButtonSubmit>
+				/>
 
 				<ButtonSubmit
 					variant='secondary'
 					text={'Продолжить с Microsoft'}
 					icon={<TiVendorMicrosoft />}
 					href=''
-				></ButtonSubmit>
+				/>
 
 				<ButtonSubmit
 					variant='secondary'
 					text={'Продолжить с Yandex'}
 					icon={<FaYandex />}
 					href=''
-				></ButtonSubmit>
+				/>
 
 				<LineComponent text='или адрес эл. почты'></LineComponent>
 
@@ -82,18 +83,14 @@ export function LoginForm({}: ILoginFormProps) {
 					</span>
 				)}
 
-				<ButtonSubmit
-					variant='primary'
-					text={'Вход'}
-					type='submit'
-					href=''
-				></ButtonSubmit>
+				<ButtonSubmit variant='primary' text={'Вход'} href='' />
 
-				<ButtonSubmit
+				{/* //linkbutton */}
+				<ButtonLink
 					variant='secondary'
 					text={'Впервые в LangCards? Зарегистрироваться'}
 					href='/registration'
-				></ButtonSubmit>
+				/>
 			</form>
 		</div>
 	)

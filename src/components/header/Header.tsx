@@ -4,7 +4,7 @@ import { motion, useMotionValueEvent, useScroll } from 'motion/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
-import { ButtonMain } from '../buttons/ButtonMain'
+import { ButtonLink } from '../buttons/ButtonLink'
 import Variants from './Header.menu'
 
 export function Header() {
@@ -58,7 +58,7 @@ export function Header() {
 
 				{/* Кнопка */}
 				<div className='shrink-0 ml-auto'>
-					<ButtonMain text='Вход' href='/login' />
+					<ButtonLink text='Вход' href='/login' />
 				</div>
 			</div>
 		</motion.header>

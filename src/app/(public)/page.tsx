@@ -1,4 +1,4 @@
-import { ButtonMain } from '@/components/buttons/ButtonMain'
+import { ButtonLink } from '@/components/buttons/ButtonLink'
 
 export default function Home() {
 	return (
@@ -11,11 +11,7 @@ export default function Home() {
 				<br />
 				пробных тестов и учебных активностей.
 			</p>
-			<ButtonMain
-				text={'Зарегистрироваться бесплатно'}
-				href='/registration'
-			></ButtonMain>
+			<ButtonLink text={'Зарегистрироваться бесплатно'} href='/registration' />
 		</div>
 	)
 }
-//Ну, я пытался, но вообще не оказалось времени. Но я пытался.
