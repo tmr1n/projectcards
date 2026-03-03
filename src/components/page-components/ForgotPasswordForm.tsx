@@ -1,6 +1,6 @@
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
-import { Input } from '@/components/form-components/Input'
+import { InputComponent } from '@/components/form-components/InputComponent'
 import { LabelComponent } from '../form-components/LabelComponent'
 
 interface IForgotPasswordFormProps {
@@ -37,7 +37,7 @@ export function ForgotPasswordForm({}: IForgotPasswordFormProps) {
 				</div>
 				<div className='space-y-2'>
 					<LabelComponent text={'Email'}></LabelComponent>
-					<Input placeholder='user@mail.com'></Input>
+					<InputComponent placeholder='user@mail.com'></InputComponent>
 				</div>
 
 				<ButtonSubmit variant='primary' text={'Отправить ссылку для сброса'} />

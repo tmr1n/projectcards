@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
-import { Input } from '@/components/form-components/Input'
+import { InputComponent } from '@/components/form-components/InputComponent'
 import { PasswordInput } from '@/components/form-components/PasswordInput'
 import { ButtonLink } from '../buttons/ButtonLink'
-import { Checkbox } from '../form-components/Checkbox'
+import { Checkbox } from '../form-components/CheckboxComponent'
 import { LabelComponent } from '../form-components/LabelComponent'
 
 interface IRegistrationFormProps {
@@ -30,12 +30,12 @@ export function RegistrationForm({}: IRegistrationFormProps) {
 			>
 				<div className='space-y-2'>
 					<LabelComponent text={'Email'}></LabelComponent>
-					<Input placeholder='user@mail.com'></Input>
+					<InputComponent placeholder='user@mail.com'></InputComponent>
 				</div>
 
 				<div className='space-y-2'>
 					<LabelComponent text={'Имя пользователя'}></LabelComponent>
-					<Input placeholder='andrew123'></Input>
+					<InputComponent placeholder='andrew123'></InputComponent>
 				</div>
 
 				<div className='space-y-2'>
@@ -78,7 +78,7 @@ export function RegistrationForm({}: IRegistrationFormProps) {
 					/>
 				</div>
 
-				<ButtonSubmit variant='primary' text={'Зарегистрироваться'} href='' />
+				<ButtonSubmit variant='primary' text={'Зарегистрироваться'} />
 
 				{/* //linkbutton */}
 				<ButtonLink

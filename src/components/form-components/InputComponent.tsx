@@ -1,10 +1,10 @@
 import cn from 'clsx'
 
-interface IInputProps {
+interface IInputComponentProps {
 	placeholder?: string
 }
 
-export function Input({ placeholder }: IInputProps) {
+export function InputComponent({ placeholder }: IInputComponentProps) {
 	return (
 		<input
 			className={cn(

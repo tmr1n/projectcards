@@ -4,11 +4,11 @@ import { FaYandex } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
 import { TiVendorMicrosoft } from 'react-icons/ti'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
-import { Input } from '@/components/form-components/Input'
+import { InputComponent } from '@/components/form-components/InputComponent'
 import { PasswordInput } from '@/components/form-components/PasswordInput'
 import { ButtonLink } from '../buttons/ButtonLink'
 import { LabelComponent } from '../form-components/LabelComponent'
-import { LineComponent } from '../form-components/Line'
+import { LineComponent } from '../form-components/LineComponent'
 
 interface ILoginFormProps {
 	example: string
@@ -55,7 +55,7 @@ export function LoginForm({}: ILoginFormProps) {
 
 				<div className='space-y-2'>
 					<LabelComponent text={'Email или имя пользователя'}></LabelComponent>
-					<Input placeholder='Введите адрес эл. почты или имя пользователя'></Input>
+					<InputComponent placeholder='Введите адрес эл. почты или имя пользователя'></InputComponent>
 				</div>
 
 				<div className='space-y-2 pb-2'>
