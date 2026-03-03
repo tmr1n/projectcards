@@ -40,11 +40,7 @@ export function ForgotPasswordForm({}: IForgotPasswordFormProps) {
 					<Input placeholder='user@mail.com'></Input>
 				</div>
 
-				<ButtonSubmit
-					variant='primary'
-					text={'Отправить ссылку для сброса'}
-					href=''
-				/>
+				<ButtonSubmit variant='primary' text={'Отправить ссылку для сброса'} />
 			</form>
 		</div>
 	)

@@ -34,21 +34,21 @@ export function LoginForm({}: ILoginFormProps) {
 					variant='secondary'
 					text={'Продолжить с Google'}
 					icon={<FcGoogle />}
-					href=''
+					// href=''
 				/>
 
 				<ButtonSubmit
 					variant='secondary'
 					text={'Продолжить с Microsoft'}
 					icon={<TiVendorMicrosoft />}
-					href=''
+					// href=''
 				/>
 
 				<ButtonSubmit
 					variant='secondary'
 					text={'Продолжить с Yandex'}
 					icon={<FaYandex />}
-					href=''
+					// href=''
 				/>
 
 				<LineComponent text='или адрес эл. почты'></LineComponent>
@@ -83,7 +83,7 @@ export function LoginForm({}: ILoginFormProps) {
 					</span>
 				)}
 
-				<ButtonSubmit variant='primary' text={'Вход'} href='' />
+				<ButtonSubmit variant='primary' text={'Вход'} />
 
 				{/* //linkbutton */}
 				<ButtonLink
