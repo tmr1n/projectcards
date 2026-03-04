@@ -3,12 +3,9 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
+import type { IAnimatedPageProps } from '@/shared/types/form.types'
 
-interface AnimatedPageProps {
-	children: React.ReactNode
-}
-
-export function AnimatedPage({ children }: AnimatedPageProps) {
+export function AnimatedPage({ children }: IAnimatedPageProps) {
 	const pathname = usePathname()
 	const [closeMode, setCloseMode] = useState(false)
 	const [isVisible, setIsVisible] = useState(true)
@@ -45,5 +42,3 @@ export function AnimatedPage({ children }: AnimatedPageProps) {
 		</AnimatePresence>
 	)
 }
-
-//декомпозировать
