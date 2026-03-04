@@ -1,30 +1,33 @@
 'use client'
 
 import { X } from 'lucide-react'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import type { ICloseButtonProps } from '@/shared/types/button.types'
 
-export function CloseButton({ href, onClick }: ICloseButtonProps) {
-	if (href) {
-		return (
-			<Link href={href} aria-label='закрыть' className='close-button'>
-				<X
-					color='#586380'
-					size={32}
-					strokeWidth={1.5}
-					className='hover:scale-110 hover:opacity-80 duration-300 cursor-pointer'
-				/>
-			</Link>
-		)
+export function CloseButton({ href }: ICloseButtonProps) {
+	const router = useRouter()
+
+	const handleClick = (e: React.MouseEvent) => {
+		e.preventDefault()
+		// запускаем кастомное событие для layout
+		window.dispatchEvent(new Event('auth-exit-up'))
+		// даём layout отреагировать и начать exit
+		setTimeout(() => router.push(href), 50)
 	}
 
 	return (
 		<button
-			onClick={onClick}
-			aria-label='закрыть'
-			className='close-button hover:scale-110 hover:opacity-80 duration-300'
+			type='button'
+			aria-label='Закрыть'
+			onClick={handleClick}
+			className='close-button'
 		>
-			<X color='#586380' size={32} strokeWidth={1.5} />
+			<X
+				color='#586380'
+				size={32}
+				strokeWidth={1.5}
+				className='hover:scale-110 hover:opacity-80 duration-300 cursor-pointer'
+			/>
 		</button>
 	)
 }

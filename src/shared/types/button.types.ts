@@ -30,4 +30,6 @@ export interface IBackButtonProps {
 	onClick?: () => void
 }
 
-export interface ICloseButtonProps extends IBackButtonProps {}
+export interface ICloseButtonProps extends IBackButtonProps {
+	href: string // Теперь обязательный, т.к. next/link требует
+}
