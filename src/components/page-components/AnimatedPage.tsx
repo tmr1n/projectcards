@@ -1,3 +1,4 @@
+// AnimatedPage.tsx — РАБОЧИЙ (только initial)
 'use client'
 
 import { AnimatePresence, motion } from 'framer-motion'
@@ -8,15 +9,12 @@ export function AnimatedPage({ children }: IAnimatedPageProps) {
 	const pathname = usePathname()
 
 	return (
-		<AnimatePresence mode='wait'>
-			{' '}
-			{/* ✅ mode="wait" + exitBeforeEnter */}
+		<AnimatePresence>
 			<motion.div
 				key={pathname}
-				initial={{ opacity: 0, y: -50 }}
+				initial={{ opacity: 0, y: -50 }} // ✅ Только появление СВЕРХУ
 				animate={{ opacity: 1, y: 0 }}
-				exit={{ opacity: 0, y: -100 }}
-				transition={{ duration: 0.5 }}
+				transition={{ duration: 0.25 }}
 				className='w-full h-full min-h-screen'
 			>
 				{children}

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono, Nunito } from 'next/font/google'
+import { AnimatedPage } from '@/components/page-components/AnimatedPage'
 import './globals.css'
 
 const geistSans = Geist({
@@ -36,7 +37,7 @@ export default function RootLayout({
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} ${nunitoSans.variable} antialiased `}
 			>
-				{children}
+				<AnimatedPage>{children}</AnimatedPage>
 			</body>
 		</html>
 	)

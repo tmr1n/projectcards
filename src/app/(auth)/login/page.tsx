@@ -1,8 +1,7 @@
 'use client'
 
-import { X } from 'lucide-react'
-import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { CloseButton } from '@/components/buttons/CloseButton'
 import { AuthPageLayout } from '@/components/layouts/AuthPageLayout'
 import { LoginForm } from '@/components/page-components/LoginForm'
 import { NavBar } from '@/components/page-components/NavBar'
@@ -17,9 +16,7 @@ export default function Login({}: ILogin) {
 			sideText='Самый лучший способ учиться, чтобы сохранить прогресс.'
 			topButtons={
 				<div className='flex justify-end gap-4'>
-					<Link href='/' className='p-2'>
-						<X size={32} />
-					</Link>
+					<CloseButton href='/' />
 				</div>
 			}
 			navigationTabs={
