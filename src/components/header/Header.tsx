@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import { ButtonLink } from '../buttons/ButtonLink'
-import Variants from './Header.menu'
+import SidebarMenu from './SidebarMenu'
 
 export function Header() {
 	const { scrollY } = useScroll()
@@ -33,7 +33,7 @@ export function Header() {
 			<div className='flex items-center justify-between max-w-7xl mx-auto'>
 				{/* Бургер */}
 				<div className='md:hidden w-12 h-12 shrink-0'>
-					<Variants />
+					<SidebarMenu />
 				</div>
 
 				{/* Логотип */}
