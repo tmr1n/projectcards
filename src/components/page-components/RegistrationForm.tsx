@@ -6,11 +6,7 @@ import { PasswordInput } from '@/components/form-components/PasswordInput'
 import { ButtonLink } from '../buttons/ButtonLink'
 import { Checkbox } from '../form-components/CheckboxComponent'
 import { LabelComponent } from '../form-components/LabelComponent'
-
-interface IRegistrationFormProps {
-	example: string
-	exampleRequired: string
-}
+import type { IRegistrationFormProps } from '@/shared/types/auth.types'
 
 export function RegistrationForm({}: IRegistrationFormProps) {
 	const {

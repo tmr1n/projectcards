@@ -1,8 +1,7 @@
 import cn from 'clsx'
 import { Eye, EyeOff } from 'lucide-react'
 import { useState } from 'react'
-
-interface IPasswordInputProps {}
+import type { IPasswordInputProps } from '@/shared/types/form.types'
 
 export function PasswordInput({}: IPasswordInputProps) {
 	const [showPassword, setShowPassword] = useState(false)

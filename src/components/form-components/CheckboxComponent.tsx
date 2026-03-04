@@ -1,9 +1,6 @@
 import { Check } from 'lucide-react'
-import { useId, type ReactNode } from 'react'
-
-interface ICheckbox {
-	text: string | ReactNode
-}
+import { useId } from 'react'
+import type { ICheckbox } from '@/shared/types/form.types'
 
 export function Checkbox({ text }: ICheckbox) {
 	const id = useId()

@@ -1,30 +1,9 @@
 'use client'
 
-import { cva } from 'class-variance-authority'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-
-interface INavBarProps {
-	text: string
-	href: string // теперь обязательно, т.к. next/link требует
-
-	onClick?: () => void
-}
-
-const navBarStyles = cva(
-	'bg-transparent border-0 p-0 focus:outline-none cursor-pointer text-xl md:text-2xl font-bold font-nunito',
-	{
-		variants: {
-			state: {
-				active: 'text-black relative',
-				inactive: 'text-gray-400'
-			}
-		},
-		defaultVariants: {
-			state: 'inactive'
-		}
-	}
-)
+import { navBarStyles } from '@/constants/navabr'
+import type { INavBarProps } from '@/shared/types/form.types'
 
 export function NavBar({ text, href, onClick }: INavBarProps) {
 	const pathname = usePathname()

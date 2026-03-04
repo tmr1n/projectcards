@@ -1,6 +1,4 @@
-interface ILineComponentProps {
-	text: string
-}
+import type { ILineComponentProps } from '@/shared/types/form.types'
 
 export function LineComponent({ text }: ILineComponentProps) {
 	return (

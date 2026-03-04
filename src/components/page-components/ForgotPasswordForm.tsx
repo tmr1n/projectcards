@@ -2,11 +2,7 @@ import { useForm, type SubmitHandler } from 'react-hook-form'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
 import { InputComponent } from '@/components/form-components/InputComponent'
 import { LabelComponent } from '../form-components/LabelComponent'
-
-interface IForgotPasswordFormProps {
-	example: string
-	exampleRequired: string
-}
+import type { IForgotPasswordFormProps } from '@/shared/types/auth.types'
 
 export function ForgotPasswordForm({}: IForgotPasswordFormProps) {
 	const {

@@ -1,8 +1,5 @@
 import cn from 'clsx'
-
-interface IInputComponentProps {
-	placeholder?: string
-}
+import type { IInputComponentProps } from '@/shared/types/form.types'
 
 export function InputComponent({ placeholder }: IInputComponentProps) {
 	return (

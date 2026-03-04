@@ -1,8 +1,5 @@
 import Image from 'next/image'
-
-interface IFirstSideComponentProps {
-	text: string | React.ReactNode
-}
+import type { IFirstSideComponentProps } from '@/shared/types/form.types'
 
 export function FirstSideComponent({ text }: IFirstSideComponentProps) {
 	return (

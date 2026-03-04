@@ -1,14 +1,7 @@
 'use client'
 
-import type { ReactNode } from 'react'
 import { FirstSideComponent } from '@/components/page-components/FirstSideComponent'
-
-interface IAuthPageLayoutProps {
-	sideText: ReactNode
-	topButtons?: ReactNode
-	navigationTabs?: ReactNode
-	children: ReactNode
-}
+import type { IAuthPageLayoutProps } from '@/shared/types/form.types'
 
 export function AuthPageLayout({
 	sideText,

@@ -1,8 +1,4 @@
-import type { ReactNode } from 'react'
-
-interface ILabelProps {
-	text: string | ReactNode
-}
+import type { ILabelProps } from '@/shared/types/form.types'
 
 export function LabelComponent({ text }: ILabelProps) {
 	return (

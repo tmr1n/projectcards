@@ -9,11 +9,7 @@ import { PasswordInput } from '@/components/form-components/PasswordInput'
 import { ButtonLink } from '../buttons/ButtonLink'
 import { LabelComponent } from '../form-components/LabelComponent'
 import { LineComponent } from '../form-components/LineComponent'
-
-interface ILoginFormProps {
-	example: string
-	exampleRequired: string
-}
+import type { ILoginFormProps } from '@/shared/types/auth.types'
 
 export function LoginForm({}: ILoginFormProps) {
 	const {
