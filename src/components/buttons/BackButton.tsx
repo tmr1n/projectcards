@@ -2,13 +2,9 @@
 
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
+import type { IBackButtonProps } from '@/shared/types/button.types'
 
-interface BackButtonProps {
-	href?: string
-	onClick?: () => void
-}
-
-export function BackButton({ href, onClick }: BackButtonProps) {
+export function BackButton({ href, onClick }: IBackButtonProps) {
 	if (href) {
 		return (
 			<Link href={href} aria-label='назад'>

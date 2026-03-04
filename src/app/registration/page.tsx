@@ -5,10 +5,9 @@ import { AuthPageLayout } from '@/components/layouts/AuthPageLayout'
 import { AnimatedPage } from '@/components/page-components/AnimatedPage'
 import { NavBar } from '@/components/page-components/NavBar'
 import { RegistrationForm } from '@/components/page-components/RegistrationForm'
+import type { IRegistration } from '@/shared/types/auth.types'
 
-export default function Registration() {
-	// const [tab, setTab] = useState<'register' | 'login'>('login')
-
+export default function Registration({}: IRegistration) {
 	return (
 		<AnimatedPage>
 			<AuthPageLayout

@@ -2,13 +2,9 @@
 
 import { X } from 'lucide-react'
 import Link from 'next/link'
+import type { ICloseButtonProps } from '@/shared/types/button.types'
 
-interface CloseButtonProps {
-	href?: string
-	onClick?: () => void
-}
-
-export function CloseButton({ href, onClick }: CloseButtonProps) {
+export function CloseButton({ href, onClick }: ICloseButtonProps) {
 	if (href) {
 		return (
 			<Link href={href} aria-label='закрыть' className='close-button'>

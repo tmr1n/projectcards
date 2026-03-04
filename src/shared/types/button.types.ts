@@ -24,3 +24,10 @@ export interface IButtonPrimitiveProps
 	extends TButtonBase, React.ButtonHTMLAttributes<HTMLButtonElement> {
 	children: React.ReactNode
 }
+
+export interface IBackButtonProps {
+	href?: string
+	onClick?: () => void
+}
+
+export interface ICloseButtonProps extends IBackButtonProps {}

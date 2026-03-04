@@ -5,9 +5,7 @@ import { AuthPageLayout } from '@/components/layouts/AuthPageLayout'
 import { AnimatedPage } from '@/components/page-components/AnimatedPage'
 import { LoginForm } from '@/components/page-components/LoginForm'
 import { NavBar } from '@/components/page-components/NavBar'
-
-//import { useForm } from 'react-hook-form'
-interface ILogin {}
+import type { ILogin } from '@/shared/types/auth.types'
 
 export default function Login({}: ILogin) {
 	return (
