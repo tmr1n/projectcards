@@ -5,6 +5,7 @@ export interface IForgotPasswordFormProps {
 	exampleRequired: string
 }
 export interface ILoginFormProps {
+	email: string
 	example: string
 	exampleRequired: string
 }

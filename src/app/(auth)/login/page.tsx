@@ -21,7 +21,7 @@ export default function Login() {
 				</>
 			}
 		>
-			<LoginForm example='' exampleRequired='' />
+			<LoginForm example='' exampleRequired='' email='' />
 		</AuthPageLayout>
 	)
 }

@@ -12,12 +12,11 @@ import { LineComponent } from '../form-components/LineComponent'
 import type { ILoginFormProps } from '@/shared/types/auth.types'
 
 export function LoginForm({}: ILoginFormProps) {
-	const {
-		register,
-		handleSubmit,
-		watch,
-		formState: { errors }
-	} = useForm<ILoginFormProps>()
+	const { register, handleSubmit, watch, formState } = useForm<ILoginFormProps>(
+		{ mode: 'onChange' }
+	)
+
+	const emailError = formState.errors['email']?.message
 	const onSubmit: SubmitHandler<ILoginFormProps> = data => console.log(data)
 
 	return (
@@ -51,7 +50,19 @@ export function LoginForm({}: ILoginFormProps) {
 
 				<div className='space-y-2'>
 					<LabelComponent text={'Email или имя пользователя'}></LabelComponent>
-					<InputComponent placeholder='Введите адрес эл. почты или имя пользователя'></InputComponent>
+					<InputComponent
+						placeholder='Введите адрес эл. почты или имя пользователя'
+						{...register('email', {
+							required: 'Это поле обязательно',
+							pattern: {
+								value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+								message: 'Введите корректный email'
+							}
+						})}
+					/>
+					{emailError && (
+						<p className='text-red-500 text-sm mt-1'>{emailError}</p>
+					)}
 				</div>
 
 				<div className='space-y-2 pb-2'>
@@ -73,15 +84,8 @@ export function LoginForm({}: ILoginFormProps) {
 					<PasswordInput />
 				</div>
 
-				{errors.exampleRequired && (
-					<span className='text-red-500 text-sm mt-1'>
-						{errors.exampleRequired.message}
-					</span>
-				)}
-
 				<ButtonSubmit variant='primary' text={'Вход'} />
 
-				{/* //linkbutton */}
 				<ButtonLink
 					variant='secondary'
 					text={'Впервые в LangCards? Зарегистрироваться'}

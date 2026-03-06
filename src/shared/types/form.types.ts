@@ -1,10 +1,12 @@
-import { type ReactNode } from 'react'
+import { type InputHTMLAttributes, type ReactNode } from 'react'
+
+export type HTMLInputProps = InputHTMLAttributes<HTMLInputElement>
 
 export interface ICheckbox {
 	text: string | ReactNode
 }
 
-export interface IInputComponentProps {
+export interface IInputComponentProps extends HTMLInputProps {
 	placeholder?: string
 }
 
