@@ -4,7 +4,7 @@ import { motion, useMotionValueEvent, useScroll } from 'motion/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
-import { ButtonLink } from '../buttons/ButtonLink'
+import { ButtonLink } from '@/components/buttons/ButtonLink'
 import SidebarMenu from './SidebarMenu'
 
 export function Header() {

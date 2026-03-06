@@ -3,20 +3,20 @@ import { useForm, type SubmitHandler } from 'react-hook-form'
 import { FaYandex } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
 import { TiVendorMicrosoft } from 'react-icons/ti'
+import { ButtonLink } from '@/components/buttons/ButtonLink'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
 import { InputComponent } from '@/components/form-components/InputComponent'
+import { LabelComponent } from '@/components/form-components/LabelComponent'
+import { LineComponent } from '@/components/form-components/LineComponent'
 import { PasswordInput } from '@/components/form-components/PasswordInput'
-import { ButtonLink } from '../buttons/ButtonLink'
-import { LabelComponent } from '../form-components/LabelComponent'
-import { LineComponent } from '../form-components/LineComponent'
 import type { ILoginFormProps } from '@/shared/types/auth.types'
 
 export function LoginForm({}: ILoginFormProps) {
 	const { register, handleSubmit, watch, formState } = useForm<ILoginFormProps>(
-		{ mode: 'onChange' }
+		{ mode: 'onChange' } // Валидация будет происходить при каждом изменении поля. Вы можете изменить это на 'onSubmit', если хотите, чтобы валидация происходила только при отправке формы. Mode - это опция, которая определяет, когда должна выполняться валидация формы. 'onChange' означает, что валидация будет выполняться при каждом изменении поля, 'onSubmit' - только при отправке формы, 'onBlur' - при потере фокуса поля, и 'all' - при любом из этих событий.
 	)
 
-	const emailError = formState.errors['email']?.message
+	const emailError = formState.errors['email']?.message // ?. - это оператор опциональной цепочки, который позволяет безопасно обращаться к вложенным свойствам объекта. Если formState.errors['email'] не существует или равно undefined, то emailError будет равно undefined вместо того, чтобы вызвать ошибку.
 	const onSubmit: SubmitHandler<ILoginFormProps> = data => console.log(data)
 
 	return (
