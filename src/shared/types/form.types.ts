@@ -8,10 +8,13 @@ export interface ICheckbox {
 
 export interface IInputComponentProps extends HTMLInputProps {
 	placeholder?: string
+	error?: string | null
 }
 
 export interface ILabelProps {
 	text: string | ReactNode
+	error?: string | null
+	className?: string
 }
 
 export interface ILineComponentProps {

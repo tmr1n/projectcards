@@ -1,16 +1,17 @@
-// import { useForm, UseFormReturn } from 'react-hook-form'
+import type { UseFormReturn } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 
-// export interface LoginFormData {
-// 	email: string
-// 	password: string
-// }
+export interface ILoginFormData {
+	email: string
+	password: string
+}
 
-// export const useLoginValidation = (): UseFormReturn<LoginFormData> => {
-// 	return useForm<LoginFormData>({
-// 		mode: 'onChange',
-// 		defaultValues: {
-// 			email: '',
-// 			password: ''
-// 		}
-// 	})
-// }
+export const useValidation = (): UseFormReturn<ILoginFormData> => {
+	return useForm<ILoginFormData>({
+		mode: 'onChange',
+		defaultValues: {
+			email: '',
+			password: ''
+		}
+	})
+}
