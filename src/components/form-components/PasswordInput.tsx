@@ -1,21 +1,23 @@
-import cn from 'clsx'
+// components/form-components/PasswordInput.tsx
 import { Eye, EyeOff } from 'lucide-react'
 import { useState } from 'react'
+import { InputBase } from './InputBase'
 import type { IPasswordInputProps } from '@/shared/types/form.types'
 
-export function PasswordInput({}: IPasswordInputProps) {
+export function PasswordInput({
+	error,
+	...props
+}: IPasswordInputProps & { error?: string | null }) {
 	const [showPassword, setShowPassword] = useState(false)
 
 	return (
 		<div className='relative'>
-			<input
+			<InputBase
 				type={showPassword ? 'text' : 'password'}
-				className={cn(
-					'w-full h-12.5 px-4 py-3.5  pr-12 border-2 border-transparent rounded-lg bg-[#f8f9fa] text-[16px] text-[#2d3748] leading-5.5 transition-all duration-300 ease-in-out',
-					'placeholder:text-[#8e9aaf]',
-					'focus:border-[#007bff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,123,255,0.1)] focus:outline-none'
-				)}
+				error={error}
 				placeholder='••••••••'
+				className='pr-12' // переопределяем padding-right
+				{...props}
 			/>
 			<button
 				type='button'

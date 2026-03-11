@@ -16,7 +16,7 @@ export function LoginForm({}: ILoginFormProps) {
 	const form = useValidation()
 	const { register, handleSubmit, formState } = form
 	const emailError = formState.errors.email?.message
-
+	const passwordError = formState.errors.password?.message
 	// const emailError = formState.errors['email']?.message // ?. - это оператор опциональной цепочки, который позволяет безопасно обращаться к вложенным свойствам объекта. Если formState.errors['email'] не существует или равно undefined, то emailError будет равно undefined вместо того, чтобы вызвать ошибку.
 	const onSubmit: SubmitHandler<ILoginFormData> = data => console.log(data)
 
@@ -68,7 +68,10 @@ export function LoginForm({}: ILoginFormProps) {
 
 				<div className='space-y-2 pb-2'>
 					<div className='flex items-center justify-between'>
-						<LabelComponent text='Пароль'></LabelComponent>
+						<LabelComponent
+							text='Пароль'
+							error={passwordError || null}
+						></LabelComponent>
 						<LabelComponent
 							text={
 								<>
@@ -82,7 +85,11 @@ export function LoginForm({}: ILoginFormProps) {
 							}
 						></LabelComponent>
 					</div>
-					<PasswordInput />
+					<PasswordInput
+					// Тут должна быть обработка серверной ошибки(невеерный пароль)
+					// error={passwordError || null}
+					// {...register('password', { required: 'Обязательно' })}
+					/>
 				</div>
 
 				<ButtonSubmit variant='primary' text={'Вход'} />
