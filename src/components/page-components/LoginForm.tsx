@@ -17,7 +17,7 @@ export function LoginForm({}: ILoginFormProps) {
 	const { register, handleSubmit, formState } = form
 	const emailError = formState.errors.email?.message
 	const passwordError = formState.errors.password?.message
-	// const emailError = formState.errors['email']?.message // ?. - это оператор опциональной цепочки, который позволяет безопасно обращаться к вложенным свойствам объекта. Если formState.errors['email'] не существует или равно undefined, то emailError будет равно undefined вместо того, чтобы вызвать ошибку.
+	// ?. - если не существует или undefined, то не будет ошибки, а просто вернет undefined
 	const onSubmit: SubmitHandler<ILoginFormData> = data => console.log(data)
 
 	return (
