@@ -28,7 +28,7 @@ const pWords = pText.split(' ')
 export default function Home() {
 	return (
 		<div className='flex flex-col items-center justify-center gap-4 p-4 pt-12.5'>
-			<h1 className='text-[2.5rem] text-center md:text-[4rem] font-semibold text-black flex flex-wrap justify-center gap-x-[0.28em]'>
+			<h1 className='text-[2.5rem] text-center md:text-[3rem] font-semibold text-black flex flex-wrap justify-center gap-x-[0.28em]'>
 				{h1Words.map((word, i) => {
 					const isStudy = word.replace(/\W/g, '').toLowerCase() === 'study'
 					return (

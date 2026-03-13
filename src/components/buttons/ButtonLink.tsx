@@ -1,6 +1,6 @@
 // components/ui/button-link.tsx
 import Link from 'next/link'
-import { ButtonPrimitive } from '@/components/ui/ButtonPrimitive'
+import { ButtonPrimitive } from '@/components/buttons/ButtonPrimitive'
 import type { IButtonLinkProps } from '@/shared/types/button.types'
 
 export function ButtonLink({

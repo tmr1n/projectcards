@@ -1,30 +1,62 @@
 import { useEffect, useState } from 'react'
 
 /**
- * Delays showing an error by `delay` ms, but clears it immediately
- * when the value is empty or the error resolves.
+ * Хук для отображения ошибок с задержкой.
  *
- * UX: error appears "after a moment" of typing, disappears instantly on fix/clear.
+ * ЗАЧЕМ нужен:
+ * Без задержки ошибка "Недопустимый email" мигает при каждом нажатии клавиши.
+ * С задержкой — ошибка появляется только когда пользователь "остановился" (500мс).
+ *
+ * КАК работает:
+ * - Ошибка ПОЯВЛЯЕТСЯ через delay мс (чтобы не мешать при быстрой печати)
+ * - Ошибка ИСЧЕЗАЕТ мгновенно (как только пользователь исправился или очистил поле)
+ * - После отправки формы (forceShow=true) — показываем ошибку сразу и даже для пустых полей
+ *
+ * @param rawError  - Текст ошибки от Zod/react-hook-form (undefined/null = нет ошибки)
+ * @param value     - Текущее значение поля (нужно чтобы знать: поле пустое или нет)
+ * @param delay     - Задержка в мс перед показом ошибки. По умолчанию 500мс.
+ * @param forceShow - Показывать ошибку немедленно, даже для пустых полей.
+ *                    Используйте isSubmitted из formState — после нажатия Submit
+ *                    ошибки должны показываться сразу.
  */
 export function useDelayedError(
 	rawError: string | null | undefined,
 	value: string,
-	delay = 500
+	delay = 500,
+	forceShow = false
 ): string | null {
 	const [error, setError] = useState<string | null>(null)
 
 	useEffect(() => {
-		// Never show error for empty field
-		const target = value.length > 0 ? (rawError ?? null) : null
+		const rawErrorText = rawError ?? null
 
-		if (!target) {
+		// РЕЖИМ ПОСЛЕ SUBMIT: показываем ошибку немедленно, игнорируем пустые поля
+		if (forceShow) {
+			setError(rawErrorText)
+			return
+		}
+
+		// ОБЫЧНЫЙ РЕЖИМ: не показываем ошибку для пустых полей
+		// Логика: пустое поле — пользователь ещё ничего не ввёл, не нужно пугать
+		if (value.length === 0) {
 			setError(null)
 			return
 		}
 
-		const timer = setTimeout(() => setError(target), delay)
+		// Если ошибки нет → сбрасываем МГНОВЕННО (хорошая UX: быстрый позитивный фидбек)
+		if (!rawErrorText) {
+			setError(null)
+			return
+		}
+
+		// Если ошибка есть → показываем с задержкой (чтобы не мигало при печати)
+		// setTimeout возвращает ID таймера — он нужен для очистки в return
+		const timer = setTimeout(() => setError(rawErrorText), delay)
+
+		// Функция очистки: вызывается когда зависимости (rawError, value) изменились
+		// до того как истёк таймер. Без этого — старые ошибки могут "проскочить".
 		return () => clearTimeout(timer)
-	}, [rawError, value, delay])
+	}, [rawError, value, delay, forceShow])
 
 	return error
 }

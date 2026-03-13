@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import type { IFirstSideComponentProps } from '@/shared/types/form.types'
+import type { IFirstSideComponentProps } from '@/shared/types/layout.types'
 
 export function FirstSideComponent({ text }: IFirstSideComponentProps) {
 	return (

@@ -1,36 +1,92 @@
-import { Check } from 'lucide-react'
-import React, { useId } from 'react'
+// CheckboxComponent — кастомный чекбокс с современным дизайном.
+//
+// КАК РАБОТАЕТ:
+// Нативный <input type="checkbox"> скрывается (sr-only = только для скрин-ридеров).
+// Вместо него — кастомный <span> который реагирует на состояние через CSS-классы peer-*.
+//
+// peer-* — это Tailwind-паттерн: когда элемент имеет класс "peer",
+// его сиблинги (братья/сёстры) могут менять стиль через peer-checked:, peer-focus: и т.д.
+//
+// group / group-hover: — похожий паттерн для родитель → потомок.
+// Когда <label> получает hover, дочерний <span> меняет стиль через group-hover:.
+//
+// ИЗМЕНЕНИЯ: убран React.forwardRef (React 19), улучшен дизайн галочки.
+
+import { useId } from 'react'
+import { cn } from '@/utils/utils'
 import type { ICheckbox } from '@/shared/types/form.types'
 
-const Checkbox = React.forwardRef<HTMLInputElement, ICheckbox>(({ text, ...props }, ref) => {
+type TCheckboxProps = ICheckbox & {
+	ref?: React.Ref<HTMLInputElement>
+}
+
+export function Checkbox({ text, ref, ...props }: TCheckboxProps) {
+	// useId — генерирует уникальный id для связки <label htmlFor> ↔ <input id>
+	// Это важно для доступности: клик по тексту активирует чекбокс
 	const id = useId()
 
 	return (
-		<div className='flex items-center mb-4'>
+		<div className='flex items-start mb-4'>
+			{/* group — маркер для group-hover: на дочерних элементах */}
 			<label
 				htmlFor={id}
-				className='flex items-start select-none ms-2 text-sm font-medium text-heading cursor-pointer'
+				className='group flex items-start gap-3 cursor-pointer select-none'
 			>
-				<input id={id} type='checkbox' className='sr-only peer' ref={ref} {...props} />
+				{/* Скрытый нативный input — управляет состоянием (checked/unchecked) */}
+				{/* sr-only = видим только скрин-ридерам, визуально отсутствует */}
+				{/* peer — маркер для peer-checked:, peer-focus-visible: на сиблингах */}
+				<input
+					id={id}
+					type='checkbox'
+					className='sr-only peer'
+					ref={ref}
+					{...props}
+				/>
+
+				{/* Кастомная визуальная галочка */}
 				<span
-					aria-hidden
-					className='w-5 h-5 border-2 border-gray-300 rounded-sm bg-white shrink-0 relative mt-0.5 transition-all duration-200 ease-in-out
-						peer-checked:bg-purple-500 peer-checked:border-purple-500 group-hover:border-gray-400
-						peer-focus-visible:ring-4 peer-focus-visible:ring-purple-200/40
-						peer-checked:[&>svg]:opacity-100'
+					aria-hidden // скрываем от скрин-ридеров (нативный input уже описан)
+					className={cn(
+						// Размер и форма
+						'w-5 h-5 border-2 rounded-[4px] bg-white shrink-0 relative mt-0.5',
+						// Плавные переходы всех свойств
+						'transition-all duration-200 ease-in-out',
+						// Цвет рамки:
+						//   обычный → серый
+						//   hover на label (group-hover) → синеватый
+						'border-gray-300 group-hover:border-blue-400',
+						// Когда peer (нативный input) отмечен → синий фон и рамка
+						'peer-checked:bg-blue-600 peer-checked:border-blue-600',
+						// Фокус с клавиатуры (Tab) → синее кольцо вокруг (доступность)
+						'peer-focus-visible:ring-2 peer-focus-visible:ring-blue-500/30 peer-focus-visible:ring-offset-1',
+						// SVG галочка внутри:
+						//   [&>svg] — селектор прямого потомка svg
+						//   По умолчанию scale-0 (сжата до нуля = невидима)
+						//   Когда peer checked → scale-100 (нормальный размер, с анимацией)
+						'[&>svg]:scale-0 [&>svg]:transition-transform [&>svg]:duration-150 [&>svg]:ease-out',
+						'peer-checked:[&>svg]:scale-100',
+					)}
 				>
-					<Check
-						className='absolute left-1/2 top-1/2 w-3 h-3 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-150 opacity-0'
-						size={10}
-						strokeWidth={4}
+					{/* SVG галочка — белая поверх синего фона */}
+					<svg
+						viewBox='0 0 14 14'
+						className='absolute inset-0 w-full h-full p-[3px] text-white'
+						fill='none'
+						stroke='currentColor'
+						strokeWidth={2.5}
+						strokeLinecap='round'
+						strokeLinejoin='round'
 						aria-hidden
-					/>
+					>
+						<polyline points='2,8 6,11 12,3' />
+					</svg>
 				</span>
-				<span className='text-gray-800 font-nunito ml-2 font-semibold'>{text}</span>
+
+				{/* Текст рядом с чекбоксом (может быть строкой или JSX со ссылками) */}
+				<span className='text-sm text-gray-700 font-nunito font-medium leading-relaxed mt-0.5'>
+					{text}
+				</span>
 			</label>
 		</div>
 	)
-})
-
-Checkbox.displayName = 'Checkbox'
-export { Checkbox }
+}

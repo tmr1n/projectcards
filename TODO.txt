@@ -12,11 +12,11 @@ Header - починить баг на отображение
 
 Второстепенно
 (Лоадер
-стр 404
+стр 404 - можно улучшить
 Заглушечная страница пользователя
 кастомный лоадер горизонтальный на главной стр)
 
-И только после этого - обработка ошибок. (TanstackQuery/Zustand)
+
 
 
 Типы T , Интерфейсы I Во всём проекте.
@@ -27,36 +27,9 @@ shared/types/
 └── api.types.ts       — ApiResponse<T>, ApiError
 
 
-store/       → Zustand (auth state, user, tokens)
-providers/   → QueryClientProvider, AuthProvider, ThemeProvider
-server-actions/ → Next.js Server Actions для auth (login, register, reset)
-services/    → API клиент (fetch wrapper / axios)
+
 
 Убрать к чертям useValidation или настроить нормально
-
-
-
-....Настроить на будущее Server Actions
-
-// src/server-actions/auth.actions.ts
-'use server'
-import { redirect } from 'next/navigation'
-
-export async function loginAction(data: LoginFormData) {
-  const res = await fetch('/api/auth/login', { method: 'POST', body: JSON.stringify(data) })
-  if (!res.ok) return { error: 'Неверный логин или пароль' }
-  redirect('/dashboard')
-}
-
-
-
-....Настроить состояние аутентификации 
-
-NextAuth.js v5 (Auth.js) — если нужна OAuth (Google, Microsoft уже есть кнопки)
-Zustand — для client-side состояния (user, isLoggedIn)
-Middleware — защита роутов
-
-
 
 
 Компоненты
@@ -82,13 +55,50 @@ src/app/
 ├── error.tsx          → глобальный обработчик ошибок
 ├── not-found.tsx      → кастомная 404 страница
 └── loading.tsx        → Suspense fallback
+
+
+
+
+
+
+
+Проверка наличия:
+
 Производительность и SEO
 В src/app/layout.tsx скорее всего нет metadata. Добавить:
-
 
 export const metadata: Metadata = {
   title: { template: '%s | ProjectCards', default: 'ProjectCards' },
   description: '...',
 }
+
+store/       → Zustand (auth state, user, tokens)
+providers/   → QueryClientProvider, AuthProvider, ThemeProvider
+server-actions/ → Next.js Server Actions для auth (login, register, reset)
+services/    → API клиент (fetch wrapper / axios)
+
+
+10. Вопрос Store(Zustand (auth state, user, tokens)). Я с Zustand не знаком. Я прошу тебя сделать всё под стать проекту, по современным стандартам, но убедительнейшая просьба - мне нужно понять, что происходит. Всё везде комментируй, всё на русском. //изначально я всё прочитаю, сам попробую, а потом что-то как-то где-то буду писать Claude. 
+
+11.providers/   → QueryClientProvider, AuthProvider, ThemeProvider. Я так понимаю речь пошла про TanstackQuery. //изначально я всё прочитаю, сам попробую, а потом что-то как-то где-то буду писать Claude. 
+
+12. ....Настроить состояние аутентификации 
+
+NextAuth.js v5 (Auth.js) — если нужна OAuth (Google, Microsoft уже есть кнопки)
+Zustand — для client-side состояния (user, isLoggedIn)
+Middleware — защита роутов
+
+....Настроить на будущее Server Actions
+
+// src/server-actions/auth.actions.ts
+'use server'
+import { redirect } from 'next/navigation'
+
+export async function loginAction(data: LoginFormData) {
+  const res = await fetch('/api/auth/login', { method: 'POST', body: JSON.stringify(data) })
+  if (!res.ok) return { error: 'Неверный логин или пароль' }
+  redirect('/dashboard')
+}
+
 
 Качество	Тесты (Vitest + Testing Library), i18n, Storybook для компонентов

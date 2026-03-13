@@ -14,9 +14,10 @@ export default function AuthLayout({
 		<AnimatePresence mode='wait'>
 			<motion.div
 				key={pathname}
-				initial={{ opacity: 0, y: -50 }} // ✅ Только появление СВЕРХУ
+				initial={{ opacity: 0, y: -40 }}
 				animate={{ opacity: 1, y: 0 }}
-				transition={{ duration: 0.25 }}
+				exit={{ opacity: 0, y: -40 }}
+				transition={{ duration: 0.25, ease: 'easeInOut' }}
 				className='w-full h-full min-h-screen'
 			>
 				{children}

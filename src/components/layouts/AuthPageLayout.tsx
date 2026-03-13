@@ -1,7 +1,7 @@
 'use client'
 
 import { FirstSideComponent } from '@/components/page-components/FirstSideComponent'
-import type { IAuthPageLayoutProps } from '@/shared/types/form.types'
+import type { IAuthPageLayoutProps } from '@/shared/types/layout.types'
 
 export function AuthPageLayout({
 	sideText,

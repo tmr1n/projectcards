@@ -1,6 +1,6 @@
 'use client'
 
-import { ButtonPrimitive } from '@/components/ui/ButtonPrimitive'
+import { ButtonPrimitive } from '@/components/buttons/ButtonPrimitive'
 import type { IButtonSubmitProps } from '@/shared/types/button.types'
 
 export function ButtonSubmit({
