@@ -8,10 +8,6 @@ Header - починить баг на отображение
 Анимация исчезновения модальных окон. --------- motion.dev
 
 
-
-Анимировать текст на главной странице
-
-
 Поменять галочки в Checkbox.tsx
 
 Второстепенно
@@ -23,35 +19,76 @@ Header - починить баг на отображение
 И только после этого - обработка ошибок. (TanstackQuery/Zustand)
 
 
-Встал вопрос дополнения функционала в формах, т.к кнопки мы переделали. (Red group react-hook-form)
+Типы T , Интерфейсы I Во всём проекте.
+shared/types/
+├── auth.types.ts      — только доменные типы (User, Session, Tokens)
+├── form.types.ts      — только UI-компоненты форм
+├── layout.types.ts    — AuthPageLayout, AnimatedPage
+└── api.types.ts       — ApiResponse<T>, ApiError
 
-Всецело план намечен
+
+store/       → Zustand (auth state, user, tokens)
+providers/   → QueryClientProvider, AuthProvider, ThemeProvider
+server-actions/ → Next.js Server Actions для auth (login, register, reset)
+services/    → API клиент (fetch wrapper / axios)
+
+Убрать к чертям useValidation или настроить нормально
 
 
-Перейдём к валидации.
-Настрой правильную схему/схемы, если нужно.
-Принцип есть - если ошибка, то она показывается в label. 
-Input горит красным (стили уже настроены), единственное, нужно чтобы показывалось не сразу, а через мгновение.
 
-Регистрация:
-Email: Недопустимый адрес электронной почты.
-Имя пользователя: 
-Имя пользователя слишком короткое. Оно должно содержать не менее 3 символов;
-(под Inputом) -
-Имена пользователей должны начинаться с букв A-Z и не могут содержать символы с диакритическими знаками.
-Имя пользователя может содержать только буквы, цифры, подчеркивания и дефисы;
+....Настроить на будущее Server Actions
 
-Пароль:
-Пароль должен содержать одну большую букву.;
-Слишком короткий пароль. Минимальная длина – 8 знаков.;
-Пароль должен содержать один специальный символ.
-(Под Inputом если не выполняются условия, если осталось что-то одно, то ошибка отображается в label) -
-Пароль должен содержать одну большую букву.
-Пароль должен содержать один специальный символ.
+// src/server-actions/auth.actions.ts
+'use server'
+import { redirect } from 'next/navigation'
 
-Повторите пароль:
-Пароли не совпадают
+export async function loginAction(data: LoginFormData) {
+  const res = await fetch('/api/auth/login', { method: 'POST', body: JSON.stringify(data) })
+  if (!res.ok) return { error: 'Неверный логин или пароль' }
+  redirect('/dashboard')
+}
 
-Если не выбраны Checkbox:
 
-Примите условия предоставления услуг и политику конфиденциальности LangCards, чтобы продолжить.
+
+....Настроить состояние аутентификации 
+
+NextAuth.js v5 (Auth.js) — если нужна OAuth (Google, Microsoft уже есть кнопки)
+Zustand — для client-side состояния (user, isLoggedIn)
+Middleware — защита роутов
+
+
+
+
+Компоненты
+Дублирование кнопок
+src/components/ui/ButtonPrimitive.tsx и src/components/buttons/ содержат похожую логику. Нужно оставить один источник истины.
+
+useInputStyles → CVA
+src/hooks/useInputStyles.ts — хук, который просто возвращает строку className. Это антипаттерн для простой стилизации. Лучше CVA (как уже используется в кнопках):
+
+
+// Убрать хук, добавить в constants/
+export const inputVariants = cva('base-styles', {
+  variants: { error: { true: 'border-red-500 bg-red-50', false: 'border-gray-300' } }
+})
+forwardRef с React 19
+В React 19 forwardRef больше не нужен — ref передаётся как обычный prop. InputComponent.tsx использует устаревший паттерн.
+
+Обработка ошибок
+Нет ни одного error.tsx или ErrorBoundary. По современным стандартам Next.js:
+
+
+src/app/
+├── error.tsx          → глобальный обработчик ошибок
+├── not-found.tsx      → кастомная 404 страница
+└── loading.tsx        → Suspense fallback
+Производительность и SEO
+В src/app/layout.tsx скорее всего нет metadata. Добавить:
+
+
+export const metadata: Metadata = {
+  title: { template: '%s | ProjectCards', default: 'ProjectCards' },
+  description: '...',
+}
+
+Качество	Тесты (Vitest + Testing Library), i18n, Storybook для компонентов
