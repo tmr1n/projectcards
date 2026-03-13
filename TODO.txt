@@ -1,64 +1,22 @@
-(Login/registration (page.tsx) - вроде не по принципу DRY, как буд-то можно ещё что-то придумать по типу один файл, одна страница. Хз.)
+Отключить деплой, возможно оно там че-то жрёт
+
+
+Разбор всех файлов с комментариями.
+Добавить комментарии непосредственно к валидации
 
 
 *Нужна практика use хукам, базовым в реакте. Я чувствую, что нет практики
 
-Header - починить баг на отображение
-
-Анимация исчезновения модальных окон. --------- motion.dev
 
 
-Поменять галочки в Checkbox.tsx
+Анимация исчезновения модальных окон. --------- motion.dev (по прежнему хреново)
 
-Второстепенно
-(Лоадер
+
+
 стр 404 - можно улучшить
 Заглушечная страница пользователя
-кастомный лоадер горизонтальный на главной стр)
-
-
-
-
-Типы T , Интерфейсы I Во всём проекте.
-shared/types/
-├── auth.types.ts      — только доменные типы (User, Session, Tokens)
-├── form.types.ts      — только UI-компоненты форм
-├── layout.types.ts    — AuthPageLayout, AnimatedPage
-└── api.types.ts       — ApiResponse<T>, ApiError
-
-
-
-
-Убрать к чертям useValidation или настроить нормально
-
-
-Компоненты
-Дублирование кнопок
-src/components/ui/ButtonPrimitive.tsx и src/components/buttons/ содержат похожую логику. Нужно оставить один источник истины.
-
-useInputStyles → CVA
-src/hooks/useInputStyles.ts — хук, который просто возвращает строку className. Это антипаттерн для простой стилизации. Лучше CVA (как уже используется в кнопках):
-
-
-// Убрать хук, добавить в constants/
-export const inputVariants = cva('base-styles', {
-  variants: { error: { true: 'border-red-500 bg-red-50', false: 'border-gray-300' } }
-})
-forwardRef с React 19
-В React 19 forwardRef больше не нужен — ref передаётся как обычный prop. InputComponent.tsx использует устаревший паттерн.
-
-Обработка ошибок
-Нет ни одного error.tsx или ErrorBoundary. По современным стандартам Next.js:
-
-
-src/app/
-├── error.tsx          → глобальный обработчик ошибок
-├── not-found.tsx      → кастомная 404 страница
-└── loading.tsx        → Suspense fallback
-
-
-
-
+Набить главную страницу добром плюс скелетонами.
+Футер
 
 
 
