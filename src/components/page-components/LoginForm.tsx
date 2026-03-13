@@ -3,7 +3,7 @@ import { type SubmitHandler } from 'react-hook-form'
 import { FaYandex } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
 import { TiVendorMicrosoft } from 'react-icons/ti'
-import { useValidation, type ILoginFormData } from '@/hooks/useValidation'
+import { useValidation, type LoginFormData } from '@/hooks/useValidation'
 import { ButtonLink } from '@/components/buttons/ButtonLink'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
 import { InputComponent } from '@/components/form-components/InputComponent'
@@ -18,7 +18,7 @@ export function LoginForm({}: ILoginFormProps) {
 	const emailError = formState.errors.email?.message
 	const passwordError = formState.errors.password?.message
 	// ?. - если не существует или undefined, то не будет ошибки, а просто вернет undefined
-	const onSubmit: SubmitHandler<ILoginFormData> = data => console.log(data)
+	const onSubmit: SubmitHandler<LoginFormData> = data => console.log(data)
 
 	return (
 		<div className=' bg-white flex items-center justify-center p-8 '>

@@ -1,8 +1,8 @@
 import { Check } from 'lucide-react'
-import { useId } from 'react'
+import React, { useId } from 'react'
 import type { ICheckbox } from '@/shared/types/form.types'
 
-export function Checkbox({ text }: ICheckbox) {
+const Checkbox = React.forwardRef<HTMLInputElement, ICheckbox>(({ text, ...props }, ref) => {
 	const id = useId()
 
 	return (
@@ -11,10 +11,10 @@ export function Checkbox({ text }: ICheckbox) {
 				htmlFor={id}
 				className='flex items-start select-none ms-2 text-sm font-medium text-heading cursor-pointer'
 			>
-				<input id={id} type='checkbox' className='sr-only peer' />
+				<input id={id} type='checkbox' className='sr-only peer' ref={ref} {...props} />
 				<span
 					aria-hidden
-					className='w-5 h-5  border-2 border-gray-300 rounded-sm bg-white shrink-0 relative mt-0.5 transition-all duration-200 ease-in-out
+					className='w-5 h-5 border-2 border-gray-300 rounded-sm bg-white shrink-0 relative mt-0.5 transition-all duration-200 ease-in-out
 						peer-checked:bg-purple-500 peer-checked:border-purple-500 group-hover:border-gray-400
 						peer-focus-visible:ring-4 peer-focus-visible:ring-purple-200/40
 						peer-checked:[&>svg]:opacity-100'
@@ -26,10 +26,11 @@ export function Checkbox({ text }: ICheckbox) {
 						aria-hidden
 					/>
 				</span>
-				<span className='text-gray-800 font-nunito ml-2 font-semibold'>
-					{text}
-				</span>
+				<span className='text-gray-800 font-nunito ml-2 font-semibold'>{text}</span>
 			</label>
 		</div>
 	)
-}
+})
+
+Checkbox.displayName = 'Checkbox'
+export { Checkbox }

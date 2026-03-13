@@ -4,9 +4,7 @@ import { CloseButton } from '@/components/buttons/CloseButton'
 import { AuthPageLayout } from '@/components/layouts/AuthPageLayout'
 import { NavBar } from '@/components/page-components/NavBar'
 import { RegistrationForm } from '@/components/page-components/RegistrationForm'
-import type { IRegistration } from '@/shared/types/auth.types'
-
-export default function Registration({}: IRegistration) {
+export default function Registration() {
 	return (
 		<AuthPageLayout
 			sideText='Самый лучший способ учиться, чтобы сохранить прогресс.'
@@ -22,7 +20,7 @@ export default function Registration({}: IRegistration) {
 				</>
 			}
 		>
-			<RegistrationForm example={''} exampleRequired={''} />
+			<RegistrationForm />
 		</AuthPageLayout>
 	)
 }

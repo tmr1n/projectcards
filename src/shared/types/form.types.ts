@@ -2,7 +2,7 @@ import { type InputHTMLAttributes, type ReactNode } from 'react'
 
 export type HTMLInputProps = InputHTMLAttributes<HTMLInputElement>
 
-export interface ICheckbox {
+export interface ICheckbox extends InputHTMLAttributes<HTMLInputElement> {
 	text: string | ReactNode
 }
 
@@ -21,7 +21,9 @@ export interface ILineComponentProps {
 	text: string
 }
 
-export interface IPasswordInputProps {}
+export interface IPasswordInputProps extends HTMLInputProps {
+	error?: string | null
+}
 
 export interface IAuthPageLayoutProps {
 	sideText: ReactNode

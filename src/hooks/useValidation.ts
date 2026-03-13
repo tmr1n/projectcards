@@ -1,24 +1,17 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import type { UseFormReturn } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
-// useValidation.ts
 import { loginSchema } from '@/schemas/auth.schema'
+import type { LoginFormData } from '@/schemas/auth.schema'
 
-const form = useForm({ resolver: zodResolver(loginSchema) })
+export type { LoginFormData }
 
-export interface ILoginFormData {
-	email: string
-	password: string
+export const useValidation = () => {
+  return useForm<LoginFormData>({
+    mode: 'onBlur',
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    resolver: zodResolver(loginSchema),
+  })
 }
-
-export const useValidation = (): UseFormReturn<ILoginFormData> => {
-	return useForm<ILoginFormData>({
-		mode: 'onChange',
-		defaultValues: {
-			email: '',
-			password: ''
-		}
-	})
-}
-
-//
