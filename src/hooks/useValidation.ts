@@ -6,12 +6,12 @@ import type { LoginFormData } from '@/schemas/auth.schema'
 export type { LoginFormData }
 
 export const useValidation = () => {
-  return useForm<LoginFormData>({
-    mode: 'onBlur',
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-    resolver: zodResolver(loginSchema),
-  })
+	return useForm<LoginFormData>({
+		mode: 'onChange',
+		defaultValues: {
+			email: '',
+			password: '',
+		},
+		resolver: zodResolver(loginSchema),
+	})
 }

@@ -1,21 +1,30 @@
 import { useForm, type SubmitHandler } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
 import { InputComponent } from '@/components/form-components/InputComponent'
-import { LabelComponent } from '../form-components/LabelComponent'
-import type { IForgotPasswordFormProps } from '@/shared/types/auth.types'
+import { LabelComponent } from '@/components/form-components/LabelComponent'
+import { useDelayedError } from '@/hooks/useDelayedError'
+import { forgotPasswordSchema, type ForgotPasswordFormData } from '@/schemas/auth.schema'
 
-export function ForgotPasswordForm({}: IForgotPasswordFormProps) {
+export function ForgotPasswordForm() {
 	const {
 		register,
 		handleSubmit,
 		watch,
-		formState: { errors }
-	} = useForm<IForgotPasswordFormProps>()
-	const onSubmit: SubmitHandler<IForgotPasswordFormProps> = data =>
-		console.log(data)
+		formState: { errors },
+	} = useForm<ForgotPasswordFormData>({
+		mode: 'onChange',
+		resolver: zodResolver(forgotPasswordSchema),
+		defaultValues: { email: '' },
+	})
+
+	const onSubmit: SubmitHandler<ForgotPasswordFormData> = data => console.log(data)
+
+	const emailValue = watch('email') ?? ''
+	const emailLabelError = useDelayedError(errors.email?.message, emailValue)
 
 	return (
-		<div className=' bg-white flex items-center justify-center p-8 '>
+		<div className='bg-white flex items-center justify-center p-8'>
 			<form
 				onSubmit={handleSubmit(onSubmit)}
 				className='w-full max-w-lg flex flex-col gap-4'
@@ -31,12 +40,17 @@ export function ForgotPasswordForm({}: IForgotPasswordFormProps) {
 						отправим им эту ссылку.
 					</p>
 				</div>
+
 				<div className='space-y-2'>
-					<LabelComponent text={'Email'}></LabelComponent>
-					<InputComponent placeholder='user@mail.com'></InputComponent>
+					<LabelComponent text='Email' error={emailLabelError} />
+					<InputComponent
+						placeholder='user@mail.com'
+						error={emailLabelError}
+						{...register('email')}
+					/>
 				</div>
 
-				<ButtonSubmit variant='primary' text={'Отправить ссылку для сброса'} />
+				<ButtonSubmit variant='primary' text='Отправить ссылку для сброса' />
 			</form>
 		</div>
 	)
