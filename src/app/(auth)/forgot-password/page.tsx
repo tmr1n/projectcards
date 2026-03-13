@@ -16,7 +16,7 @@ export default function ForgotPassword() {
 				</div>
 			}
 		>
-			<ForgotPasswordForm example='' exampleRequired='' />
+			<ForgotPasswordForm />
 		</AuthPageLayout>
 	)
 }
