@@ -1,7 +1,7 @@
-// components/ui/button-link.tsx
 import Link from 'next/link'
-import { ButtonPrimitive } from '@/components/buttons/ButtonPrimitive'
+import { buttonStyles } from '@/constants/button'
 import type { IButtonLinkProps } from '@/shared/types/button.types'
+import { cn } from '@/utils/utils'
 
 export function ButtonLink({
 	text,
@@ -11,11 +11,11 @@ export function ButtonLink({
 	className
 }: IButtonLinkProps) {
 	return (
-		<Link href={href}>
-			<ButtonPrimitive variant={variant} className={className}>
+		<Link href={href} className={cn(buttonStyles({ variant }), className)}>
+			<div className='flex items-center justify-center'>
 				{icon && <span className='inline-flex text-xl pr-1'>{icon}</span>}
 				{text}
-			</ButtonPrimitive>
+			</div>
 		</Link>
 	)
 }
