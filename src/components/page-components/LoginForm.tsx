@@ -95,7 +95,7 @@ export function LoginForm() {
 				onSubmit={handleSubmit(onSubmit)}
 				className='w-full max-w-lg flex flex-col gap-4'
 			>
-				{/* Кнопки OAuth — войти через соц. сети (пока не реализованы) */}
+				{/* TODO: Кнопки OAuth — войти через соц. сети (пока не реализованы) */}
 				<ButtonSubmit
 					variant='secondary'
 					text='Продолжить с Google'
