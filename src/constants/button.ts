@@ -3,7 +3,7 @@ import { cva } from 'class-variance-authority'
 
 export const buttonStyles = cva(
 	[
-		'block w-full h-[65px] px-[0.875rem] py-[0.375rem]',
+		'block flex w-full justify-center h-[65px] px-[0.875rem] py-[0.375rem]',
 		'text-center text-base font-semibold',
 		'border-0 rounded-[50px]',
 		'transition-colors duration-300 ease-in-out cursor-pointer'
