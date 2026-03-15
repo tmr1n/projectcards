@@ -10,7 +10,7 @@ export function NavBar({ text, href, onClick }: INavBarProps) {
 	const active = pathname === href // авто-определение active состояния
 
 	return (
-		<Link href={href}>
+		<Link href={href} className='flex flex-col items-center gap-1'>
 			<button
 				type='button'
 				role='tab'
@@ -19,13 +19,13 @@ export function NavBar({ text, href, onClick }: INavBarProps) {
 				className={navBarStyles({ state: active ? 'active' : 'inactive' })}
 			>
 				<span>{text}</span>
-				{active && (
-					<span
-						aria-hidden
-						className='absolute -bottom-2 left-0 right-0 h-0.75 bg-[#e372ff] rounded-xs shadow-[0_2px_8px_rgba(227,114,255,0.3)]'
-					/>
-				)}
 			</button>
+			{active && (
+				<span
+					aria-hidden
+					className='w-full h-0.75 bg-[#e372ff] rounded-xs shadow-[0_2px_8px_rgba(227,114,255,0.3)]'
+				/>
+			)}
 		</Link>
 	)
 }

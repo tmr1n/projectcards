@@ -5,7 +5,7 @@ export const navBarStyles = cva(
 	{
 		variants: {
 			state: {
-				active: 'text-black relative',
+				active: 'text-black',
 				inactive: 'text-gray-400'
 			}
 		},
