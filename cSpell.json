@@ -1,0 +1,6 @@
+{
+	"version": "0.2",
+	"language": "en,ru",
+	"import": ["@cspell/dict-ru_ru/cspell-ext.json"],
+	"ignorePaths": ["node_modules", "dist", "build"]
+}

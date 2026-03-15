@@ -6,8 +6,11 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { ButtonLink } from '@/components/buttons/ButtonLink'
 import SidebarMenu from './SidebarMenu'
+import { useAuthStore } from '@/store/authStore'
 
 export function Header() {
+	const { isAuthenticated, logout } = useAuthStore()
+
 	const { scrollY } = useScroll()
 	const [hidden, setHidden] = useState(false)
 
@@ -58,7 +61,11 @@ export function Header() {
 
 				{/* Кнопка */}
 				<div className='shrink-0 ml-auto'>
-					<ButtonLink text='Вход' href='/login' />
+					{isAuthenticated ? (
+						<button onClick={logout}>Выйти</button>
+					) : (
+						<ButtonLink text='Вход' href='/login' />
+					)}
 				</div>
 			</div>
 		</motion.header>

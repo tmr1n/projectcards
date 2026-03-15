@@ -70,7 +70,7 @@ export function Checkbox({ text, ref, ...props }: TCheckboxProps) {
 					{/* SVG галочка — белая поверх синего фона */}
 					<svg
 						viewBox='0 0 14 14'
-						className='absolute inset-0 w-full h-full p-[3px] text-white'
+						className='absolute inset-0 w-full h-full p-0.75 text-white'
 						fill='none'
 						stroke='currentColor'
 						strokeWidth={2.5}

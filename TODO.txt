@@ -1,5 +1,5 @@
 
-
+Вопрос к useDebounce и к (херня, которая запрещает надцать раз кликать и отправлять надцать запросов)
 
 Разбор всех файлов с комментариями.
 Добавить комментарии непосредственно к валидации
@@ -18,6 +18,7 @@
 Набить главную страницу добром плюс скелетонами.
 Футер
 
+сделать спиннер, когда данные будут отправляться.
 
 
 Проверка наличия:
@@ -30,33 +31,104 @@ export const metadata: Metadata = {
   description: '...',
 }
 
-store/       → Zustand (auth state, user, tokens)
-providers/   → QueryClientProvider, AuthProvider, ThemeProvider
-server-actions/ → Next.js Server Actions для auth (login, register, reset)
-services/    → API клиент (fetch wrapper / axios)
+═══════════════════════════════════════════════════════
+ZUSTAND — ПЛАН РЕАЛИЗАЦИИ
+═══════════════════════════════════════════════════════
+Обучающий файл со всеми комментариями:
+  src/store/authStore.ts  ← читай его первым
 
+───────────────────────────────────────────────────────
+ШАГ 1: Подключи store к LoginForm
+───────────────────────────────────────────────────────
+Файл: src/components/page-components/LoginForm.tsx
 
-10. Вопрос Store(Zustand (auth state, user, tokens)). Я с Zustand не знаком. Я прошу тебя сделать всё под стать проекту, по современным стандартам, но убедительнейшая просьба - мне нужно понять, что происходит. Всё везде комментируй, всё на русском. //изначально я всё прочитаю, сам попробую, а потом что-то как-то где-то буду писать Claude. 
+1. Импортируй store вверху файла:
+   import { useAuthStore } from '@/store/authStore'
 
-11.providers/   → QueryClientProvider, AuthProvider, ThemeProvider. Я так понимаю речь пошла про TanstackQuery. //изначально я всё прочитаю, сам попробую, а потом что-то как-то где-то буду писать Claude. 
+2. Внутри компонента LoginForm получи нужные данные:
+   const login = useAuthStore(state => state.login)
+   const isLoading = useAuthStore(state => state.isLoading)
+   const error = useAuthStore(state => state.error)
+   const clearError = useAuthStore(state => state.clearError)
 
-12. ....Настроить состояние аутентификации 
+3. В onSubmit — замени console.log на вызов store:
+   const onSubmit = async (data: LoginFormData) => {
+     await login(data.email, data.password)
+     // После успешного входа — router.push('/dashboard')
+   }
 
-NextAuth.js v5 (Auth.js) — если нужна OAuth (Google, Microsoft уже есть кнопки)
-Zustand — для client-side состояния (user, isLoggedIn)
-Middleware — защита роутов
+4. Убери локальный useState для isLoading — теперь он в store.
 
-....Настроить на будущее Server Actions
+5. Покажи ошибку сервера под формой (добавь после полей):
+   {error && <p className="text-red-500 text-sm">{error}</p>}
 
-// src/server-actions/auth.actions.ts
+6. При начале ввода сбрасывай ошибку:
+   onChange={() => { if (error) clearError() }}
+
+───────────────────────────────────────────────────────
+ШАГ 2: Подключи store к RegistrationForm
+───────────────────────────────────────────────────────
+Файл: src/components/page-components/RegistrationForm.tsx
+
+То же самое что и в LoginForm, но вместо login вызываешь:
+  await register(data.email, data.username, data.password)
+
+───────────────────────────────────────────────────────
+ШАГ 3: Покажи кнопку "Выйти" в Header
+───────────────────────────────────────────────────────
+Файл: src/components/header/Header.tsx
+
+1. Импортируй store
+2. Получи: const { isAuthenticated, logout } = useAuthStore(...)
+3. Если isAuthenticated — показывай кнопку "Выйти" вместо "Вход":
+   {isAuthenticated
+     ? <button onClick={logout}>Выйти</button>
+     : <ButtonLink text='Вход' href='/login' />
+   }
+
+───────────────────────────────────────────────────────
+ШАГ 4 (потом): Server Actions — реальные запросы к серверу
+───────────────────────────────────────────────────────
+Файл: src/server-actions/auth.actions.ts
+
 'use server'
-import { redirect } from 'next/navigation'
-
-export async function loginAction(data: LoginFormData) {
-  const res = await fetch('/api/auth/login', { method: 'POST', body: JSON.stringify(data) })
-  if (!res.ok) return { error: 'Неверный логин или пароль' }
-  redirect('/dashboard')
+export async function loginAction(data: { email: string, password: string }) {
+  const res = await fetch('https://your-api/auth/login', {
+    method: 'POST',
+    body: JSON.stringify(data)
+  })
+  if (!res.ok) throw new Error('Неверный логин или пароль')
+  return res.json() // { user, accessToken }
 }
+
+Затем в authStore.ts замени заглушку:
+  const response = await loginAction({ email, password })
+  set({ user: response.user, accessToken: response.accessToken, ... })
+
+───────────────────────────────────────────────────────
+ШАГ 5 (потом): Защита роутов (Middleware)
+───────────────────────────────────────────────────────
+Файл: src/middleware.ts (создать в корне src/)
+
+Проверяет токен при каждом переходе на защищённую страницу.
+Если токена нет — редиректит на /login.
+
+───────────────────────────────────────────────────────
+Дополнительно (providers/):
+───────────────────────────────────────────────────────
+providers/ нужен для TanStack Query (не Zustand).
+TanStack Query — это про кеширование server-запросов.
+Изучать после того как освоишь Zustand.
+═══════════════════════════════════════════════════════
 
 
 Качество	Тесты (Vitest + Testing Library), i18n, Storybook для компонентов
+
+Три главных шага (по порядку)
+Шаг 1 — LoginForm.tsx: убери useState для isLoading, подключи useAuthStore, вызови login() в onSubmit.
+
+Шаг 2 — то же самое в RegistrationForm.tsx, но register().
+
+Шаг 3 — Header.tsx: через isAuthenticated показывай "Выйти" вместо "Вход".
+
+Всё детально с примерами кода в TODO.txt, раздел "ZUSTAND — ПЛАН РЕАЛИЗАЦИИ".

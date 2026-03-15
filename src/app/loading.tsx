@@ -11,15 +11,9 @@
 //   Next.js автоматически оборачивает страницы в <Suspense fallback={<Loading />}>.
 //   Пока содержимое страницы не готово — показывается Loading.
 //   Когда готово — Loading заменяется настоящей страницей.
-//
-// В продакшне здесь обычно размещают skeleton-экраны (заглушки в форме контента).
-// Сейчас — простой спиннер.
+
+import { HomePageSkeleton } from '@/components/ui/skeletons/HomePageSkeleton'
 
 export default function Loading() {
-	return (
-		<div className='flex items-center justify-center min-h-screen'>
-			{/* Спиннер — такой же как в FormLoader для консистентности */}
-			<div className='w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin' />
-		</div>
-	)
+	return <HomePageSkeleton />
 }
