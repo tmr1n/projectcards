@@ -13,8 +13,8 @@
 // ИЗМЕНЕНИЯ: убран React.forwardRef (React 19), улучшен дизайн галочки.
 
 import { useId } from 'react'
-import { cn } from '@/utils/utils'
 import type { ICheckbox } from '@/shared/types/form.types'
+import { cn } from '@/utils/utils'
 
 type TCheckboxProps = ICheckbox & {
 	ref?: React.Ref<HTMLInputElement>
@@ -48,7 +48,7 @@ export function Checkbox({ text, ref, ...props }: TCheckboxProps) {
 					aria-hidden // скрываем от скрин-ридеров (нативный input уже описан)
 					className={cn(
 						// Размер и форма
-						'w-5 h-5 border-2 rounded-[4px] bg-white shrink-0 relative mt-0.5',
+						'w-5 h-5 border-2 rounded-sm bg-white shrink-0 relative mt-0.5',
 						// Плавные переходы всех свойств
 						'transition-all duration-200 ease-in-out',
 						// Цвет рамки:
@@ -64,7 +64,7 @@ export function Checkbox({ text, ref, ...props }: TCheckboxProps) {
 						//   По умолчанию scale-0 (сжата до нуля = невидима)
 						//   Когда peer checked → scale-100 (нормальный размер, с анимацией)
 						'[&>svg]:scale-0 [&>svg]:transition-transform [&>svg]:duration-150 [&>svg]:ease-out',
-						'peer-checked:[&>svg]:scale-100',
+						'peer-checked:[&>svg]:scale-100'
 					)}
 				>
 					{/* SVG галочка — белая поверх синего фона */}
