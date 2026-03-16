@@ -54,7 +54,7 @@ export function RegistrationForm() {
 
 	const onSubmit = async (data: RegisterFormData) => {
 		await registration(data.email, data.username, data.password)
-		// После успешного входа — router.push('/dashboard')
+		//TODO: После успешного входа — router.push('/dashboard')
 		//TODO: После успешной регистрации — можно сразу залогинить пользователя или показать сообщение "Регистрация успешна, войдите в аккаунт" - получается редирект на Login и всплывашка "Регистрация успешна, войдите в аккаунт" (задача на будущее)
 	}
 
@@ -181,9 +181,9 @@ export function RegistrationForm() {
 				{/* Имя пользователя */}
 				<div className='space-y-2'>
 					<LabelComponent
-					text='Имя пользователя'
-					error={serverFieldErrors?.username ?? usernameLabelError}
-				/>
+						text='Имя пользователя'
+						error={serverFieldErrors?.username ?? usernameLabelError}
+					/>
 					<InputComponent
 						placeholder='andrew123'
 						error={usernameLabelError}

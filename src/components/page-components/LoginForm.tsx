@@ -82,7 +82,7 @@ export function LoginForm() {
 	// onSubmit — вызывается handleSubmit ТОЛЬКО если Zod сказал что данные валидны
 	const onSubmit = async (data: LoginFormData) => {
 		await login(data.email, data.password)
-		// После успешного входа — router.push('/dashboard')
+		//TODO: После успешного входа — router.push('/dashboard')
 	}
 
 	return (

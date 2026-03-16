@@ -31,11 +31,11 @@ export function TopLoader() {
 		setVisible(true)
 
 		// Имитируем прогресс загрузки с помощью последовательных таймеров
-		const t1 = setTimeout(() => setProgress(40), 150)  // быстрый старт
-		const t2 = setTimeout(() => setProgress(80), 350)  // замедляемся
+		const t1 = setTimeout(() => setProgress(40), 150) // быстрый старт
+		const t2 = setTimeout(() => setProgress(80), 350) // замедляемся
 		const t3 = setTimeout(() => setProgress(100), 550) // завершаем
 		const t4 = setTimeout(() => setVisible(false), 800) // скрываем
-		const t5 = setTimeout(() => setProgress(0), 900)    // сбрасываем (после скрытия)
+		const t5 = setTimeout(() => setProgress(0), 900) // сбрасываем (после скрытия)
 
 		// Функция очистки — важно! Если компонент размонтируется или pathname снова
 		// сменится ДО завершения таймеров — отменяем предыдущие таймеры
@@ -54,7 +54,7 @@ export function TopLoader() {
 	return (
 		// Фиксированная позиция — всегда вверху страницы поверх всего
 		// pointer-events-none — полоса не блокирует клики по элементам под ней
-		<div className='fixed top-0 left-0 right-0 z-[9999] h-[3px] pointer-events-none'>
+		<div className='fixed top-0 left-0 right-0 z-9999 h-0.75 pointer-events-none'>
 			{/* Ширина меняется через inline-style (не Tailwind) потому что значение динамическое */}
 			{/* transition-[width] — плавное изменение ширины */}
 			{/* rounded-r-full — скруглённый правый конец для более красивого вида */}
