@@ -60,6 +60,36 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { IUser } from '@/shared/types/auth.types'
+// Server Actions из src/server-actions/auth.actions.ts.
+// Они выполняются на сервере, но вызываются как обычные async-функции.
+import {
+	loginAction,
+	logoutAction,
+	registerAction,
+} from '@/server-actions/auth.actions'
+// ApiError — кастомный класс ошибки из lib/api.ts.
+// Позволяет различать: ошибка поля формы (422) vs общая ошибка (500) vs 401.
+import { ApiError } from '@/lib/api'
+
+// ─────────────────────────────────────────────────────────────
+// ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ
+// ─────────────────────────────────────────────────────────────
+//
+// Бэкенд возвращает ошибки полей как массивы строк:
+//   { email: ['Email уже занят', 'Проверьте формат'] }
+//
+// В store хранятся как одна строка на поле:
+//   { email: 'Email уже занят' }
+//
+// Берём только первое сообщение — остальные обычно дублируют смысл.
+
+function flattenFieldErrors(
+	errors: Record<string, string[]>
+): Record<string, string> {
+	return Object.fromEntries(
+		Object.entries(errors).map(([field, messages]) => [field, messages[0]])
+	)
+}
 
 // ─────────────────────────────────────────────────────────────
 // ТИПЫ STORE
@@ -147,7 +177,7 @@ interface AuthActions {
 
 export const useAuthStore = create<AuthState & AuthActions>()(
 	persist(
-		set => ({
+		(set, get) => ({
 			// ─────────────────────────────────────────────────
 			// НАЧАЛЬНОЕ СОСТОЯНИЕ
 			// Эти значения устанавливаются когда приложение
@@ -167,102 +197,101 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 			//
 			// Вызывается из LoginForm при submit.
 			// Последовательность:
-			//   1. Устанавливаем isLoading = true (появляется лоадер)
-			//   2. Делаем запрос к серверу (сейчас — заглушка)
-			//   3. Сохраняем user + accessToken в store
-			//   4. isAuthenticated становится true
-			//   5. isLoading = false (лоадер пропадает)
+			//   1. isLoading = true → появляется лоадер
+			//   2. Вызываем loginAction (Server Action) → запрос к бэкенду
+			//   3. Бэкенд вернул { data: { user, tokens }, success: true }
+			//   4. Сохраняем user + accessToken в store
+			//   5. isLoading = false, лоадер пропадает
 			//
-			// Если сервер вернул ошибку (неверный пароль и т.д.):
-			//   3a. Сохраняем error — отображаем сообщение юзеру
-			//   4a. isLoading = false
+			// Если бэкенд вернул ошибку:
+			//   err instanceof ApiError → ошибка с HTTP-кодом
+			//     statusCode 422 → ошибки полей (email занят, неверный пароль)
+			//       → serverFieldErrors → появится в label нужного поля
+			//     другой код → общая ошибка → error → красный баннер
+			//   обычная Error → нет сети / Next.js упал → общая ошибка
 
 			login: async (email, password) => {
-				// Сбрасываем ошибку от предыдущей попытки, включаем лоадер
-				set({ isLoading: true, error: null })
+				// Сбрасываем все ошибки от предыдущей попытки, включаем лоадер
+				set({ isLoading: true, error: null, serverFieldErrors: null })
 
 				try {
-					// ─────────────────────────────────────────
-					// TODO: заменить на реальный Server Action
-					// ─────────────────────────────────────────
-					// import { loginAction } from '@/server-actions/auth.actions'
-					// const response = await loginAction({ email, password })
-					//
-					// Ответ сервера будет иметь тип IApiResponse<IAuthTokens & { user: IUser }>
-					// Смотри src/shared/types/api.types.ts и auth.types.ts
-
-					// Временная заглушка (удалить когда будет сервер):
-					console.log('login called:', { email, password })
-					await new Promise(resolve => setTimeout(resolve, 800)) // имитируем задержку сети
-
-					const fakeUser: IUser = {
-						id: 'user-1',
-						email,
-						username: email.split('@')[0],
-						createdAt: new Date().toISOString()
-					}
+					// loginAction — Server Action из auth.actions.ts.
+					// Выполняется на сервере, делает POST /login к бэкенду.
+					// Возвращает IApiResponse<AuthResponse>:
+					//   { data: { user: IUser, tokens: IAuthTokens }, message: string, success: true }
+					const response = await loginAction({ email, password })
 
 					// set() — обновляет только перечисленные поля.
 					// Остальные поля store НЕ затрагивает.
 					set({
-						user: fakeUser,
-						accessToken: 'fake-access-token-from-server',
+						user: response.data.user,
+						accessToken: response.data.tokens.accessToken,
 						isAuthenticated: true,
 						isLoading: false,
-						error: null
+						error: null,
 					})
 				} catch (err) {
-					// err может быть чем угодно, поэтому безопасно извлекаем message
-					const message =
-						err instanceof Error
-							? err.message
-							: 'Ошибка входа. Попробуйте ещё раз.'
-
-					set({ error: message, isLoading: false })
+					// ApiError — ошибка которую кинул lib/api.ts когда бэкенд вернул 4xx/5xx
+					if (err instanceof ApiError) {
+						set({
+							// Если бэкенд прислал ошибки по полям — показываем их в формe
+							// Если нет (общая ошибка типа "неверный пароль") — в баннер
+							serverFieldErrors: err.fieldErrors
+								? flattenFieldErrors(err.fieldErrors)
+								: null,
+							error: err.fieldErrors ? null : err.message,
+							isLoading: false,
+						})
+					} else {
+						// Неожиданная ошибка: нет сети, Next.js недоступен и т.д.
+						set({
+							error: 'Ошибка входа. Проверьте соединение и попробуйте ещё раз.',
+							isLoading: false,
+						})
+					}
 				}
 			},
 
 			// ─────────────────────────────────────────────────
-			// ACTION: register
+			// ACTION: registration
 			// ─────────────────────────────────────────────────
 			//
 			// Вызывается из RegistrationForm при submit.
-			// Логика аналогична login, но принимает больше данных.
+			// Логика обработки ошибок аналогична login.
+			// Бэкенд может вернуть serverFieldErrors:
+			//   { email: "Email уже занят", username: "Имя уже занято" }
+			// Они автоматически появятся в label нужных полей формы.
 
 			registration: async (email, username, password) => {
-				set({ isLoading: true, error: null })
+				set({ isLoading: true, error: null, serverFieldErrors: null })
 
 				try {
-					// TODO: заменить на реальный Server Action
-					// import { registerAction } from '@/server-actions/auth.actions'
-					// const response = await registerAction({ email, username, password })
-
-					//TODO: Когда сервер реально вернёт { errors: { email: "Email уже занят" } }, нужно будет в registration action сделать set({ serverFieldErrors: { email: "Email уже занят" } }) — и оно автоматически появится в нужном label.
-
-					console.log('register called:', { email, username, password })
-					await new Promise(resolve => setTimeout(resolve, 800))
-
-					const fakeUser: IUser = {
-						id: 'user-2',
-						email,
-						username,
-						createdAt: new Date().toISOString()
-					}
+					// registerAction — Server Action из auth.actions.ts.
+					// Делает POST /registration к бэкенду.
+					const response = await registerAction({ email, username, password })
 
 					set({
-						user: fakeUser,
-						accessToken: 'fake-access-token-after-register',
+						user: response.data.user,
+						accessToken: response.data.tokens.accessToken,
 						isAuthenticated: true,
 						isLoading: false,
-						error: null
+						error: null,
 					})
 				} catch (err) {
-					const message =
-						err instanceof Error
-							? err.message
-							: 'Ошибка регистрации. Попробуйте ещё раз.'
-
-					set({ error: message, isLoading: false })
+					if (err instanceof ApiError) {
+						set({
+							serverFieldErrors: err.fieldErrors
+								? flattenFieldErrors(err.fieldErrors)
+								: null,
+							error: err.fieldErrors ? null : err.message,
+							isLoading: false,
+						})
+					} else {
+						set({
+							error: 'Ошибка регистрации. Проверьте соединение и попробуйте ещё раз.',
+							isLoading: false,
+						})
+					}
 				}
 			},
 
@@ -270,15 +299,24 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 			// ACTION: logout
 			// ─────────────────────────────────────────────────
 			//
-			// Сбрасываем state в начальные значения.
+			// Сообщает бэкенду о выходе (инвалидирует refresh-токен),
+			// затем сбрасывает state в начальные значения.
 			// persist middleware автоматически очистит localStorage.
 
 			logout: () => {
+				// Достаём текущий токен чтобы передать в logoutAction
+				const { accessToken } = get()
+
+				// Вызываем Server Action (не ждём результата — logout всегда успешен)
+				// logoutAction глотает ошибки внутри себя (см. auth.actions.ts)
+				if (accessToken) void logoutAction(accessToken)
+
 				set({
 					user: null,
 					accessToken: null,
 					isAuthenticated: false,
-					error: null
+					error: null,
+					serverFieldErrors: null,
 				})
 			},
 
@@ -289,7 +327,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 			// Вызывается когда пользователь начал вводить после ошибки.
 			// Убирает красное сообщение об ошибке сервера.
 
-			clearError: () => set({ error: null, serverFieldErrors: null })
+			clearError: () => set({ error: null, serverFieldErrors: null }),
 		}),
 
 		// ─────────────────────────────────────────────────────
@@ -311,8 +349,8 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 			partialize: state => ({
 				user: state.user,
 				accessToken: state.accessToken,
-				isAuthenticated: state.isAuthenticated
-			})
+				isAuthenticated: state.isAuthenticated,
+			}),
 		}
 	)
 )
