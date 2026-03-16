@@ -1,3 +1,20 @@
+// ─── ПОТОК ДАННЫХ ───────────────────────────────────────────────────────────
+//
+//   Этот файл получает правила из constants/validation.ts и строит Zod-схемы.
+//
+//   constants/validation.ts          ← правила (regex, длины, сообщения)
+//          ↓ импорт
+//   auth.schema.ts (этот файл)       ← Zod-схемы собираются из правил
+//          ↓ импорт registerSchema / loginSchema
+//   RegistrationForm / LoginForm     ← useForm({ resolver: zodResolver(schema) })
+//          ↓
+//   errors.field.message             ← одна ошибка Zod над полем (через LabelComponent)
+//
+//   Параллельно: constants/validation.ts → PASSWORD_HINTS / USERNAME_HINTS
+//   → тоже идут в RegistrationForm, но уже для списка hints под полем (не через Zod).
+//
+// ────────────────────────────────────────────────────────────────────────────
+
 import { z } from 'zod'
 import {
 	PASSWORD_VALIDATION,
