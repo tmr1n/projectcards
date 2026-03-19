@@ -1,13 +1,31 @@
-import { cn } from "@/lib/utils"
+import { cn } from '@/utils/utils'
 
-function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="skeleton"
-      className={cn("animate-pulse rounded-md bg-muted", className)}
-      {...props}
-    />
-  )
+//TODO: Decompose
+
+interface SkeletonProps {
+	className?: string
 }
 
-export { Skeleton }
+/**
+ * Базовый скелетон-примитив с shimmer-анимацией.
+ *
+ * Использование:
+ *   <Skeleton className="h-6 w-48 rounded-md" />
+ *
+ * Для более сложных скелетонов страниц — используй готовые компоненты
+ * из src/components/ui/skeletons/
+ */
+export function Skeleton({ className }: SkeletonProps) {
+	return (
+		<div
+			aria-hidden='true'
+			className={cn(
+				'rounded-md',
+				'bg-linear-to-r from-gray-100 via-gray-200 to-gray-100',
+				'bg-size-[200%_100%]',
+				'animate-skeleton',
+				className
+			)}
+		/>
+	)
+}

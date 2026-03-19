@@ -1,8 +1,7 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono, Nunito, Playfair_Display } from 'next/font/google'
-import { TooltipProvider } from '@/components/ui/tooltip'
-import { TopLoader } from '@/components/ui/TopLoader'
 import './globals.css'
+import { TopLoader } from '@/components/ui/TopLoader'
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -45,7 +44,7 @@ export default function RootLayout({
 				className={`${geistSans.variable} ${geistMono.variable} ${nunitoSans.variable} ${playfair.variable} antialiased `}
 			>
 				<TopLoader />
-				<TooltipProvider>{children}</TooltipProvider>
+			{children}
 			</body>
 		</html>
 	)
