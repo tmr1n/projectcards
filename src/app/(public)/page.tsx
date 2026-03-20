@@ -33,13 +33,83 @@ const pText =
 const pWords = pText.split(' ')
 
 const cardData = [
-	{ bg: 'bg-gray-600', fanX: -240, fanR: -22, fanY: 20, stackR: -3, endX: -100, endR: -18, endY: 30, delay: 0.72 },
-	{ bg: 'bg-gray-400', fanX: -160, fanR: -13, fanY: 10, stackR: -2, endX: -20,  endR: -8,  endY: 12, delay: 0.64 },
-	{ bg: 'bg-gray-500', fanX: -80,  fanR: -6,  fanY: 4,  stackR: -1, endX: 60,   endR: -2,  endY: 3,  delay: 0.56 },
-	{ bg: 'bg-gray-200', fanX: 0,    fanR: 0,   fanY: 0,  stackR: 0,  endX: 140,  endR: 4,   endY: 8,  delay: 0.2  },
-	{ bg: 'bg-gray-300', fanX: 80,   fanR: 6,   fanY: 4,  stackR: 1,  endX: 220,  endR: 10,  endY: 18, delay: 0.56 },
-	{ bg: 'bg-black',    fanX: 160,  fanR: 13,  fanY: 10, stackR: 2,  endX: 300,  endR: 16,  endY: 30, delay: 0.64 },
-	{ bg: 'bg-gray-400', fanX: 240,  fanR: 22,  fanY: 20, stackR: 3,  endX: 380,  endR: 22,  endY: 44, delay: 0.72 }
+	{
+		bg: 'bg-gray-600',
+		fanX: -240,
+		fanR: -22,
+		fanY: 20,
+		stackR: -3,
+		endX: -100,
+		endR: -18,
+		endY: 30,
+		delay: 0.72
+	},
+	{
+		bg: 'bg-gray-400',
+		fanX: -160,
+		fanR: -13,
+		fanY: 10,
+		stackR: -2,
+		endX: -20,
+		endR: -8,
+		endY: 12,
+		delay: 0.64
+	},
+	{
+		bg: 'bg-gray-500',
+		fanX: -80,
+		fanR: -6,
+		fanY: 4,
+		stackR: -1,
+		endX: 60,
+		endR: -2,
+		endY: 3,
+		delay: 0.56
+	},
+	{
+		bg: 'bg-gray-200',
+		fanX: 0,
+		fanR: 0,
+		fanY: 0,
+		stackR: 0,
+		endX: 140,
+		endR: 4,
+		endY: 8,
+		delay: 0.2
+	},
+	{
+		bg: 'bg-gray-300',
+		fanX: 80,
+		fanR: 6,
+		fanY: 4,
+		stackR: 1,
+		endX: 220,
+		endR: 10,
+		endY: 18,
+		delay: 0.56
+	},
+	{
+		bg: 'bg-black',
+		fanX: 160,
+		fanR: 13,
+		fanY: 10,
+		stackR: 2,
+		endX: 300,
+		endR: 16,
+		endY: 30,
+		delay: 0.64
+	},
+	{
+		bg: 'bg-gray-400',
+		fanX: 240,
+		fanR: 22,
+		fanY: 20,
+		stackR: 3,
+		endX: 380,
+		endR: 22,
+		endY: 44,
+		delay: 0.72
+	}
 ]
 
 type CardDatum = (typeof cardData)[0]
@@ -76,7 +146,7 @@ function Card({
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			transition={{ delay: card.delay, duration: 0.5 }}
-			className={`absolute left-1/2 top-1/2 w-40 h-44 ${card.bg} rounded-2xl shadow-md -ml-20 -mt-22`}
+			className={`absolute left-1/2 top-1/2 w-40 h-44 ${card.bg} rounded-2xl shadow-md -ml-20 -mt-22 cursor-pointer`}
 			style={{ x, y, rotate, zIndex }}
 		/>
 	)
@@ -106,31 +176,36 @@ export default function Home() {
 
 	return (
 		<div ref={containerRef} className='relative h-[400vh]'>
-			<div className='sticky top-0 h-screen overflow-hidden bg-white'>
-
+			<div
+				className='sticky top-0 h-screen overflow-hidden bg-white -mt-5
+			'
+			>
 				{/* Hero: h1 → spacer (cards) → p → button */}
 				<motion.div
-					className='absolute inset-0 flex flex-col items-center justify-center gap-5 px-4 z-10 pointer-events-none'
+					className='absolute inset-0 flex flex-col items-center justify-center gap-5 px-4 z-10 pointer-events-none mb-15'
 					style={{ opacity: heroOpacity, y: heroY }}
 				>
-					<h1 className='text-[3rem] text-center md:text-[4rem] font-bold text-black flex flex-wrap justify-center gap-x-[0.3em] leading-tight -mt-10'>
+					<h1 className='text-[3rem] text-center md:text-[3.5rem] font-bold text-black flex flex-wrap justify-center gap-x-[0.3em] leading-tight translate-y-5'>
 						{h1Words.map((word, i) => {
 							const isLast = i === h1Words.length - 1
 							return (
-								<motion.span
-									key={i}
-									custom={i}
-									variants={wordVariants}
-									initial='hidden'
-									animate='visible'
-									className={
-										isLast
-											? 'font-(family-name:--font-playfair) italic'
-											: 'font-(family-name:--font-geist-sans)'
-									}
-								>
-									{word}
-								</motion.span>
+								<>
+									<motion.span
+										key={i}
+										custom={i}
+										variants={wordVariants}
+										initial='hidden'
+										animate='visible'
+										className={
+											isLast
+												? 'font-(family-name:--font-playfair) italic'
+												: 'font-(family-name:--font-geist-sans)'
+										}
+									>
+										{word}
+									</motion.span>
+									{i === 1 && <span key='br' className='basis-full' />}
+								</>
 							)
 						})}
 					</h1>
@@ -138,7 +213,7 @@ export default function Home() {
 					{/* Spacer — holds space for cards */}
 					<div className='h-52 w-full shrink-0' />
 
-					<p className='text-[1rem] md:text-[1.25rem] text-center text-black font-(family-name:--font-geist-sans) flex flex-wrap justify-center gap-x-[0.28em] max-w-2xl mt-15'>
+					<p className='text-[1rem] md:text-[1.25rem] text-center text-black font-(family-name:--font-geist-sans) flex flex-wrap justify-center gap-x-[0.28em] max-w-2xl mt-5'>
 						{pWords.map((word, i) => (
 							<motion.span
 								key={i}
@@ -163,7 +238,10 @@ export default function Home() {
 							damping: 18
 						}}
 					>
-						<ButtonLink text='Зарегистрироваться бесплатно' href='/registration' />
+						<ButtonLink
+							text='Зарегистрироваться бесплатно'
+							href='/registration'
+						/>
 					</motion.div>
 				</motion.div>
 
@@ -196,14 +274,14 @@ export default function Home() {
 							className='text-gray-500 text-sm mb-8 font-(family-name:--font-geist-sans) leading-relaxed'
 							style={{ opacity: newTextOpacity, y: newTextY }}
 						>
-							Создавай колоды, добавляй карточки и изучай материал в своём темпе.
+							Создавай колоды, добавляй карточки и изучай материал в своём
+							темпе.
 						</motion.p>
 						<motion.div style={{ opacity: newTextOpacity, y: newTextY }}>
 							<ButtonLink text='Начать бесплатно' href='/registration' />
 						</motion.div>
 					</div>
 				</div>
-
 			</div>
 		</div>
 	)
