@@ -49,8 +49,8 @@
 'use server'
 
 import { apiFetch } from '@/lib/api'
-import type { IAuthTokens, IUser } from '@/shared/types/auth.types'
 import type { IApiResponse } from '@/shared/types/api.types'
+import type { IAuthTokens, IUser } from '@/shared/types/auth.types'
 
 // ─────────────────────────────────────────────────────────────
 // Типы данных (payload = то что отправляем на бэкенд)
@@ -95,7 +95,7 @@ export async function loginAction(
 	// Токен не передаём — при логине он ещё не известен
 	return apiFetch<AuthResponse>('/login', {
 		method: 'POST',
-		body: payload, // apiFetch сам сделает JSON.stringify
+		body: payload // apiFetch сам сделает JSON.stringify
 	})
 }
 
@@ -112,7 +112,7 @@ export async function registerAction(
 ): Promise<IApiResponse<AuthResponse>> {
 	return apiFetch<AuthResponse>('/registration', {
 		method: 'POST',
-		body: payload,
+		body: payload
 	})
 }
 
@@ -133,7 +133,7 @@ export async function logoutAction(token: string): Promise<void> {
 	try {
 		await apiFetch('/logout', {
 			method: 'POST',
-			token, // добавит заголовок Authorization: Bearer <token>
+			token // добавит заголовок Authorization: Bearer <token>
 		})
 	} catch {
 		// Намеренно пустой catch: logout всегда успешен с точки зрения UI
@@ -168,6 +168,6 @@ export async function refreshTokenAction(): Promise<
 	// Без этого httpOnly refresh-токен не будет отправлен!
 	return apiFetch<{ accessToken: string }>('/refresh', {
 		method: 'POST',
-		credentials: 'include',
+		credentials: 'include'
 	})
 }
