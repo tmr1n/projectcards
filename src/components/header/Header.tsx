@@ -16,7 +16,7 @@ export function Header() {
 
 	useMotionValueEvent(scrollY, 'change', current => {
 		const previous = scrollY.getPrevious() ?? 0
-		if (current > previous && current > 150) {
+		if (current > previous && current > 150 && window.innerWidth >= 768) {
 			setHidden(true)
 		} else {
 			setHidden(false)
