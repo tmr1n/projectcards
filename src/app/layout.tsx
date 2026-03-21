@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono, Nunito, Playfair_Display } from 'next/font/google'
 import './globals.css'
+import { QueryProvider } from '@/providers/QueryProvider'
 import { TopLoader } from '@/components/ui/TopLoader'
 
 const geistSans = Geist({
@@ -44,7 +45,11 @@ export default function RootLayout({
 				className={`${geistSans.variable} ${geistMono.variable} ${nunitoSans.variable} ${playfair.variable} antialiased `}
 			>
 				<TopLoader />
-			{children}
+				{/* QueryProvider оборачивает всё приложение — любой компонент
+				    внутри него может использовать useQuery и useMutation */}
+				<QueryProvider>
+					{children}
+				</QueryProvider>
 			</body>
 		</html>
 	)
