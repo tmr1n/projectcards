@@ -13,7 +13,9 @@ export const buttonStyles = cva(
 			variant: {
 				primary: 'bg-blue-600 text-white hover:bg-[#7342bc]',
 				secondary:
-					'font-medium bg-white text-gray-600 border-solid border-2 border-[#eaeaea] hover:bg-[#f0f0f0] border-[#bfbfbf]'
+					'font-medium bg-white text-gray-600 border-solid border-2 border-[#eaeaea] hover:bg-[#f0f0f0] border-[#bfbfbf]',
+				third:
+					'text-sm border-0 font-bold text-blue-600 hover:text-blue-800 transition-colors'
 			}
 		},
 		defaultVariants: {

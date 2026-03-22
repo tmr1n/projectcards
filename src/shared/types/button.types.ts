@@ -2,7 +2,7 @@ import type { Url } from 'next/dist/shared/lib/router/router'
 import React from 'react'
 
 // Общие типы (DRY)
-export type TButtonVariant = 'primary' | 'secondary'
+export type TButtonVariant = 'primary' | 'secondary' | 'third'
 export type TButtonContent = {
 	text: string
 	icon?: React.ReactNode

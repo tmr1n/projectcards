@@ -16,7 +16,6 @@ import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { FaYandex } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
-import { TiVendorMicrosoft } from 'react-icons/ti'
 import { useDelayedError } from '@/hooks/useDelayedError'
 import { ButtonLink } from '@/components/buttons/ButtonLink'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
@@ -101,11 +100,7 @@ export function LoginForm() {
 					text='Продолжить с Google'
 					icon={<FcGoogle />}
 				/>
-				<ButtonSubmit
-					variant='secondary'
-					text='Продолжить с Microsoft'
-					icon={<TiVendorMicrosoft />}
-				/>
+
 				<ButtonSubmit
 					variant='secondary'
 					text='Продолжить с Yandex'
