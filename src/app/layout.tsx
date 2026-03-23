@@ -26,9 +26,12 @@ const playfair = Playfair_Display({
 })
 
 export const metadata: Metadata = {
-	title: 'New cards era!',
+	title: {
+		template: '%s | LangCards',
+		default: 'LangCards — учи с карточками'
+	},
 	description:
-		'Now you can learn any material with interactive cards, practice tests and learning activities.',
+		'Учи любой материал с интерактивными карточками, практическими тестами и учебными активностями.',
 	icons: {
 		icon: '/images/Title-logo.svg'
 	}
