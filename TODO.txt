@@ -1,129 +1,21 @@
 
 
-
-
 *Нужна практика use хукам, базовым в реакте. Я чувствую, что нет практики
 *как работает TanStackQuery?
 
 
+Пройтись по мобильным стилям
+на мобилке слетел в хидере логотип
+Анимировать лого?
 
 
-Изменить шапку на более приятную
-Анимация третьей секции на главной стр
-Добавить контента + анимации.
-Футер
+
 стр 404 - можно улучшить
 
-
-
-
+Плашка - мы используем cookies
 
 реальные запросы везде
-
-───────────────────────────────────────────────────────
-ШАГ 5 (потом): Защита роутов (Middleware)
-───────────────────────────────────────────────────────
-Файл: src/middleware.ts (создать в корне src/)
-
-Проверяет токен при каждом переходе на защищённую страницу.
-Если токена нет — редиректит на /login.
-
-
 
 
 Качество	Тесты (Vitest + Testing Library), i18n, Storybook для компонентов
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-═══════════════════════════════════════════════════════
-ZUSTAND — ПЛАН РЕАЛИЗАЦИИ
-═══════════════════════════════════════════════════════
-Обучающий файл со всеми комментариями:
-  src/store/authStore.ts  ← читай его первым
-
-───────────────────────────────────────────────────────
-ШАГ 1: Подключи store к LoginForm
-───────────────────────────────────────────────────────
-Файл: src/components/page-components/LoginForm.tsx
-
-1. Импортируй store вверху файла:
-   import { useAuthStore } from '@/store/authStore'
-
-2. Внутри компонента LoginForm получи нужные данные:
-   const login = useAuthStore(state => state.login)
-   const isLoading = useAuthStore(state => state.isLoading)
-   const error = useAuthStore(state => state.error)
-   const clearError = useAuthStore(state => state.clearError)
-
-3. В onSubmit — замени console.log на вызов store:
-   const onSubmit = async (data: LoginFormData) => {
-     await login(data.email, data.password)
-     // После успешного входа — router.push('/dashboard')
-   }
-
-4. Убери локальный useState для isLoading — теперь он в store.
-
-5. Покажи ошибку сервера под формой (добавь после полей):
-   {error && <p className="text-red-500 text-sm">{error}</p>}
-
-6. При начале ввода сбрасывай ошибку:
-   onChange={() => { if (error) clearError() }}
-
-───────────────────────────────────────────────────────
-ШАГ 2: Подключи store к RegistrationForm
-───────────────────────────────────────────────────────
-Файл: src/components/page-components/RegistrationForm.tsx
-
-То же самое что и в LoginForm, но вместо login вызываешь:
-  await register(data.email, data.username, data.password)
-
-───────────────────────────────────────────────────────
-ШАГ 3: Покажи кнопку "Выйти" в Header
-───────────────────────────────────────────────────────
-Файл: src/components/header/Header.tsx
-
-1. Импортируй store
-2. Получи: const { isAuthenticated, logout } = useAuthStore(...)
-3. Если isAuthenticated — показывай кнопку "Выйти" вместо "Вход":
-   {isAuthenticated
-     ? <button onClick={logout}>Выйти</button>
-     : <ButtonLink text='Вход' href='/login' />
-   }
-
-───────────────────────────────────────────────────────
-ШАГ 4 (потом): Server Actions — реальные запросы к серверу
-───────────────────────────────────────────────────────
-Файл: src/server-actions/auth.actions.ts
-
-'use server'
-export async function loginAction(data: { email: string, password: string }) {
-  const res = await fetch('https://your-api/auth/login', {
-    method: 'POST',
-    body: JSON.stringify(data)
-  })
-  if (!res.ok) throw new Error('Неверный логин или пароль')
-  return res.json() // { user, accessToken }
-}
-
-Затем в authStore.ts замени заглушку:
-  const response = await loginAction({ email, password })
-  set({ user: response.user, accessToken: response.accessToken, ... })

@@ -45,11 +45,9 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} ${nunitoSans.variable} ${playfair.variable} antialiased `}
+				className={`${geistSans.variable} ${geistMono.variable} ${nunitoSans.variable} ${playfair.variable} antialiased`}
 			>
 				<TopLoader />
-				{/* QueryProvider оборачивает всё приложение — любой компонент
-				    внутри него может использовать useQuery и useMutation */}
 				<QueryProvider>
 					{children}
 				</QueryProvider>
