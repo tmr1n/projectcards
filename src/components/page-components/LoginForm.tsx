@@ -117,12 +117,18 @@ export function LoginForm() {
 					variant='secondary'
 					text='Продолжить с Google'
 					icon={<FcGoogle />}
+					onClick={() =>
+						(window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`)
+					}
 				/>
 
 				<ButtonSubmit
 					variant='secondary'
 					text='Продолжить с Yandex'
 					icon={<FaYandex />}
+					onClick={() =>
+						(window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/yandex`)
+					}
 				/>
 
 				<LineComponent text='или адрес эл. почты' />
