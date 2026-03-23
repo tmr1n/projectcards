@@ -84,8 +84,16 @@ export function LoginForm() {
 
 	const onSubmit = async (data: LoginFormData) => {
 		await login(data.email, data.password, data.email)
-		router.push('/email-confirmation')
-		//TODO: После успешного входа — router.push('/dashboard')
+
+		const { error, isAuthenticated } = useAuthStore.getState()
+
+		if (error) return // ошибка — остаёмся на форме
+
+		if (isAuthenticated) {
+			router.push('/dashboard') // успешный вход → дашборд
+		} else {
+			router.push('/email-confirmation') // email не подтверждён
+		}
 	}
 
 	return (

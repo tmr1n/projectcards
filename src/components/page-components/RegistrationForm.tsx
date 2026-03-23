@@ -56,7 +56,15 @@ export function RegistrationForm() {
 
 	const onSubmit = async (data: RegisterFormData) => {
 		await registration(data.email, data.username, data.password, data.email)
-		router.push('/email-confirmation')
+		const { error, isAuthenticated } = useAuthStore.getState()
+
+		if (error) return // ошибка — остаёмся на форме
+
+		if (isAuthenticated) {
+			router.push('/dashboard') // успешный вход → дашборд
+		} else {
+			router.push('/email-confirmation') // email не подтверждён
+		}
 	}
 
 	const emailValue = watch('email') ?? ''

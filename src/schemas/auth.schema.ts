@@ -68,6 +68,21 @@ export const forgotPasswordSchema = z.object({
 	email: z.string().email('Недопустимый адрес электронной почты.')
 })
 
+export const changePasswordSchema = z
+	.object({
+		password: z
+			.string()
+			.min(PASSWORD_VALIDATION.minLength, PASSWORD_VALIDATION.minLengthMessage)
+			.regex(PASSWORD_VALIDATION.hasUppercase, PASSWORD_VALIDATION.hasUppercaseMessage)
+			.regex(PASSWORD_VALIDATION.hasSpecial, PASSWORD_VALIDATION.hasSpecialMessage),
+		confirmPassword: z.string()
+	})
+	.refine(d => d.password === d.confirmPassword, {
+		message: 'Пароли не совпадают',
+		path: ['confirmPassword']
+	})
+
 export type LoginFormData = z.infer<typeof loginSchema>
 export type RegisterFormData = z.infer<typeof registerSchema>
 export type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>
+export type ChangePasswordFormData = z.infer<typeof changePasswordSchema>
