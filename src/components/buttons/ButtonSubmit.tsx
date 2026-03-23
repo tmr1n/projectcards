@@ -8,14 +8,16 @@ export function ButtonSubmit({
 	icon,
 	variant = 'primary',
 	className,
-	disabled
+	disabled,
+	onClick
 }: IButtonSubmitProps) {
 	return (
 		<ButtonPrimitive
-			type='submit'
+			type={onClick ? 'button' : 'submit'}
 			variant={variant}
 			className={className}
 			disabled={disabled}
+			onClick={onClick}
 		>
 			{icon && <span className='inline-flex text-xl pr-1'>{icon}</span>}
 			{text}

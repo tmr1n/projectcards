@@ -2,7 +2,7 @@
 
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { ButtonLink } from '@/components/buttons/ButtonLink'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
 import { FormLoader } from '@/components/ui/FormLoader'
@@ -55,7 +55,17 @@ const EnvelopeSVG = ({
 
 export default function page() {
 	const pendingEmail = useAuthStore(state => state.pendingEmail)
-	const isLoading = useAuthStore(state => state.isLoading)
+	const [isLoading, setIsLoading] = useState(false)
+
+	const handleResend = async () => {
+		setIsLoading(true)
+		try {
+			// TODO: await resendConfirmationAction(pendingEmail)
+		} finally {
+			setIsLoading(false)
+		}
+	}
+
 	return (
 		<div className='relative min-h-screen overflow-hidden flex items-center'>
 			<FormLoader isLoading={isLoading} />
@@ -77,7 +87,7 @@ export default function page() {
 
 			{/* Content */}
 			<div className='flex flex-col p-15 gap-5 max-w-150 relative z-10'>
-				<h1 className='text-black font-bold text-xl md:text-2xl '>
+				<h1 className='text-black font-bold text-xl md:text-2xl'>
 					Подтвердите адрес электронной почты, чтобы продолжить
 				</h1>
 				<p className='text-black text-m'>
@@ -94,6 +104,7 @@ export default function page() {
 						variant='primary'
 						text='Отправить письмо повторно'
 						disabled={isLoading}
+						onClick={handleResend}
 					/>
 					<ButtonLink
 						className='text-xs md:text-sm m-1'

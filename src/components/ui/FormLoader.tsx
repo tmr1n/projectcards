@@ -35,7 +35,7 @@ export function FormLoader({ isLoading }: IFormLoaderProps) {
 		>
 			{/* Спиннер: круг с разноцветными краями, вращается через animate-spin */}
 			{/* border-blue-200 = светлая часть круга, border-t-blue-600 = тёмная (верхняя) */}
-			<div className='w-10 h-10 border-[3px] border-blue-200 border-t-blue-600 rounded-full animate-spin' />
+			<div className='w-14 h-14 md:w-10 md:h-10 border-[3px] border-blue-200 border-t-blue-600 rounded-full animate-spin' />
 		</div>
 	)
 }

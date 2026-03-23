@@ -19,7 +19,7 @@ export interface IButtonLinkProps extends TButtonContent, TButtonBase {
 
 export interface IButtonSubmitProps extends TButtonContent, TButtonBase {
 	disabled?: boolean
-	// href нет — только у Link
+	onClick?: () => void
 }
 export interface IButtonPrimitiveProps
 	extends TButtonBase, React.ButtonHTMLAttributes<HTMLButtonElement> {
