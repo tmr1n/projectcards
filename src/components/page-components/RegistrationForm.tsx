@@ -19,6 +19,7 @@ import { Checkbox } from '@/components/form-components/CheckboxComponent'
 import { InputComponent } from '@/components/form-components/InputComponent'
 import { LabelComponent } from '@/components/form-components/LabelComponent'
 import { PasswordInput } from '@/components/form-components/PasswordInput'
+import { ErrorBanner } from '@/components/ui/ErrorBanner'
 import { FormLoader } from '@/components/ui/FormLoader'
 import {
 	PASSWORD_HINTS,
@@ -35,6 +36,10 @@ export function RegistrationForm() {
 	const serverFieldErrors = useAuthStore(state => state.serverFieldErrors)
 	const clearError = useAuthStore(state => state.clearError)
 	const router = useRouter()
+
+	useEffect(() => {
+		return () => clearError()
+	}, [])
 
 	const {
 		register,
@@ -120,8 +125,10 @@ export function RegistrationForm() {
 	// ─── LABEL ERRORS ────────────────────────────────────────────────────────────
 
 	// Пароль: если hints показаны → label = ошибка длины (если есть), иначе null
+	// После submit (isSubmitted) — показываем ошибку даже для пустого поля
 	const rawPasswordLabelError = (() => {
-		if (passwordValue.length === 0) return null
+		if (passwordValue.length === 0)
+			return isSubmitted ? (errors.password?.message ?? null) : null
 		if (showPasswordHintsDelayed)
 			return passwordValue.length < PASSWORD_VALIDATION.minLength
 				? PASSWORD_VALIDATION.minLengthMessage
@@ -130,8 +137,10 @@ export function RegistrationForm() {
 	})()
 
 	// Username: если hints показаны → label пустой (hints покрывают всё)
+	// После submit — показываем ошибку для пустого поля
 	const rawUsernameLabelError = (() => {
-		if (usernameValue.length === 0) return null
+		if (usernameValue.length === 0)
+			return isSubmitted ? (errors.username?.message ?? null) : null
 		if (showUsernameHintsDelayed) return null
 		return errors.username?.message ?? null
 	})()
@@ -290,6 +299,8 @@ export function RegistrationForm() {
 						</p>
 					)}
 				</div>
+
+				<ErrorBanner error={error} />
 
 				<ButtonSubmit
 					variant='primary'

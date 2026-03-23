@@ -1,15 +1,18 @@
 // ForgotPasswordForm — форма сброса пароля.
 // Пользователь вводит email → получает ссылку для сброса на почту.
 
+'use client'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { useDelayedError } from '@/hooks/useDelayedError'
+import { ButtonLink } from '@/components/buttons/ButtonLink'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
 import { InputComponent } from '@/components/form-components/InputComponent'
 import { LabelComponent } from '@/components/form-components/LabelComponent'
+import { ErrorBanner } from '@/components/ui/ErrorBanner'
 import { FormLoader } from '@/components/ui/FormLoader'
-import { ButtonLink } from '../buttons/ButtonLink'
 import {
 	forgotPasswordSchema,
 	type ForgotPasswordFormData
@@ -18,6 +21,7 @@ import {
 export function ForgotPasswordForm() {
 	const [isLoading, setIsLoading] = useState(false)
 	const [isSuccess, setIsSuccess] = useState(false)
+	const [error, setError] = useState<string | null>(null)
 
 	const {
 		register,
@@ -30,18 +34,20 @@ export function ForgotPasswordForm() {
 		defaultValues: { email: '' }
 	})
 
-	const onSubmit: SubmitHandler<ForgotPasswordFormData> = async data => {
+	const onSubmit: SubmitHandler<ForgotPasswordFormData> = async _data => {
 		setIsLoading(true)
+		setError(null)
 		try {
-			// TODO: await sendResetLinkAction(data.email)
+			// TODO: await sendResetLinkAction(_data.email)
 			setIsSuccess(true)
+		} catch {
+			setError('Не удалось отправить письмо. Попробуйте ещё раз.')
 		} finally {
 			setIsLoading(false)
 		}
 	}
 
 	const emailValue = watch('email') ?? ''
-	// isSubmitted: после нажатия кнопки — показываем ошибку сразу и для пустого поля
 	const emailLabelError = useDelayedError(
 		errors.email?.message,
 		emailValue,
@@ -91,9 +97,15 @@ export function ForgotPasswordForm() {
 					<InputComponent
 						placeholder='user@mail.com'
 						error={emailLabelError}
-						{...register('email')}
+						{...register('email', {
+							onChange: () => {
+								if (error) setError(null)
+							}
+						})}
 					/>
 				</div>
+
+				<ErrorBanner error={error} />
 
 				<ButtonSubmit
 					variant='primary'
