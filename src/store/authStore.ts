@@ -59,17 +59,17 @@
 
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { IUser } from '@/shared/types/auth.types'
+// ApiError — кастомный класс ошибки из lib/api.ts.
+// Позволяет различать: ошибка поля формы (422) vs общая ошибка (500) vs 401.
+import { ApiError } from '@/lib/api'
 // Server Actions из src/server-actions/auth.actions.ts.
 // Они выполняются на сервере, но вызываются как обычные async-функции.
 import {
 	loginAction,
 	logoutAction,
-	registerAction,
+	registerAction
 } from '@/server-actions/auth.actions'
-// ApiError — кастомный класс ошибки из lib/api.ts.
-// Позволяет различать: ошибка поля формы (422) vs общая ошибка (500) vs 401.
-import { ApiError } from '@/lib/api'
+import type { IUser } from '@/shared/types/auth.types'
 
 // ─────────────────────────────────────────────────────────────
 // ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ
@@ -136,18 +136,24 @@ interface AuthState {
 	//
 	// В форме читаем: serverFieldErrors?.email → передаём в label email-поля
 	serverFieldErrors: Partial<Record<string, string>> | null
+	pendingEmail: string | null
 }
 
 // ACTIONS — функции для изменения State
 interface AuthActions {
 	// Войти в систему. Принимает данные из LoginForm.
-	login: (email: string, password: string) => Promise<void>
+	login: (
+		email: string,
+		password: string,
+		pendingEmail: string
+	) => Promise<void>
 
 	// Зарегистрироваться. Принимает данные из RegistrationForm.
 	registration: (
 		email: string,
 		username: string,
-		password: string
+		password: string,
+		pendingEmail: string
 	) => Promise<void>
 
 	// Выйти: сбросить всё состояние в начальное.
@@ -190,6 +196,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 			isLoading: false,
 			error: null,
 			serverFieldErrors: null,
+			pendingEmail: null,
 
 			// ─────────────────────────────────────────────────
 			// ACTION: login
@@ -210,7 +217,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 			//     другой код → общая ошибка → error → красный баннер
 			//   обычная Error → нет сети / Next.js упал → общая ошибка
 
-			login: async (email, password) => {
+			login: async (email, password, pendingEmail) => {
 				// Сбрасываем все ошибки от предыдущей попытки, включаем лоадер
 				set({ isLoading: true, error: null, serverFieldErrors: null })
 
@@ -219,7 +226,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 					// Выполняется на сервере, делает POST /login к бэкенду.
 					// Возвращает IApiResponse<AuthResponse>:
 					//   { data: { user: IUser, tokens: IAuthTokens }, message: string, success: true }
-					const response = await loginAction({ email, password })
+					const response = await loginAction({ email, password, pendingEmail })
 
 					// set() — обновляет только перечисленные поля.
 					// Остальные поля store НЕ затрагивает.
@@ -229,6 +236,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 						isAuthenticated: true,
 						isLoading: false,
 						error: null,
+						pendingEmail: email
 					})
 				} catch (err) {
 					// ApiError — ошибка которую кинул lib/api.ts когда бэкенд вернул 4xx/5xx
@@ -240,13 +248,13 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 								? flattenFieldErrors(err.fieldErrors)
 								: null,
 							error: err.fieldErrors ? null : err.message,
-							isLoading: false,
+							isLoading: false
 						})
 					} else {
 						// Неожиданная ошибка: нет сети, Next.js недоступен и т.д.
 						set({
 							error: 'Ошибка входа. Проверьте соединение и попробуйте ещё раз.',
-							isLoading: false,
+							isLoading: false
 						})
 					}
 				}
@@ -262,13 +270,18 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 			//   { email: "Email уже занят", username: "Имя уже занято" }
 			// Они автоматически появятся в label нужных полей формы.
 
-			registration: async (email, username, password) => {
+			registration: async (email, username, password, pendingEmail) => {
 				set({ isLoading: true, error: null, serverFieldErrors: null })
 
 				try {
 					// registerAction — Server Action из auth.actions.ts.
 					// Делает POST /registration к бэкенду.
-					const response = await registerAction({ email, username, password })
+					const response = await registerAction({
+						email,
+						username,
+						password,
+						pendingEmail
+					})
 
 					set({
 						user: response.data.user,
@@ -276,6 +289,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 						isAuthenticated: true,
 						isLoading: false,
 						error: null,
+						pendingEmail: email
 					})
 				} catch (err) {
 					if (err instanceof ApiError) {
@@ -284,12 +298,13 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 								? flattenFieldErrors(err.fieldErrors)
 								: null,
 							error: err.fieldErrors ? null : err.message,
-							isLoading: false,
+							isLoading: false
 						})
 					} else {
 						set({
-							error: 'Ошибка регистрации. Проверьте соединение и попробуйте ещё раз.',
-							isLoading: false,
+							error:
+								'Ошибка регистрации. Проверьте соединение и попробуйте ещё раз.',
+							isLoading: false
 						})
 					}
 				}
@@ -316,7 +331,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 					accessToken: null,
 					isAuthenticated: false,
 					error: null,
-					serverFieldErrors: null,
+					serverFieldErrors: null
 				})
 			},
 
@@ -327,7 +342,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 			// Вызывается когда пользователь начал вводить после ошибки.
 			// Убирает красное сообщение об ошибке сервера.
 
-			clearError: () => set({ error: null, serverFieldErrors: null }),
+			clearError: () => set({ error: null, serverFieldErrors: null })
 		}),
 
 		// ─────────────────────────────────────────────────────
@@ -349,8 +364,8 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 			partialize: state => ({
 				user: state.user,
 				accessToken: state.accessToken,
-				isAuthenticated: state.isAuthenticated,
-			}),
+				isAuthenticated: state.isAuthenticated
+			})
 		}
 	)
 )

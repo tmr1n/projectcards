@@ -13,6 +13,7 @@
 	--font-nunito: var(--font-nunito-sans);
 
 	--animate-skeleton: skeleton-shimmer 1.6s linear infinite;
+	--animate-float: float 5s ease-in-out infinite;
 }
 
 @keyframes skeleton-shimmer {
@@ -21,6 +22,15 @@
 	}
 	100% {
 		background-position: 200% 0;
+	}
+}
+
+@keyframes float {
+	0%, 100% {
+		transform: translateY(0px) rotate(-3deg);
+	}
+	50% {
+		transform: translateY(-18px) rotate(3deg);
 	}
 }
 

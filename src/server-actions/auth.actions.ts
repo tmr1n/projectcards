@@ -61,12 +61,14 @@ interface LoginPayload {
 	// Поэтому в loginSchema поле тоже называется email (см. auth.schema.ts).
 	email: string
 	password: string
+	pendingEmail: string
 }
 
 interface RegisterPayload {
 	email: string
 	username: string
 	password: string
+	pendingEmail: string
 }
 
 // Тип данных которые вернёт бэкенд при логине/регистрации.

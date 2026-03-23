@@ -9,6 +9,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDelayedError } from '@/hooks/useDelayedError'
@@ -33,6 +34,7 @@ export function RegistrationForm() {
 	const error = useAuthStore(state => state.error)
 	const serverFieldErrors = useAuthStore(state => state.serverFieldErrors)
 	const clearError = useAuthStore(state => state.clearError)
+	const router = useRouter()
 
 	const {
 		register,
@@ -53,9 +55,8 @@ export function RegistrationForm() {
 	})
 
 	const onSubmit = async (data: RegisterFormData) => {
-		await registration(data.email, data.username, data.password)
-		//TODO: После успешного входа — router.push('/dashboard')
-		//TODO: После успешной регистрации — можно сразу залогинить пользователя или показать сообщение "Регистрация успешна, войдите в аккаунт" - получается редирект на Login и всплывашка "Регистрация успешна, войдите в аккаунт" (задача на будущее)
+		await registration(data.email, data.username, data.password, data.email)
+		router.push('/email-confirmation')
 	}
 
 	const emailValue = watch('email') ?? ''

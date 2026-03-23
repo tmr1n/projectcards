@@ -13,6 +13,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { FaYandex } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
@@ -30,7 +31,7 @@ import { useAuthStore } from '@/store/authStore'
 export function LoginForm() {
 	const login = useAuthStore(state => state.login)
 	const isLoading = useAuthStore(state => state.isLoading)
-
+	const pendingEmail = useAuthStore(state => state.pendingEmail)
 	const error = useAuthStore(state => state.error)
 	const clearError = useAuthStore(state => state.clearError)
 
@@ -79,8 +80,11 @@ export function LoginForm() {
 	)
 
 	// onSubmit — вызывается handleSubmit ТОЛЬКО если Zod сказал что данные валидны
+	const router = useRouter()
+
 	const onSubmit = async (data: LoginFormData) => {
-		await login(data.email, data.password)
+		await login(data.email, data.password, data.email)
+		router.push('/email-confirmation')
 		//TODO: После успешного входа — router.push('/dashboard')
 	}
 
