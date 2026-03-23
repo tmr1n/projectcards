@@ -162,6 +162,7 @@ export function ChangePasswordForm() {
 					variant='primary'
 					text='Сменить пароль'
 					className='mt-5'
+					disabled={isLoading}
 				/>
 			</form>
 		</div>

@@ -5,6 +5,7 @@
 import React from 'react'
 import { ButtonLink } from '@/components/buttons/ButtonLink'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
+import { FormLoader } from '@/components/ui/FormLoader'
 import { useAuthStore } from '@/store/authStore'
 
 const EnvelopeSVG = ({
@@ -54,9 +55,10 @@ const EnvelopeSVG = ({
 
 export default function page() {
 	const pendingEmail = useAuthStore(state => state.pendingEmail)
-
+	const isLoading = useAuthStore(state => state.isLoading)
 	return (
 		<div className='relative min-h-screen overflow-hidden flex items-center'>
+			<FormLoader isLoading={isLoading} />
 			{/* Background envelopes */}
 			<div
 				className='absolute inset-0 pointer-events-none select-none'
@@ -91,12 +93,13 @@ export default function page() {
 						className='text-xs md:text-sm m-1'
 						variant='primary'
 						text='Отправить письмо повторно'
+						disabled={isLoading}
 					/>
 					<ButtonLink
 						className='text-xs md:text-sm m-1'
 						variant='third'
-						text='Уже есть учетная запись? Войти'
-						href='/login'
+						text='Вернуться на главную'
+						href='/'
 					/>
 				</div>
 			</div>

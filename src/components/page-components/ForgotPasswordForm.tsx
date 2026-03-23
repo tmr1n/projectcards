@@ -95,7 +95,11 @@ export function ForgotPasswordForm() {
 					/>
 				</div>
 
-				<ButtonSubmit variant='primary' text='Отправить ссылку для сброса' />
+				<ButtonSubmit
+					variant='primary'
+					text='Отправить ссылку для сброса'
+					disabled={isLoading}
+				/>
 			</form>
 		</div>
 	)

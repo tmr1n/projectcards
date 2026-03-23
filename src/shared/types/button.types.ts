@@ -18,6 +18,7 @@ export interface IButtonLinkProps extends TButtonContent, TButtonBase {
 }
 
 export interface IButtonSubmitProps extends TButtonContent, TButtonBase {
+	disabled?: boolean
 	// href нет — только у Link
 }
 export interface IButtonPrimitiveProps

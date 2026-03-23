@@ -291,7 +291,11 @@ export function RegistrationForm() {
 					)}
 				</div>
 
-				<ButtonSubmit variant='primary' text='Зарегистрироваться' />
+				<ButtonSubmit
+					variant='primary'
+					text='Зарегистрироваться'
+					disabled={isLoading}
+				/>
 				<ButtonLink
 					variant='secondary'
 					text='Уже есть учетная запись? Войти'

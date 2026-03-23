@@ -170,7 +170,7 @@ export function LoginForm() {
 
 				<ErrorBanner error={error} />
 
-				<ButtonSubmit variant='primary' text='Вход' />
+				<ButtonSubmit variant='primary' text='Вход' disabled={isLoading} />
 
 				<ButtonLink
 					variant='secondary'
