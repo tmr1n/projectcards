@@ -285,7 +285,7 @@ export function RegistrationForm() {
 					/>
 					{/* Ошибка terms: показываем только после попытки Submit */}
 					{errors.terms && (
-						<p className='text-xs text-[#ff4757] font-medium -mt-2 mb-2'>
+						<p className='text-sm text-[#ff4757] font-bold font-nunito mt-5 mb-2'>
 							{errors.terms.message}
 						</p>
 					)}

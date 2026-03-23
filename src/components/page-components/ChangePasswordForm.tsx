@@ -7,6 +7,7 @@ import { useDelayedError } from '@/hooks/useDelayedError'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
 import { LabelComponent } from '@/components/form-components/LabelComponent'
 import { PasswordInput } from '@/components/form-components/PasswordInput'
+import { ErrorBanner } from '@/components/ui/ErrorBanner'
 import { FormLoader } from '@/components/ui/FormLoader'
 import { PASSWORD_HINTS, PASSWORD_VALIDATION } from '@/constants/validation'
 import {
@@ -140,7 +141,7 @@ export function ChangePasswordForm() {
 					</div>
 				</div>
 
-				{error && <p className='text-red-500 text-sm'>{error}</p>}
+				<ErrorBanner error={error} />
 
 				<ButtonSubmit
 					variant='primary'

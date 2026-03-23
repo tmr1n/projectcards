@@ -24,6 +24,7 @@ import { InputComponent } from '@/components/form-components/InputComponent'
 import { LabelComponent } from '@/components/form-components/LabelComponent'
 import { LineComponent } from '@/components/form-components/LineComponent'
 import { PasswordInput } from '@/components/form-components/PasswordInput'
+import { ErrorBanner } from '@/components/ui/ErrorBanner'
 import { FormLoader } from '@/components/ui/FormLoader'
 import { loginSchema, type LoginFormData } from '@/schemas/auth.schema'
 import { useAuthStore } from '@/store/authStore'
@@ -167,7 +168,7 @@ export function LoginForm() {
 					/>
 				</div>
 
-				{error && <p className='text-red-500 text-sm'>{error}</p>}
+				<ErrorBanner error={error} />
 
 				<ButtonSubmit variant='primary' text='Вход' />
 
