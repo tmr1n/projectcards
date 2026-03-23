@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDelayedError } from '@/hooks/useDelayedError'
+import { ButtonLink } from '@/components/buttons/ButtonLink'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
 import { LabelComponent } from '@/components/form-components/LabelComponent'
 import { PasswordInput } from '@/components/form-components/PasswordInput'
@@ -20,6 +21,7 @@ import { useAuthStore } from '@/store/authStore'
 export function ChangePasswordForm() {
 	const accessToken = useAuthStore(state => state.accessToken)
 	const [isLoading, setIsLoading] = useState(false)
+	const [isSuccess, setIsSuccess] = useState(false)
 	const [error, setError] = useState<string | null>(null)
 
 	const {
@@ -38,6 +40,7 @@ export function ChangePasswordForm() {
 		setError(null)
 		try {
 			await changePasswordAction({ password: data.password }, accessToken ?? '')
+			setIsSuccess(true)
 		} catch {
 			setError('Не удалось сменить пароль. Попробуйте ещё раз.')
 		} finally {
@@ -90,6 +93,18 @@ export function ChangePasswordForm() {
 		500,
 		isSubmitted
 	)
+
+	if (isSuccess) {
+		return (
+			<div className='h-screen relative bg-white flex items-center justify-center p-8'>
+				<div className='w-full max-w-lg flex flex-col gap-4'>
+					<h1 className='text-3xl font-bold text-black mb-4'>Успешно!</h1>
+					<p className='text-black'>Ваш пароль был сменён.</p>
+					<ButtonLink variant='primary' text='На главную' href='/' />
+				</div>
+			</div>
+		)
+	}
 
 	return (
 		<div className='h-screen relative bg-white flex items-center justify-center p-8'>
