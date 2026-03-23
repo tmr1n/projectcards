@@ -13,8 +13,11 @@ import {
 	changePasswordSchema,
 	type ChangePasswordFormData
 } from '@/schemas/auth.schema'
+import { changePasswordAction } from '@/server-actions/auth.actions'
+import { useAuthStore } from '@/store/authStore'
 
 export function ChangePasswordForm() {
+	const accessToken = useAuthStore(state => state.accessToken)
 	const [isLoading, setIsLoading] = useState(false)
 	const [error, setError] = useState<string | null>(null)
 
@@ -33,8 +36,7 @@ export function ChangePasswordForm() {
 		setIsLoading(true)
 		setError(null)
 		try {
-			// TODO: await changePasswordAction(data.password)
-			console.log('Новый пароль:', data.password)
+			await changePasswordAction({ password: data.password }, accessToken ?? '')
 		} catch {
 			setError('Не удалось сменить пароль. Попробуйте ещё раз.')
 		} finally {
@@ -47,9 +49,11 @@ export function ChangePasswordForm() {
 
 	// ─── PASSWORD HINTS ──────────────────────────────────────────────────────────
 	const failingPwHints = PASSWORD_HINTS.filter(h => !h.test(passwordValue))
-	const showPasswordHints = passwordValue.length > 0 && failingPwHints.length >= 2
+	const showPasswordHints =
+		passwordValue.length > 0 && failingPwHints.length >= 2
 
-	const [showPasswordHintsDelayed, setShowPasswordHintsDelayed] = useState(false)
+	const [showPasswordHintsDelayed, setShowPasswordHintsDelayed] =
+		useState(false)
 	useEffect(() => {
 		if (!showPasswordHints) {
 			setShowPasswordHintsDelayed(false)
@@ -94,7 +98,7 @@ export function ChangePasswordForm() {
 				onSubmit={handleSubmit(onSubmit)}
 				className='w-full max-w-lg flex flex-col gap-4'
 			>
-				<h1 className='text-3xl font-bold text-black mb-4'>
+				<h1 className='text-3xl font-bold text-black mb-4 font-nunito'>
 					Введите новый пароль
 				</h1>
 
@@ -138,7 +142,11 @@ export function ChangePasswordForm() {
 
 				{error && <p className='text-red-500 text-sm'>{error}</p>}
 
-				<ButtonSubmit variant='primary' text='Сменить пароль' className='mt-5' />
+				<ButtonSubmit
+					variant='primary'
+					text='Сменить пароль'
+					className='mt-5'
+				/>
 			</form>
 		</div>
 	)

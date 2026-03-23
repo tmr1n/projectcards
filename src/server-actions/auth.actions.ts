@@ -70,6 +70,9 @@ interface RegisterPayload {
 	password: string
 	pendingEmail: string
 }
+interface ChangePasswordPayload {
+	password: string
+}
 
 // Тип данных которые вернёт бэкенд при логине/регистрации.
 // Это поле data внутри IApiResponse<T>.
@@ -118,6 +121,16 @@ export async function registerAction(
 	})
 }
 
+export async function changePasswordAction(
+	payload: ChangePasswordPayload,
+	token: string
+): Promise<IApiResponse<{ message: string }>> {
+	return apiFetch<{ message: string }>('/change-password', {
+		method: 'POST',
+		body: payload,
+		token
+	})
+}
 // ─────────────────────────────────────────────────────────────
 // ACTION: logoutAction
 // ─────────────────────────────────────────────────────────────
