@@ -1,7 +1,7 @@
 'use client'
 
-import { motion, useMotionValueEvent, useScroll } from 'motion/react'
 import { UserRound } from 'lucide-react'
+import { motion, useMotionValueEvent, useScroll } from 'motion/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -79,7 +79,7 @@ export function Header() {
 							<button
 								key={link.label}
 								onClick={() => scrollToSection(link.id)}
-								className='flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-medium text-gray-500 hover:text-black hover:bg-gray-50 transition-colors font-(family-name:--font-geist-sans)'
+								className='flex  cursor-pointer items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-medium text-gray-500 hover:text-black hover:bg-gray-50 transition-colors font-(family-name:--font-geist-sans)'
 							>
 								{i === 1 && (
 									<span className='w-1.5 h-1.5 rounded-full bg-black inline-block' />
