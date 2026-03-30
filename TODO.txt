@@ -20,3 +20,5 @@
 
 Качество	Тесты (Vitest + Testing Library), i18n, Storybook для компонентов
 
+
+написать обёртку вида generic types Class для принятия ошибок с сервера
