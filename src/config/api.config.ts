@@ -23,5 +23,3 @@
 
 // Fallback 'http://localhost:8000/api/v1' — на случай если
 // .env.local не создан (чтобы приложение хотя бы запустилось).
-export const API_BASE_URL =
-	process.env.API_URL ?? 'http://localhost:8000/api/v1'

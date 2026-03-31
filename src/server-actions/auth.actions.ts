@@ -50,7 +50,6 @@
 
 import { apiFetch } from '@/lib/api'
 import type { IApiResponse } from '@/shared/types/api.types'
-import type { IAuthTokens, IUser } from '@/shared/types/auth.types'
 
 // ─────────────────────────────────────────────────────────────
 // Типы данных (payload = то что отправляем на бэкенд)
@@ -61,14 +60,16 @@ interface LoginPayload {
 	// Поэтому в loginSchema поле тоже называется email (см. auth.schema.ts).
 	email: string
 	password: string
-	pendingEmail: string
 }
 
 interface RegisterPayload {
 	email: string
-	username: string
+	name: string
 	password: string
 	pendingEmail: string
+	password_confirmation: string
+	terms_accepted: boolean
+	mailing_enabled: boolean
 }
 interface ChangePasswordPayload {
 	password: string
@@ -78,8 +79,8 @@ interface ChangePasswordPayload {
 // Это поле data внутри IApiResponse<T>.
 // Итоговый ответ: { data: AuthResponse, message: "...", success: true }
 interface AuthResponse {
-	user: IUser
-	tokens: IAuthTokens // { accessToken: string, refreshToken: string }
+	access_token: string
+	email_is_verified: boolean
 }
 
 // ─────────────────────────────────────────────────────────────
