@@ -1,363 +1,210 @@
-# Архитектура: Store + Server Actions + API
+# Архитектура проекта
 
-> Как работает авторизация от нажатия кнопки до сохранения пользователя.
-> Написано для джунов — без воды.
-
----
-
-## Карта файлов
+## Общая схема слоёв
 
 ```
-src/
-├── config/
-│   └── api.config.ts          ← 🔧 один URL бэкенда для всего проекта
-├── shared/types/
-│   └── api.types.ts           ← 📐 TypeScript-контракты (формы ответов)
-├── lib/
-│   └── api.ts                 ← 🌐 HTTP-клиент (делает fetch, бросает ошибки)
-├── server-actions/
-│   └── auth.actions.ts        ← ⚙️  Server Actions (выполняются на сервере)
-└── store/
-    └── authStore.ts           ← 🧠 Глобальный стейт (Zustand)
+Браузер (клиент)
+├── Компоненты (LoginForm, RegistrationForm, Header...)
+├── Zustand (authStore)          ← глобальное UI-состояние
+└── TanStack Query               ← кеш данных с сервера
+
+Next.js сервер
+└── Server Actions (auth.actions.ts)   ← выполняются только здесь
+
+Внешний бэкенд
+└── https://app.155.212.216.106.nip.io/api/v1
 ```
 
 ---
 
-## Полная схема потока данных
+## Файлы и связи
+
+### `src/config/api.config.ts`
+**Что:** Хранит `API_BASE_URL` — базовый URL бэкенда.
+**Зачем:** Одно место для смены URL. Меняешь здесь — меняется везде.
 
 ```
-  БРАУЗЕР (клиент)                    NEXT.JS СЕРВЕР              БЭКЕНД
-  ─────────────────                   ──────────────              ──────────────────
-
-  LoginForm
-  [Пользователь нажал "Войти"]
-         │
-         ▼
-  ┌──────────────────┐
-  │   authStore.ts   │  ← useAuthStore(s => s.login)
-  │                  │
-  │  login(email,    │  1. set({ isLoading: true })
-  │  password)       │     → кнопка показывает лоадер
-  │                  │
-  │  await           │
-  │  loginAction()   │──────────────────────────────────►  auth.actions.ts
-  └──────────────────┘                                     [Server Action]
-         │                                                        │
-         │                                                        │  apiFetch('/login',
-         │                                                        │  { method: 'POST',
-         │                                                        │    body: {email, pwd} })
-         │                                                        │
-         │                                                        ▼
-         │                                                   ┌─────────────┐
-         │                                                   │   lib/api.ts │
-         │                                                   │             │
-         │                                                   │ 1. Добавить │
-         │                                                   │  заголовки  │
-         │                                                   │  Content-   │
-         │                                                   │  Type: json │
-         │                                                   │             │
-         │                                                   │ 2. fetch()  │──────────►  POST /api/v1/login
-         │                                                   │             │            { email, password }
-         │                                                   │ 3. Проверить│◄──────────  { data: { user,
-         │                                                   │  response.ok│             tokens },
-         │                                                   │             │             success: true }
-         │                                                   │ 4. ok=false │
-         │                                                   │  → throw    │
-         │                                                   │  ApiError   │
-         │                                                   └─────────────┘
-         │                                                        │
-         │◄───────────────────────────────────────────────────────┘
-         │   Либо: IApiResponse<AuthResponse>
-         │   Либо: throw ApiError
-         │
-         ▼
-  ┌──────────────────┐
-  │   authStore.ts   │
-  │                  │
-  │  try {           │
-  │    set({         │  ✅ УСПЕХ:
-  │      user,       │  → user, accessToken сохранены
-  │      accessToken,│  → isAuthenticated = true
-  │      isAuth:true │  → localStorage обновлён (persist)
-  │    })            │  → лоадер исчезает
-  │  } catch(err) {  │
-  │    ApiError?     │  ❌ ОШИБКА 422 (неверный пароль):
-  │    → fieldErrors │  → serverFieldErrors = { email: "..." }
-  │    → error msg   │  → красный текст под полем формы
-  │  }               │
-  └──────────────────┘
-         │
-         ▼
-  LoginForm перерисовывается
-  (Zustand автоматически уведомил
-   все подписанные компоненты)
+api.config.ts
+    └─► lib/api.ts   (импортирует API_BASE_URL)
 ```
 
 ---
 
-## Каждый файл по отдельности
-
-### 1. `api.config.ts` — откуда брать бэкенд
-
-```
-┌─────────────────────────────────┐
-│         api.config.ts           │
-│                                 │
-│  .env.local:                    │
-│    API_URL=http://localhost:8000 │
-│             /api/v1             │
-│                 │               │
-│                 ▼               │
-│  export const API_BASE_URL      │
-│    = process.env.API_URL        │
-│    ?? 'http://localhost:8000...'│
-└─────────────────────────────────┘
-
-Используется только в: lib/api.ts
-```
-
-**Зачем:** Один URL на весь проект. Меняешь `.env.local` — меняется везде.
-
-**Важно:** Без `NEXT_PUBLIC_` префикса → переменная **только на сервере**. В браузер не утекает.
-
----
-
-### 2. `api.types.ts` — контракты с бэкендом
+### `src/lib/api.ts`
+**Что:** `apiFetch<T>(endpoint, options)` — базовый HTTP-клиент. Добавляет заголовки, парсит JSON, кидает `ApiError` при 4xx/5xx.
+**Зачем:** Единая точка всех HTTP-запросов. Не дублируем headers/JSON.stringify в каждом action.
 
 ```
-┌─────────────────────────────────────────────────┐
-│                  api.types.ts                   │
-│                                                 │
-│  IApiResponse<T>          IApiError             │
-│  ┌─────────────────┐      ┌──────────────────┐  │
-│  │ data:    T      │      │ message: string  │  │
-│  │ message: string │      │ statusCode: num  │  │
-│  │ success: boolean│      │ errors?: {       │  │
-│  └─────────────────┘      │   email: ['...'] │  │
-│                           │ }                │  │
-│  Пример:                  └──────────────────┘  │
-│  IApiResponse<IUser>                            │
-│  {                                              │
-│    data: { id: "1", email: "a@b.com", ... }     │
-│    message: "Успешный вход"                     │
-│    success: true                                │
-│  }                                              │
-└─────────────────────────────────────────────────┘
-
-T = Generic. Ты говоришь "что придёт в data":
-  IApiResponse<IUser>       → data это объект пользователя
-  IApiResponse<AuthResponse>→ data это { user, tokens }
-  IApiResponse<IDeck[]>     → data это массив колод
+lib/api.ts
+    ├─► config/api.config.ts    (берёт BASE_URL)
+    ├─► shared/types/api.types  (тип IApiResponse<T> для возврата)
+    └── экспортирует: apiFetch, ApiError
 ```
 
 ---
 
-### 3. `lib/api.ts` — HTTP-клиент
+### `src/shared/types/api-schema.ts`  ⚠️ автогенерация
+**Что:** TypeScript-типы всех эндпоинтов бэкенда. Генерируется командой `bun run api:types`.
+**Зачем:** Типы точно соответствуют реальному API. Не нужно писать вручную и угадывать поля.
 
 ```
-┌─────────────────────────────────────────────────────┐
-│                     lib/api.ts                      │
-│                                                     │
-│  apiFetch('/login', { method, body, token? })       │
-│                                                     │
-│  ┌──────────────────────────────────────────────┐   │
-│  │ 1. Собрать headers                           │   │
-│  │    Content-Type: application/json            │   │
-│  │    Authorization: Bearer <token>  ← если есть│   │
-│  │                                              │   │
-│  │ 2. fetch(API_BASE_URL + endpoint, options)   │   │
-│  │    ↓                                         │   │
-│  │ 3. Если response.ok = false (4xx/5xx)        │   │
-│  │    → throw new ApiError(status, msg, fields) │   │
-│  │                                              │   │
-│  │ 4. Если ok → return responseData            │   │
-│  └──────────────────────────────────────────────┘   │
-│                                                     │
-│  class ApiError extends Error {                     │
-│    statusCode: number   ← 401, 422, 500...          │
-│    message: string      ← "Неверный пароль"         │
-│    fieldErrors?: {...}  ← { email: ['занят'] }      │
-│  }                                                  │
-└─────────────────────────────────────────────────────┘
+api-schema.ts
+    ├─► server-actions/auth.actions.ts  (LoginPayload, RegisterPayload...)
+    └─► store/authStore.ts              (RegisterPayload)
+```
 
-Зачем ApiError, а не обычный Error?
-  Обычный Error: "что-то сломалось"
-  ApiError:      statusCode=422, fieldErrors={email:['занят']}
-  → authStore знает: показать ошибку именно под полем email
+> Не редактировать вручную. При изменении API → `bun run api:types`.
+
+---
+
+### `src/shared/types/api.types.ts`
+**Что:** `IApiResponse<T>` — универсальная обёртка ответа `{ data, message, success }`. `IApiError` — тип ошибки.
+**Зачем:** Все ответы бэкенда имеют одинаковую структуру — описываем один раз.
+
+```
+api.types.ts
+    └─► lib/api.ts   (используется внутри apiFetch)
 ```
 
 ---
 
-### 4. `auth.actions.ts` — Server Actions
+### `src/server-actions/auth.actions.ts`  ⚠️ только сервер
+**Что:** Функции `loginAction`, `registerAction`, `logoutAction`, `refreshTokenAction`, `updatePasswordAction`. Делают HTTP-запросы к бэкенду.
+**Зачем:** Запросы к бэкенду идут через Next.js-сервер, а не напрямую из браузера. Токен не светится в DevTools, не нужен CORS.
 
 ```
-┌──────────────────────────────────────────────────────────┐
-│               auth.actions.ts                            │
-│  'use server'  ← всё в этом файле выполняется на сервере │
-│                                                          │
-│  loginAction({ email, password })                        │
-│    → apiFetch('/login', { method: 'POST', body })        │
-│                                                          │
-│  registerAction({ email, username, password })           │
-│    → apiFetch('/registration', { method: 'POST', body }) │
-│                                                          │
-│  logoutAction(token)                                     │
-│    → apiFetch('/logout', { method: 'POST', token })      │
-│    → ошибки глотаем (logout всегда успешен для UI)       │
-│                                                          │
-│  refreshTokenAction()                                    │
-│    → apiFetch('/refresh', { credentials: 'include' })    │
-│    → credentials: 'include' = передать httpOnly cookies  │
-└──────────────────────────────────────────────────────────┘
+auth.actions.ts
+    ├─► lib/api.ts              (вызывает apiFetch)
+    └─► shared/types/api-schema (типы payload и response)
+```
 
-Зачем Server Actions, а не fetch прямо из компонента?
-
-  ❌ Без Server Actions (fetch в браузере):
-     Browser ──── POST /api/login ────► Backend
-     Проблемы:
-       - Нужен CORS на бэкенде
-       - Запросы видны в DevTools → Network
-       - URL бэкенда светится в браузере
-
-  ✅ С Server Actions:
-     Browser ──► Next.js Server ──── POST /api/login ────► Backend
-     Плюсы:
-       - CORS не нужен (сервер → сервер)
-       - Запрос к бэкенду не виден в браузере
-       - URL бэкенда только в .env на сервере
+Вызывается из:
+```
+store/authStore.ts  →  auth.actions.ts  →  apiFetch  →  Backend
 ```
 
 ---
 
-### 5. `authStore.ts` — глобальный стейт (Zustand)
+### `src/store/authStore.ts`
+**Что:** Zustand-стор. Хранит `accessToken`, `isAuthenticated`, `pendingEmail`, `twoFactorToken`, ошибки. Методы: `login`, `registration`, `logout`, `clearError`.
+**Зачем:** Глобальное состояние авторизации. Любой компонент читает его напрямую без prop drilling.
 
 ```
-┌────────────────────────────────────────────────────────────┐
-│                      authStore.ts                          │
-│                                                            │
-│  STATE (данные):              ACTIONS (функции):           │
-│  ┌──────────────────────┐     ┌────────────────────────┐   │
-│  │ user: IUser | null   │     │ login(email, password) │   │
-│  │ accessToken: string  │     │ registration(...)      │   │
-│  │ isAuthenticated: bool│     │ logout()               │   │
-│  │ isLoading: boolean   │     │ clearError()           │   │
-│  │ error: string | null │     └────────────────────────┘   │
-│  │ serverFieldErrors    │                                  │
-│  └──────────────────────┘                                  │
-│                                                            │
-│  persist middleware:                                       │
-│  ┌────────────────────────────────────────────────────┐    │
-│  │ localStorage['langcards-auth'] = {                 │    │
-│  │   user, accessToken, isAuthenticated               │    │
-│  │ }                                                  │    │
-│  │                                                    │    │
-│  │ Сохраняем: user, accessToken, isAuthenticated      │    │
-│  │ НЕ сохраняем: isLoading, error (они временные)     │    │
-│  └────────────────────────────────────────────────────┘    │
-└────────────────────────────────────────────────────────────┘
+authStore.ts
+    ├─► server-actions/auth.actions.ts  (вызывает loginAction и др.)
+    └─► shared/types/api-schema         (тип RegisterPayload)
+```
 
-Как использовать в любом компоненте:
-  const user   = useAuthStore(s => s.user)
-  const login  = useAuthStore(s => s.login)
-  const logout = useAuthStore(s => s.logout)
+Persist в `localStorage` → пользователь остаётся залогинен после перезагрузки.
+
+Читается из:
+```
+LoginForm, RegistrationForm, ChangePasswordForm, Header, email-confirmation/page
 ```
 
 ---
 
-## Полный путь: что происходит при логине
+### `src/schemas/auth.schema.ts`
+**Что:** Zod-схемы валидации форм (`loginSchema`, `registrationSchema`, `changePasswordSchema`).
+**Зачем:** Валидация на клиенте до отправки на сервер. Типы формы выводятся из схемы автоматически.
 
 ```
-Шаг 1. Пользователь вводит email + пароль и жмёт Submit
-       LoginForm → onSubmit → authStore.login(email, password)
-
-Шаг 2. authStore включает лоадер
-       set({ isLoading: true }) → кнопка "Submit" показывает спиннер
-
-Шаг 3. authStore вызывает Server Action
-       await loginAction({ email, password })
-       → Next.js незаметно для браузера отправляет на свой сервер
-
-Шаг 4. Server Action вызывает apiFetch
-       apiFetch('/login', { method: 'POST', body: { email, password } })
-
-Шаг 5. apiFetch делает реальный HTTP запрос к бэкенду
-       POST http://localhost:8000/api/v1/login
-       Headers: { Content-Type: application/json }
-       Body: { "email": "user@test.com", "password": "qwerty123" }
-
-Шаг 6. Бэкенд отвечает
-       200 OK:
-         { data: { user: {...}, tokens: { accessToken: "eyJ..." } },
-           message: "Успешный вход", success: true }
-
-       или 422 Unprocessable Entity:
-         { message: "Неверный пароль",
-           statusCode: 422,
-           errors: { password: ["Неверный пароль"] } }
-
-Шаг 7a. Если 200 — apiFetch возвращает данные
-        auth.actions → authStore
-        set({ user, accessToken, isAuthenticated: true, isLoading: false })
-        persist сохраняет в localStorage
-        → LoginForm получает isAuthenticated=true → редирект на /dashboard
-
-Шаг 7b. Если 4xx — apiFetch бросает ApiError
-        auth.actions не ловит → прокидывает в authStore
-        authStore ловит:
-          if err.fieldErrors → set({ serverFieldErrors: { password: "Неверный пароль" } })
-          else               → set({ error: "Общая ошибка сервера" })
-        → форма показывает ошибку под нужным полем
+auth.schema.ts
+    └─► компоненты форм  (LoginForm, RegistrationForm, ChangePasswordForm)
 ```
 
 ---
 
-## Путь ошибок
+### `src/middleware.ts`
+**Что:** Next.js Middleware. Проверяет cookie `token` перед каждым запросом к защищённым роутам.
+**Зачем:** Защита роутов `/dashboard`, `/profile` — без токена редирект на `/login`.
+
+> ⚠️ Сейчас смотрит на cookie `token`, но `authStore` хранит токен в `localStorage`. Это рассинхрон — нужно будет чинить.
+
+---
+
+### `src/lib/queryClient.ts`
+**Что:** Экземпляр `QueryClient` с настройками кеша (staleTime: 5 мин, gcTime: 10 мин).
+**Зачем:** TanStack Query нужен один клиент на всё приложение. Здесь задаём дефолтное поведение всех запросов.
 
 ```
-                    Что произошло              Где показывается
-                    ─────────────────────────  ────────────────────────────
- Бэкенд вернул      statusCode: 422            Под конкретным полем формы
- ошибку поля:       fieldErrors: {             (через serverFieldErrors
-                      email: ['уже занят']     в LabelComponent)
-                    }
-
- Бэкенд вернул      statusCode: 401            Общий баннер ошибки
- общую ошибку:      message: "Неверный пароль" (через error в компоненте)
-
- Нет сети /         throw Error (не ApiError)  Общий баннер ошибки
- Next.js упал:                                 "Проверьте соединение"
-
- apiError глотается logoutAction               Нигде — logout всегда
- намеренно:                                    успешен для пользователя
+queryClient.ts
+    └─► providers/QueryProvider  (передаётся в <QueryClientProvider>)
 ```
 
 ---
 
-## Токены: accessToken и refreshToken
+## Полный поток: логин пользователя
 
 ```
-  accessToken                         refreshToken
-  ─────────────────────────────────   ──────────────────────────────────
-  Живёт: ~15 минут                    Живёт: ~30 дней
-  Хранится: localStorage (Zustand)    Хранится: httpOnly cookie
-  Передаётся: Authorization: Bearer   Передаётся: автоматически браузером
-  Виден JS: да                        Виден JS: НЕТ (защита от XSS)
-
-  Когда accessToken истечёт (401):
-  authStore → refreshTokenAction() → бэкенд видит cookie → выдаёт новый accessToken
-  → authStore сохраняет новый токен → повторяет упавший запрос
-
-  TODO: логика авто-обновления токена ещё не реализована в authStore
+1. LoginForm.onSubmit(email, password)
+        │
+        ▼
+2. authStore.login(email, password)
+   set({ isLoading: true })
+        │
+        ▼
+3. loginAction({ email, password })        ← Server Action (сервер)
+        │
+        ▼
+4. apiFetch('/login', { method: 'POST', body })
+   + заголовки Content-Type, Accept
+        │
+        ▼
+5. Backend API → ответ:
+   { data: { access_token, email_is_verified } }
+   ИЛИ
+   { data: { two_factor_token, ... } }
+        │
+        ▼
+6. authStore получает результат:
+   - обычный логин → set({ accessToken, isAuthenticated: email_is_verified })
+   - 2FA           → set({ twoFactorToken })
+   - ошибка 422    → set({ serverFieldErrors })   → показываются в форме
+   - ошибка 401    → set({ error })               → красный баннер
+        │
+        ▼
+7. LoginForm читает useAuthStore.getState()
+   isAuthenticated → /dashboard
+   !isAuthenticated → /email-confirmation
 ```
 
 ---
 
-## Резюме: зачем каждый файл
+## Полный поток: регистрация
 
-| Файл | Роль | Аналогия |
-|------|------|----------|
-| `api.config.ts` | Один URL бэкенда | `.env` файл для URL |
-| `api.types.ts` | Контракты ответов сервера | Схема базы данных |
-| `lib/api.ts` | Делает HTTP запросы | Axios, но свой |
-| `auth.actions.ts` | Мост: клиент → сервер → бэкенд | Контроллер в MVC |
-| `authStore.ts` | Глобальный стейт приложения | Redux store, но проще |
+```
+1. RegistrationForm.onSubmit(data)
+        │
+        ▼
+2. authStore.registration({ name, email, password, ... })
+        │
+        ▼
+3. registerAction(payload)              ← Server Action
+        │
+        ▼
+4. apiFetch('/registration', { body })
+        │
+        ▼
+5. Backend → { data: { job_id } }       ← юзера нет, только фоновая задача
+        │
+        ▼
+6. authStore: set({ pendingEmail: email })
+   isAuthenticated остаётся false
+        │
+        ▼
+7. RegistrationForm → router.push('/email-confirmation')
+```
+
+---
+
+## Что где хранится
+
+| Данные | Где | Почему |
+|---|---|---|
+| `accessToken` | Zustand → localStorage | Нужен в каждом запросе, должен пережить перезагрузку |
+| `isAuthenticated` | Zustand → localStorage | Быстрая проверка без запроса к серверу |
+| `pendingEmail` | Zustand → localStorage | Нужен на странице подтверждения email |
+| Данные с сервера (колоды, карточки) | TanStack Query cache | Серверное состояние — кешируется, инвалидируется |
+| Ошибки форм | Zustand (НЕ localStorage) | Временные, не нужны после перезагрузки |
+| Защита роутов | middleware.ts cookie | Работает до рендера страницы |

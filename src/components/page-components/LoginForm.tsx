@@ -89,7 +89,7 @@ export function LoginForm() {
 	}, [])
 
 	const onSubmit = async (data: LoginFormData) => {
-		await login(data.email, data.password, data.email)
+		await login(data.email, data.password)
 
 		const { error, isAuthenticated } = useAuthStore.getState()
 
@@ -112,7 +112,6 @@ export function LoginForm() {
 				onSubmit={handleSubmit(onSubmit)}
 				className='w-full max-w-lg flex flex-col gap-4'
 			>
-				{/* TODO: Кнопки OAuth — войти через соц. сети (пока не реализованы) */}
 				<ButtonSubmit
 					variant='secondary'
 					text='Продолжить с Google'

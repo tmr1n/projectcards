@@ -60,16 +60,21 @@ export function RegistrationForm() {
 	})
 
 	const onSubmit = async (data: RegisterFormData) => {
-		await registration(data.email, data.username, data.password, data.email)
-		const { error, isAuthenticated } = useAuthStore.getState()
+		await registration({
+			name: data.username,
+			email: data.email,
+			password: data.password,
+			password_confirmation: data.confirmPassword,
+			mailing_enabled: data.newsletter ?? false,
+			terms_accepted: data.terms ?? false,
+		})
+
+		const { error } = useAuthStore.getState()
 
 		if (error) return // ошибка — остаёмся на форме
 
-		if (isAuthenticated) {
-			router.push('/dashboard') // успешный вход → дашборд
-		} else {
-			router.push('/email-confirmation') // email не подтверждён
-		}
+		// После регистрации всегда идём на подтверждение email
+		router.push('/email-confirmation')
 	}
 
 	const emailValue = watch('email') ?? ''

@@ -49,39 +49,40 @@
 'use server'
 
 import { apiFetch } from '@/lib/api'
-import type { IApiResponse } from '@/shared/types/api.types'
+// Типы берём из сгенерированной схемы бэкенда (bun run api:types).
+// Меняется API → перегенерировали → типы обновились автоматически.
+import type { components } from '@/shared/types/api-schema'
 
 // ─────────────────────────────────────────────────────────────
-// Типы данных (payload = то что отправляем на бэкенд)
+// Payload-типы (что отправляем на бэкенд)
 // ─────────────────────────────────────────────────────────────
 
-interface LoginPayload {
-	// Поле называется email, но принимает и username — бэкенд сам разберётся.
-	// Поэтому в loginSchema поле тоже называется email (см. auth.schema.ts).
-	email: string
-	password: string
-}
+type LoginPayload = components['schemas']['AuthRequest']
+// { email: string, password: string }
 
-interface RegisterPayload {
-	email: string
-	name: string
-	password: string
-	pendingEmail: string
-	password_confirmation: string
-	terms_accepted: boolean
-	mailing_enabled: boolean
-}
-interface ChangePasswordPayload {
-	password: string
-}
+type RegisterPayload = components['schemas']['RegistrationRequest']
+// { name, email, password, password_confirmation, mailing_enabled, terms_accepted }
 
-// Тип данных которые вернёт бэкенд при логине/регистрации.
-// Это поле data внутри IApiResponse<T>.
-// Итоговый ответ: { data: AuthResponse, message: "...", success: true }
-interface AuthResponse {
-	access_token: string
-	email_is_verified: boolean
-}
+type UpdatePasswordPayload = components['schemas']['UpdatePasswordRequest']
+// { old_password, password, password_confirmation }
+
+// ─────────────────────────────────────────────────────────────
+// Response-типы (что получаем от бэкенда)
+// ─────────────────────────────────────────────────────────────
+
+// POST /login → 200: токен + флаг верификации email
+// ИЛИ данные для 2FA — бэкенд возвращает один из двух вариантов
+type LoginResponse =
+	| { access_token: string; email_is_verified: boolean }
+	| {
+			two_factor_token: string
+			two_factor_email_enabled: boolean
+			two_factor_google_authenticator_enabled: boolean
+	  }
+
+// POST /registration → 201: только job_id фоновой задачи, юзера нет.
+// Пользователь после регистрации должен подтвердить email — не логиним сразу.
+type RegisterResponse = { job_id?: string } | null
 
 // ─────────────────────────────────────────────────────────────
 // ACTION: loginAction
@@ -96,40 +97,47 @@ interface AuthResponse {
 
 export async function loginAction(
 	payload: LoginPayload
-): Promise<IApiResponse<AuthResponse>> {
-	// apiFetch из lib/api.ts — собирает запрос и делает fetch
-	// Токен не передаём — при логине он ещё не известен
-	return apiFetch<AuthResponse>('/login', {
+): Promise<LoginResponse> {
+	const res = await apiFetch<LoginResponse>('/login', {
 		method: 'POST',
-		body: payload // apiFetch сам сделает JSON.stringify
+		body: payload,
 	})
+	return res.data
 }
 
 // ─────────────────────────────────────────────────────────────
 // ACTION: registerAction
 // ─────────────────────────────────────────────────────────────
 //
-// Принимает данные из authStore.registration(email, username, password)
-// Отправляет POST /registration на бэкенд
-// Возвращает те же данные что и loginAction (user + tokens)
+// После успешной регистрации бэкенд запускает фоновую задачу
+// (определение валюты/языка/timezone) и возвращает её job_id.
+// Юзера в ответе нет — пользователь должен подтвердить email.
 
 export async function registerAction(
 	payload: RegisterPayload
-): Promise<IApiResponse<AuthResponse>> {
-	return apiFetch<AuthResponse>('/registration', {
-		method: 'POST',
-		body: payload
-	})
-}
-
-export async function changePasswordAction(
-	payload: ChangePasswordPayload,
-	token: string
-): Promise<IApiResponse<{ message: string }>> {
-	return apiFetch<{ message: string }>('/change-password', {
+): Promise<RegisterResponse> {
+	const res = await apiFetch<RegisterResponse>('/registration', {
 		method: 'POST',
 		body: payload,
-		token
+	})
+	return res.data
+}
+
+// ─────────────────────────────────────────────────────────────
+// ACTION: updatePasswordAction
+// ─────────────────────────────────────────────────────────────
+//
+// Смена пароля для авторизованного пользователя.
+// Требует старый пароль + новый + подтверждение.
+
+export async function updatePasswordAction(
+	payload: UpdatePasswordPayload,
+	token: string
+): Promise<void> {
+	await apiFetch('/updatePassword', {
+		method: 'POST',
+		body: payload,
+		token,
 	})
 }
 // ─────────────────────────────────────────────────────────────
@@ -177,13 +185,12 @@ export async function logoutAction(token: string): Promise<void> {
 //
 // TODO: Реализовать логику повтора запроса в authStore когда будет бэкенд.
 
-export async function refreshTokenAction(): Promise<
-	IApiResponse<{ accessToken: string }>
-> {
-	// credentials: 'include' — говорит fetch передать cookies к бэкенду.
-	// Без этого httpOnly refresh-токен не будет отправлен!
-	return apiFetch<{ accessToken: string }>('/refresh', {
+export async function refreshTokenAction(): Promise<{ access_token: string }> {
+	// credentials: 'include' — передаёт httpOnly cookie с refresh-токеном.
+	// Без этого бэкенд не поймёт кого обновлять.
+	const res = await apiFetch<{ access_token: string }>('/refresh', {
 		method: 'POST',
-		credentials: 'include'
+		credentials: 'include',
 	})
+	return res.data
 }

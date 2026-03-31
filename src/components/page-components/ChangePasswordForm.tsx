@@ -15,7 +15,7 @@ import {
 	changePasswordSchema,
 	type ChangePasswordFormData
 } from '@/schemas/auth.schema'
-import { changePasswordAction } from '@/server-actions/auth.actions'
+import { updatePasswordAction } from '@/server-actions/auth.actions'
 import { useAuthStore } from '@/store/authStore'
 
 export function ChangePasswordForm() {
@@ -39,7 +39,10 @@ export function ChangePasswordForm() {
 		setIsLoading(true)
 		setError(null)
 		try {
-			await changePasswordAction({ password: data.password }, accessToken ?? '')
+			await updatePasswordAction(
+				{ password: data.password, password_confirmation: data.confirmPassword },
+				accessToken ?? ''
+			)
 			setIsSuccess(true)
 		} catch {
 			setError('Не удалось сменить пароль. Попробуйте ещё раз.')
