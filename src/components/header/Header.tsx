@@ -62,6 +62,7 @@ export function Header() {
 						width={100}
 						height={67}
 						className='hidden md:block cursor-pointer'
+						priority
 					/>
 					<Image
 						src='/images/Logo-adaptive.svg'
@@ -69,6 +70,7 @@ export function Header() {
 						width={50}
 						height={50}
 						className='block md:hidden cursor-pointer'
+						priority
 					/>
 				</Link>
 
