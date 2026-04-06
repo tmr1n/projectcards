@@ -1,8 +1,8 @@
+import { TopLoader } from '@/components/ui/TopLoader'
+import { QueryProvider } from '@/providers/QueryProvider'
+import '@/app/globals.css'
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono, Nunito, Playfair_Display } from 'next/font/google'
-import './globals.css'
-import { QueryProvider } from '@/providers/QueryProvider'
-import { TopLoader } from '@/components/ui/TopLoader'
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -48,9 +48,7 @@ export default function RootLayout({
 				className={`${geistSans.variable} ${geistMono.variable} ${nunitoSans.variable} ${playfair.variable} antialiased`}
 			>
 				<TopLoader />
-				<QueryProvider>
-					{children}
-				</QueryProvider>
+				<QueryProvider>{children}</QueryProvider>
 			</body>
 		</html>
 	)
