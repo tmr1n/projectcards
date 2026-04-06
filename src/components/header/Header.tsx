@@ -91,7 +91,7 @@ export function Header() {
 				)}
 
 				{/* Right: auth */}
-				<div className='shrink-0 flex items-center gap-2 ml-auto'>
+				<div className='shrink-0 flex items-center gap-2 '>
 					{isAuthenticated ? (
 						<button
 							onClick={logout}
