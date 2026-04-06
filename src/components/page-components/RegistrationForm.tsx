@@ -12,6 +12,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslations } from 'next-intl'
 import { useDelayedError } from '@/hooks/useDelayedError'
 import { ButtonLink } from '@/components/buttons/ButtonLink'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
@@ -36,6 +37,16 @@ export function RegistrationForm() {
 	const serverFieldErrors = useAuthStore(state => state.serverFieldErrors)
 	const clearError = useAuthStore(state => state.clearError)
 	const router = useRouter()
+	const t = useTranslations('auth.registration')
+	const tValidation = useTranslations('auth.validation')
+
+	// Карта ключей hint → переводы
+	const validationMessages: Record<string, string> = {
+		hasUppercase: tValidation('passwordUppercase'),
+		hasSpecial: tValidation('passwordSpecial'),
+		startsWithLatin: tValidation('usernameLatinStart'),
+		onlyValidChars: tValidation('usernameChars')
+	}
 
 	useEffect(() => {
 		return () => clearError()
@@ -71,9 +82,8 @@ export function RegistrationForm() {
 
 		const { error } = useAuthStore.getState()
 
-		if (error) return // ошибка — остаёмся на форме
+		if (error) return
 
-		// После регистрации всегда идём на подтверждение email
 		router.push('/email-confirmation')
 	}
 
@@ -83,14 +93,10 @@ export function RegistrationForm() {
 	const confirmPasswordValue = watch('confirmPassword') ?? ''
 
 	// ─── PASSWORD HINTS ─────────────────────────────────────────────────────────
-	// Фильтруем: оставляем только условия которые НЕ выполнены
 	const failingPwHints = PASSWORD_HINTS.filter(h => !h.test(passwordValue))
-	// Показываем блок hints когда нарушены 2+ условия
 	const showPasswordHints =
 		passwordValue.length > 0 && failingPwHints.length >= 2
 
-	// Задержанный показ: появляется через 500мс, исчезает мгновенно
-	// После isSubmitted — показываем hints сразу без задержки
 	const [showPasswordHintsDelayed, setShowPasswordHintsDelayed] =
 		useState(false)
 	useEffect(() => {
@@ -108,7 +114,6 @@ export function RegistrationForm() {
 
 	// ─── USERNAME HINTS ──────────────────────────────────────────────────────────
 	const failingUnHints = USERNAME_HINTS.filter(h => !h.test(usernameValue))
-	// Hints только если длина >= 3 (иначе label покажет ошибку длины)
 	const showUsernameHints =
 		usernameValue.length >= 3 && failingUnHints.length >= 2
 
@@ -128,9 +133,6 @@ export function RegistrationForm() {
 	}, [showUsernameHints, isSubmitted])
 
 	// ─── LABEL ERRORS ────────────────────────────────────────────────────────────
-
-	// Пароль: если hints показаны → label = ошибка длины (если есть), иначе null
-	// После submit (isSubmitted) — показываем ошибку даже для пустого поля
 	const rawPasswordLabelError = (() => {
 		if (passwordValue.length === 0)
 			return isSubmitted ? (errors.password?.message ?? null) : null
@@ -141,8 +143,6 @@ export function RegistrationForm() {
 		return errors.password?.message ?? null
 	})()
 
-	// Username: если hints показаны → label пустой (hints покрывают всё)
-	// После submit — показываем ошибку для пустого поля
 	const rawUsernameLabelError = (() => {
 		if (usernameValue.length === 0)
 			return isSubmitted ? (errors.username?.message ?? null) : null
@@ -150,7 +150,6 @@ export function RegistrationForm() {
 		return errors.username?.message ?? null
 	})()
 
-	// Применяем задержку + forceShow после Submit ко всем label-ошибкам
 	const emailLabelError = useDelayedError(
 		errors.email?.message,
 		emailValue,
@@ -187,11 +186,11 @@ export function RegistrationForm() {
 				{/* Email */}
 				<div className='space-y-2'>
 					<LabelComponent
-						text='Email'
+						text={t('emailLabel')}
 						error={serverFieldErrors?.email ?? emailLabelError}
 					/>
 					<InputComponent
-						placeholder='user@mail.com'
+						placeholder={t('emailPlaceholder')}
 						error={serverFieldErrors?.email ?? emailLabelError}
 						{...register('email', {
 							onChange: () => {
@@ -204,11 +203,11 @@ export function RegistrationForm() {
 				{/* Имя пользователя */}
 				<div className='space-y-2'>
 					<LabelComponent
-						text='Имя пользователя'
+						text={t('usernameLabel')}
 						error={serverFieldErrors?.username ?? usernameLabelError}
 					/>
 					<InputComponent
-						placeholder='andrew123'
+						placeholder={t('usernamePlaceholder')}
 						error={usernameLabelError}
 						{...register('username', {
 							onChange: () => {
@@ -216,12 +215,11 @@ export function RegistrationForm() {
 							}
 						})}
 					/>
-					{/* Hints: список нарушенных условий формата под полем */}
 					{showUsernameHintsDelayed && failingUnHints.length > 0 && (
 						<ul className='space-y-1 mt-1'>
 							{failingUnHints.map(hint => (
 								<li key={hint.key} className='text-xs text-[#ff4757]'>
-									{hint.message}
+									{validationMessages[hint.key]}
 								</li>
 							))}
 						</ul>
@@ -230,7 +228,7 @@ export function RegistrationForm() {
 
 				{/* Пароль */}
 				<div className='space-y-2'>
-					<LabelComponent text='Пароль' error={passwordLabelError} />
+					<LabelComponent text={t('passwordLabel')} error={passwordLabelError} />
 					<PasswordInput
 						error={passwordLabelError}
 						{...register('password', {
@@ -243,7 +241,7 @@ export function RegistrationForm() {
 						<ul className='space-y-1 mt-1'>
 							{failingPwHints.map(hint => (
 								<li key={hint.key} className='text-xs text-[#ff4757]'>
-									{hint.message}
+									{validationMessages[hint.key]}
 								</li>
 							))}
 						</ul>
@@ -253,7 +251,7 @@ export function RegistrationForm() {
 				{/* Повторите пароль */}
 				<div className='space-y-2'>
 					<LabelComponent
-						text='Повторите пароль'
+						text={t('confirmPasswordLabel')}
 						error={confirmPasswordLabelError}
 					/>
 					<PasswordInput
@@ -269,26 +267,30 @@ export function RegistrationForm() {
 				{/* Чекбоксы */}
 				<div className='pb-2 pt-4'>
 					<Checkbox
-						text='Я хочу получать новости, рекламные сообщения, обновления и советы о том, как использовать LangCards'
+						text={t('newsletter')}
 						{...register('newsletter')}
 					/>
 					<Checkbox
 						text={
 							<>
-								Я принимаю положения, которые содержат{' '}
-								<Link
-									href='/terms'
-									className='underline text-blue-600 hover:text-blue-800'
-								>
-									Условия предоставления услуг
-								</Link>{' '}
-								и{' '}
-								<Link
-									href='/privacy'
-									className='underline text-blue-600 hover:text-blue-800'
-								>
-									Политику конфиденциальности LangCards
-								</Link>
+								{t('terms', {
+									termsLink: (
+										<Link
+											href='/terms'
+											className='underline text-blue-600 hover:text-blue-800'
+										>
+											{t('termsLink')}
+										</Link>
+									),
+									privacyLink: (
+										<Link
+											href='/privacy'
+											className='underline text-blue-600 hover:text-blue-800'
+										>
+											{t('privacyLink')}
+										</Link>
+									)
+								})}
 							</>
 						}
 						{...register('terms', {
@@ -297,7 +299,6 @@ export function RegistrationForm() {
 							}
 						})}
 					/>
-					{/* Ошибка terms: показываем только после попытки Submit */}
 					{errors.terms && (
 						<p className='text-sm text-[#ff4757] font-bold font-nunito mt-5 mb-2'>
 							{errors.terms.message}
@@ -309,12 +310,12 @@ export function RegistrationForm() {
 
 				<ButtonSubmit
 					variant='primary'
-					text='Зарегистрироваться'
+					text={t('submit')}
 					disabled={isLoading}
 				/>
 				<ButtonLink
 					variant='secondary'
-					text='Уже есть учетная запись? Войти'
+					text={t('loginLink')}
 					href='/login'
 				/>
 			</form>

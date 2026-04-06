@@ -6,6 +6,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm, type SubmitHandler } from 'react-hook-form'
+import { useTranslations } from 'next-intl'
 import { useDelayedError } from '@/hooks/useDelayedError'
 import { ButtonLink } from '@/components/buttons/ButtonLink'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
@@ -22,6 +23,8 @@ export function ForgotPasswordForm() {
 	const [isLoading, setIsLoading] = useState(false)
 	const [isSuccess, setIsSuccess] = useState(false)
 	const [error, setError] = useState<string | null>(null)
+	const t = useTranslations('auth.forgotPassword')
+	const tErrors = useTranslations('auth.errors')
 
 	const {
 		register,
@@ -41,7 +44,7 @@ export function ForgotPasswordForm() {
 			// TODO: await sendResetLinkAction(_data.email)
 			setIsSuccess(true)
 		} catch {
-			setError('Не удалось отправить письмо. Попробуйте ещё раз.')
+			setError(tErrors('sendEmail'))
 		} finally {
 			setIsLoading(false)
 		}
@@ -60,13 +63,12 @@ export function ForgotPasswordForm() {
 			<div className='relative bg-white flex items-center justify-center p-8'>
 				<div className='w-full max-w-lg flex flex-col gap-4'>
 					<h1 className='text-3xl font-bold text-black font-nunito mb-4'>
-						Проверьте электронную почту
+						{t('successTitle')}
 					</h1>
 					<p className='font-nunito text-black'>
-						Мы отправили вам ссылку для сброса пароля, проверьте ваш почтовый
-						ящик.
+						{t('successMessage')}
 					</p>
-					<ButtonLink text='На главную' href='/' />
+					<ButtonLink text={t('home')} href='/' />
 				</div>
 			</div>
 		)
@@ -82,20 +84,17 @@ export function ForgotPasswordForm() {
 			>
 				<div>
 					<h1 className='text-3xl font-bold text-black font-nunito mb-4'>
-						Выполнить сброс пароля
+						{t('title')}
 					</h1>
 					<p className='font-nunito text-black'>
-						Введите адрес электронной почты, использованный при регистрации. Мы
-						отправим вам ссылку для входа и сброса пароля. Если вы
-						зарегистрировались с помощью адреса электронной почты родителей, мы
-						отправим им эту ссылку.
+						{t('description')}
 					</p>
 				</div>
 
 				<div className='space-y-2'>
-					<LabelComponent text='Email' error={emailLabelError} />
+					<LabelComponent text={t('emailLabel')} error={emailLabelError} />
 					<InputComponent
-						placeholder='user@mail.com'
+						placeholder={t('emailPlaceholder')}
 						error={emailLabelError}
 						{...register('email', {
 							onChange: () => {
@@ -109,7 +108,7 @@ export function ForgotPasswordForm() {
 
 				<ButtonSubmit
 					variant='primary'
-					text='Отправить ссылку для сброса'
+					text={t('submit')}
 					disabled={isLoading}
 				/>
 			</form>

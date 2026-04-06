@@ -10,10 +10,8 @@ import {
 	useTransform
 } from 'framer-motion'
 import { useRef } from 'react'
+import { useTranslations } from 'next-intl'
 import { ButtonLink } from '@/components/buttons/ButtonLink'
-
-const pText =
-	'Освойте любой изучаемый материал с помощью интерактивных карточек, пробных тестов и учебных активностей.'
 
 const cardData = [
 	{
@@ -169,6 +167,8 @@ function Card({
 
 export function HeroSection() {
 	const containerRef = useRef<HTMLDivElement>(null)
+	const t = useTranslations('landing.hero')
+	const tSecond = useTranslations('landing.second')
 
 	const { scrollYProgress } = useScroll({
 		target: containerRef,
@@ -204,11 +204,11 @@ export function HeroSection() {
 						transition={{ duration: 0.7, type: 'spring', stiffness: 90, damping: 20 }}
 					>
 						<span className='font-(family-name:--font-geist-sans)'>
-							Карточки? Карточки!{' '}
+							{t('title')}{' '}
 						</span>
 						<br className='hidden md:block' />
 						<span className='font-(family-name:--font-playfair) italic'>
-							Запомни что угодно!
+							{t('subtitle')}
 						</span>
 					</motion.h1>
 
@@ -221,7 +221,7 @@ export function HeroSection() {
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.35, duration: 0.6, type: 'spring', stiffness: 90, damping: 20 }}
 					>
-						{pText}
+						{t('description')}
 					</motion.p>
 
 					<motion.div
@@ -231,7 +231,7 @@ export function HeroSection() {
 						transition={{ delay: 0.55, type: 'spring', stiffness: 120, damping: 18 }}
 					>
 						<ButtonLink
-							text='Зарегистрироваться бесплатно'
+							text={t('cta')}
 							href='/registration'
 						/>
 					</motion.div>
@@ -251,26 +251,25 @@ export function HeroSection() {
 							className='text-xs font-semibold tracking-widest text-gray-400 uppercase mb-4 font-(family-name:--font-geist-sans)'
 							style={{ opacity: labelOpacity }}
 						>
-							Карточки
+							{tSecond('label')}
 						</motion.p>
 						<motion.h2
 							className='text-4xl md:text-5xl font-bold text-black leading-tight mb-5 font-(family-name:--font-geist-sans)'
 							style={{ opacity: newTextOpacity, y: newTextY, x: newTextX }}
 						>
-							Учи как хочешь.{' '}
+							{tSecond('title')}{' '}
 							<span className='text-gray-400 font-(family-name:--font-playfair) italic'>
-								Когда хочешь.
+								{tSecond('subtitle')}
 							</span>
 						</motion.h2>
 						<motion.p
 							className='text-gray-500 text-sm mb-8 font-(family-name:--font-geist-sans) leading-relaxed'
 							style={{ opacity: newTextOpacity, y: newTextY }}
 						>
-							Создавай колоды, добавляй карточки и изучай материал в своём
-							темпе.
+							{tSecond('description')}
 						</motion.p>
 						<motion.div style={{ opacity: newTextOpacity, y: newTextY }}>
-							<ButtonLink text='Начать бесплатно' href='/registration' />
+							<ButtonLink text={tSecond('cta')} href='/registration' />
 						</motion.div>
 					</div>
 				</div>

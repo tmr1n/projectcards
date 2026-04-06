@@ -1,0 +1,145 @@
+{
+	"header": {
+		"nav": {
+			"cards": "Cards",
+			"decks": "Decks",
+			"howItWorks": "How it works"
+		},
+		"logout": "Log out",
+		"login": "Log in"
+	},
+	"sidebar": {
+		"home": "Home",
+		"registration": "Sign up",
+		"login": "Log in"
+	},
+	"auth": {
+		"login": {
+			"title": "Log in",
+			"sideText": "The best way to learn and save your progress.",
+			"google": "Continue with Google",
+			"yandex": "Continue with Yandex",
+			"divider": "or use email",
+			"emailLabel": "Email or username",
+			"emailPlaceholder": "Enter your email or username",
+			"passwordLabel": "Password",
+			"forgotPassword": "Forgot password?",
+			"submit": "Log in",
+			"registerLink": "New to LangCards? Sign up"
+		},
+		"registration": {
+			"title": "Sign up",
+			"sideText": "The best way to learn and save your progress.",
+			"emailLabel": "Email",
+			"emailPlaceholder": "user@mail.com",
+			"usernameLabel": "Username",
+			"usernamePlaceholder": "andrew123",
+			"passwordLabel": "Password",
+			"confirmPasswordLabel": "Confirm password",
+			"newsletter": "I want to receive news, promotions, updates and tips on how to use LangCards",
+			"terms": "I accept the {termsLink} and {privacyLink}",
+			"termsLink": "Terms of Service",
+			"privacyLink": "LangCards Privacy Policy",
+			"submit": "Sign up",
+			"loginLink": "Already have an account? Log in"
+		},
+		"forgotPassword": {
+			"sideText": "You've got this!",
+			"title": "Reset your password",
+			"description": "Enter the email address you used when registering. We'll send you a link to log in and reset your password.",
+			"emailLabel": "Email",
+			"emailPlaceholder": "user@mail.com",
+			"submit": "Send reset link",
+			"successTitle": "Check your email",
+			"successMessage": "We've sent you a password reset link, please check your inbox.",
+			"home": "Go home"
+		},
+		"emailConfirmation": {
+			"title": "Confirm your email address to continue",
+			"message": "We sent a message to {email}. Confirm it's correct by clicking the link in the email.",
+			"hint": "Didn't receive an email? Check your spam folder or request another one.",
+			"resend": "Resend email",
+			"home": "Back to home"
+		},
+		"changePassword": {
+			"title": "Enter a new password",
+			"passwordLabel": "Password",
+			"confirmPasswordLabel": "Confirm password",
+			"submit": "Change password",
+			"successTitle": "Success!",
+			"successMessage": "Your password has been changed.",
+			"home": "Go home"
+		},
+		"validation": {
+			"usernameMin": "Username is too short. It must be at least 3 characters.",
+			"usernameLatinStart": "Usernames must start with A-Z letters and cannot contain diacritic characters.",
+			"usernameChars": "Username can only contain letters, numbers, underscores and hyphens.",
+			"passwordMin": "Password is too short. Minimum length is 8 characters.",
+			"passwordUppercase": "Password must contain at least one uppercase letter.",
+			"passwordSpecial": "Password must contain at least one special character."
+		},
+		"errors": {
+			"sendEmail": "Failed to send email. Please try again.",
+			"changePassword": "Failed to change password. Please try again."
+		}
+	},
+	"landing": {
+		"hero": {
+			"title": "Flashcards? Flashcards!",
+			"subtitle": "Remember anything!",
+			"description": "Master any subject with interactive flashcards, practice tests and study activities.",
+			"cta": "Sign up for free"
+		},
+		"second": {
+			"label": "Cards",
+			"title": "Study your way.",
+			"subtitle": "Whenever you want.",
+			"description": "Create decks, add cards and learn at your own pace.",
+			"cta": "Start for free"
+		},
+		"decks": {
+			"label": "Popular decks",
+			"title": "Ready-made decks for",
+			"titleEmphasis": "a quick start.",
+			"deck1Label": "Japanese language",
+			"deck1Count": "120 cards",
+			"deck2Label": "Human anatomy",
+			"deck2Count": "84 cards",
+			"deck3Label": "History of Russia",
+			"deck3Count": "96 cards"
+		},
+		"howItWorks": {
+			"label": "How it works",
+			"title": "Three steps to",
+			"titleEmphasis": "results.",
+			"step1Title": "Create a deck",
+			"step1Description": "Give it a name, choose a topic and add cards — it takes less than a minute.",
+			"step2Title": "Add cards",
+			"step2Description": "Enter a term and a definition. Both sides are in your hands.",
+			"step3Title": "Study and remember",
+			"step3Description": "Flip cards, take tests, track your progress.",
+			"cta": "Try for free"
+		},
+		"footer": {
+			"description": "Interactive flashcards for memorising anything.",
+			"product": "Product",
+			"home": "Home",
+			"registration": "Sign up",
+			"login": "Log in",
+			"copyright": "© {year} Project Cards. All rights reserved."
+		}
+	},
+	"profile": {
+		"title": "Profile"
+	},
+	"errors": {
+		"somethingWrong": "Something went wrong",
+		"somethingWrongMessage": "An unexpected error occurred. Try refreshing the page or go back home.",
+		"retry": "Try again",
+		"home": "Go home",
+		"notFoundCode": "404",
+		"notFoundTitle": "Page not found",
+		"notFoundMessage": "Sorry, we couldn't find the page you're looking for.",
+		"contactSupport": "Contact support"
+	}
+}

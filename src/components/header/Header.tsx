@@ -6,13 +6,14 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import SidebarMenu from './SidebarMenu'
 import { useAuthStore } from '@/store/authStore'
 
-const navLinks = [
-	{ label: 'Карточки', id: null },
-	{ label: 'Колоды', id: 'popular-decks' },
-	{ label: 'Как работает', id: 'how-it-works' }
+const navLinkIds = [
+	{ key: 'cards', id: null },
+	{ key: 'decks', id: 'popular-decks' },
+	{ key: 'howItWorks', id: 'how-it-works' }
 ]
 
 function scrollToSection(id: string | null) {
@@ -28,6 +29,7 @@ export function Header() {
 	const { isAuthenticated, logout } = useAuthStore()
 	const pathname = usePathname()
 	const isHome = pathname === '/'
+	const t = useTranslations('header')
 
 	const { scrollY } = useScroll()
 	const [hidden, setHidden] = useState(false)
@@ -77,28 +79,28 @@ export function Header() {
 				{/* Nav (desktop, только на главной) */}
 				{isHome && (
 					<nav className='hidden md:flex items-center gap-1 flex-1 justify-center'>
-						{navLinks.map((link, i) => (
+						{navLinkIds.map((link, i) => (
 							<button
-								key={link.label}
+								key={link.key}
 								onClick={() => scrollToSection(link.id)}
-								className='flex  cursor-pointer items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-medium text-gray-500 hover:text-black hover:bg-gray-50 transition-colors font-(family-name:--font-geist-sans)'
+								className='flex cursor-pointer items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-medium text-gray-500 hover:text-black hover:bg-gray-50 transition-colors font-(family-name:--font-geist-sans)'
 							>
 								{i === 1 && (
 									<span className='w-1.5 h-1.5 rounded-full bg-black inline-block' />
 								)}
-								{link.label}
+								{t(`nav.${link.key}`)}
 							</button>
 						))}
 					</nav>
 				)}
 
 				{/* Right: auth */}
-				<div className='shrink-0 flex items-center gap-2 '>
+				<div className='shrink-0 flex items-center gap-2'>
 					{isAuthenticated ? (
 						<button
 							onClick={logout}
 							className='w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors'
-							aria-label='Выйти'
+							aria-label={t('logout')}
 						>
 							<UserRound size={18} />
 						</button>
@@ -106,7 +108,7 @@ export function Header() {
 						<Link
 							href='/login'
 							className='w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors'
-							aria-label='Войти'
+							aria-label={t('login')}
 						>
 							<UserRound size={18} />
 						</Link>

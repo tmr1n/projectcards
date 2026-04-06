@@ -2,25 +2,20 @@
 
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 
 const featuredDecks = [
 	{
-		label: 'Японский язык',
-		count: '120 карточек',
 		bg: 'bg-amber-50',
 		accent: 'bg-amber-400',
 		tag: '@японский'
 	},
 	{
-		label: 'Анатомия человека',
-		count: '84 карточки',
 		bg: 'bg-sky-50',
 		accent: 'bg-sky-400',
 		tag: '@медицина'
 	},
 	{
-		label: 'История России',
-		count: '96 карточек',
 		bg: 'bg-rose-50',
 		accent: 'bg-rose-400',
 		tag: '@история'
@@ -30,6 +25,13 @@ const featuredDecks = [
 export function FeaturedDecks() {
 	const [active, setActive] = useState(0)
 	const deck = featuredDecks[active]
+	const t = useTranslations('landing.decks')
+
+	const deckLabels = [
+		{ label: t('deck1Label'), count: t('deck1Count') },
+		{ label: t('deck2Label'), count: t('deck2Count') },
+		{ label: t('deck3Label'), count: t('deck3Count') }
+	]
 
 	return (
 		<section className='bg-white px-6 md:px-20 py-20'>
@@ -42,7 +44,7 @@ export function FeaturedDecks() {
 					viewport={{ once: true, amount: 0.5 }}
 					transition={{ duration: 0.45 }}
 				>
-					Популярные колоды
+					{t('label')}
 				</motion.p>
 
 				{/* Heading + badge */}
@@ -54,9 +56,9 @@ export function FeaturedDecks() {
 						viewport={{ once: true, amount: 0.5 }}
 						transition={{ duration: 0.5, delay: 0.1 }}
 					>
-						Готовые колоды для{' '}
+						{t('title')}{' '}
 						<span className='font-(family-name:--font-playfair) italic text-gray-400'>
-							быстрого старта.
+							{t('titleEmphasis')}
 						</span>
 					</motion.h2>
 
@@ -106,10 +108,10 @@ export function FeaturedDecks() {
 							{/* Deck info center */}
 							<div className='absolute inset-0 flex flex-col items-center justify-center gap-2'>
 								<p className='text-2xl md:text-4xl font-bold text-gray-800 font-(family-name:--font-geist-sans)'>
-									{deck.label}
+									{deckLabels[active]?.label}
 								</p>
 								<p className='text-sm text-gray-500 font-(family-name:--font-geist-sans)'>
-									{deck.count}
+									{deckLabels[active]?.count}
 								</p>
 							</div>
 						</motion.div>

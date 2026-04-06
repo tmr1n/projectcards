@@ -3,6 +3,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { ButtonLink } from '@/components/buttons/ButtonLink'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
 import { FormLoader } from '@/components/ui/FormLoader'
@@ -56,6 +57,7 @@ const EnvelopeSVG = ({
 export default function page() {
 	const pendingEmail = useAuthStore(state => state.pendingEmail)
 	const [isLoading, setIsLoading] = useState(false)
+	const t = useTranslations('auth.emailConfirmation')
 
 	const handleResend = async () => {
 		setIsLoading(true)
@@ -88,28 +90,26 @@ export default function page() {
 			{/* Content */}
 			<div className='flex flex-col p-15 gap-5 max-w-150 relative z-10'>
 				<h1 className='text-black font-bold text-xl md:text-2xl'>
-					Подтвердите адрес электронной почты, чтобы продолжить
+					{t('title')}
 				</h1>
 				<p className='text-black text-m'>
-					Мы отправили сообщение на адрес {pendingEmail} Подтвердите
-					правильность этого адреса, нажав на ссылку в письме.
+					{t('message', { email: pendingEmail })}
 				</p>
 				<p className='text-black text-sm'>
-					Не получили электронное письмо? Проверьте папку спама или запросите
-					повторную отправку.
+					{t('hint')}
 				</p>
 				<div className='flex flex-row'>
 					<ButtonSubmit
 						className='text-xs md:text-sm m-1'
 						variant='primary'
-						text='Отправить письмо повторно'
+						text={t('resend')}
 						disabled={isLoading}
 						onClick={handleResend}
 					/>
 					<ButtonLink
 						className='text-xs md:text-sm m-1'
 						variant='third'
-						text='Вернуться на главную'
+						text={t('home')}
 						href='/'
 					/>
 				</div>

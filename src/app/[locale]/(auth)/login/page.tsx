@@ -1,14 +1,18 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { CloseButton } from '@/components/buttons/CloseButton'
 import { AuthPageLayout } from '@/components/layouts/AuthPageLayout'
 import { LoginForm } from '@/components/page-components/LoginForm'
 import { NavBar } from '@/components/page-components/NavBar'
 
 export default function Login() {
+	const t = useTranslations('auth.login')
+	const tReg = useTranslations('auth.registration')
+
 	return (
 		<AuthPageLayout
-			sideText='Самый лучший способ учиться, чтобы сохранить прогресс.'
+			sideText={t('sideText')}
 			topButtons={
 				<div className='flex justify-end gap-4'>
 					<CloseButton href='/' />
@@ -16,8 +20,8 @@ export default function Login() {
 			}
 			navigationTabs={
 				<>
-					<NavBar text='Зарегистрироваться' href='/registration' />
-					<NavBar text='Вход' href='/login' />
+					<NavBar text={tReg('title')} href='/registration' />
+					<NavBar text={t('title')} href='/login' />
 				</>
 			}
 		>

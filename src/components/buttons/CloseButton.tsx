@@ -1,7 +1,7 @@
 'use client'
 
 import { X } from 'lucide-react'
-import { useAuthTransition } from '@/app/(auth)/layout'
+import { useAuthTransition } from '@/app/[locale]/(auth)/layout'
 import type { ICloseButtonProps } from '@/shared/types/button.types'
 
 export function CloseButton({ href }: ICloseButtonProps) {

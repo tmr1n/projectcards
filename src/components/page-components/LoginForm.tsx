@@ -18,6 +18,7 @@ import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaYandex } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
+import { useTranslations } from 'next-intl'
 import { useDelayedError } from '@/hooks/useDelayedError'
 import { ButtonLink } from '@/components/buttons/ButtonLink'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
@@ -36,23 +37,15 @@ export function LoginForm() {
 	const pendingEmail = useAuthStore(state => state.pendingEmail)
 	const error = useAuthStore(state => state.error)
 	const clearError = useAuthStore(state => state.clearError)
+	const t = useTranslations('auth.login')
 
-	// useForm — главный хук react-hook-form:
-	//   register  — привязывает <input> к форме (value, onChange, onBlur, ref)
-	//   handleSubmit — оборачивает onSubmit: блокирует при ошибках валидации
-	//   watch     — подписывается на текущее значение поля (нужно для useDelayedError)
-	//   errors    — объект с ошибками { email: { message: 'текст' } }
-	//   isSubmitted — true после первой попытки нажать Submit
 	const {
 		register,
 		handleSubmit,
 		watch,
 		formState: { errors, isSubmitted }
 	} = useForm<LoginFormData>({
-		// mode: 'onChange' — Zod запускается при каждом нажатии клавиши
-		// (альтернатива: 'onBlur' — только при потере фокуса)
 		mode: 'onChange',
-		// zodResolver "переводит" результат Zod в формат react-hook-form
 		resolver: zodResolver(loginSchema),
 		defaultValues: {
 			email: '',
@@ -60,14 +53,9 @@ export function LoginForm() {
 		}
 	})
 
-	// watch() возвращает актуальное значение поля прямо сейчас
-	// ?? '' — если undefined (до первого ввода), используем пустую строку
 	const emailValue = watch('email') ?? ''
 	const passwordValue = watch('password') ?? ''
 
-	// useDelayedError — пропускаем ошибку через задержку для лучшего UX
-	// errors.email?.message — ?. безопасный доступ: если errors.email нет → undefined
-	// isSubmitted — после Submit показываем ошибки немедленно и даже для пустых полей
 	const emailLabelError = useDelayedError(
 		errors.email?.message,
 		emailValue,
@@ -81,7 +69,6 @@ export function LoginForm() {
 		isSubmitted
 	)
 
-	// onSubmit — вызывается handleSubmit ТОЛЬКО если Zod сказал что данные валидны
 	const router = useRouter()
 
 	useEffect(() => {
@@ -93,19 +80,17 @@ export function LoginForm() {
 
 		const { error, isAuthenticated } = useAuthStore.getState()
 
-		if (error) return // ошибка — остаёмся на форме
+		if (error) return
 
 		if (isAuthenticated) {
-			router.push('/dashboard') // успешный вход → дашборд
+			router.push('/dashboard')
 		} else {
-			router.push('/email-confirmation') // email не подтверждён
+			router.push('/email-confirmation')
 		}
 	}
 
 	return (
-		// relative — нужен для FormLoader (он позиционируется absolute внутри)
 		<div className='relative bg-white flex items-center justify-center p-8'>
-			{/* Лоадер покрывает форму во время отправки */}
 			<FormLoader isLoading={isLoading} />
 
 			<form
@@ -114,7 +99,7 @@ export function LoginForm() {
 			>
 				<ButtonSubmit
 					variant='secondary'
-					text='Продолжить с Google'
+					text={t('google')}
 					icon={<FcGoogle />}
 					onClick={() =>
 						(window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`)
@@ -123,25 +108,22 @@ export function LoginForm() {
 
 				<ButtonSubmit
 					variant='secondary'
-					text='Продолжить с Yandex'
+					text={t('yandex')}
 					icon={<FaYandex />}
 					onClick={() =>
 						(window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/yandex`)
 					}
 				/>
 
-				<LineComponent text='или адрес эл. почты' />
+				<LineComponent text={t('divider')} />
 
-				{/* Поле: Email или имя пользователя */}
 				<div className='space-y-2'>
-					{/* LabelComponent: если есть error → показывает его текст красным */}
 					<LabelComponent
-						text='Email или имя пользователя'
+						text={t('emailLabel')}
 						error={emailLabelError}
 					/>
-					{/* register('email') → привязывает input к react-hook-form */}
 					<InputComponent
-						placeholder='Введите адрес эл. почты или имя пользователя'
+						placeholder={t('emailPlaceholder')}
 						error={emailLabelError}
 						{...register('email', {
 							onChange: () => {
@@ -151,10 +133,9 @@ export function LoginForm() {
 					/>
 				</div>
 
-				{/* Поле: Пароль */}
 				<div className='space-y-2 pb-2'>
 					<div className='flex items-center justify-between'>
-						<LabelComponent text='Пароль' error={passwordLabelError} />
+						<LabelComponent text={t('passwordLabel')} error={passwordLabelError} />
 
 						<LabelComponent
 							text={
@@ -162,7 +143,7 @@ export function LoginForm() {
 									href='/forgot-password'
 									className='font-bold text-blue-600 hover:text-blue-800 transition-colors'
 								>
-									Забыли пароль?
+									{t('forgotPassword')}
 								</Link>
 							}
 						/>
@@ -180,11 +161,11 @@ export function LoginForm() {
 
 				<ErrorBanner error={error} />
 
-				<ButtonSubmit variant='primary' text='Вход' disabled={isLoading} />
+				<ButtonSubmit variant='primary' text={t('submit')} disabled={isLoading} />
 
 				<ButtonLink
 					variant='secondary'
-					text='Впервые в LangCards? Зарегистрироваться'
+					text={t('registerLink')}
 					href='/registration'
 				/>
 			</form>

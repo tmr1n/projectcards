@@ -1,32 +1,23 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 import { ButtonLink } from '@/components/buttons/ButtonLink'
 
-const steps = [
+const stepStyles = [
 	{
-		number: '01',
-		title: 'Создай колоду',
-		description:
-			'Дай название, выбери тему и собери карточки — это займёт меньше минуты.',
 		bg: 'bg-black',
 		numberColor: 'text-gray-600',
 		titleColor: 'text-white',
 		descColor: 'text-gray-400'
 	},
 	{
-		number: '02',
-		title: 'Добавь карточки',
-		description: 'Введи термин и определение. Обе стороны — в твоих руках.',
 		bg: 'bg-gray-100',
 		numberColor: 'text-gray-300',
 		titleColor: 'text-black',
 		descColor: 'text-gray-500'
 	},
 	{
-		number: '03',
-		title: 'Изучай и запоминай',
-		description: 'Листай карточки, проходи тесты, отслеживай прогресс.',
 		bg: 'bg-black',
 		numberColor: 'text-gray-600',
 		titleColor: 'text-white',
@@ -35,6 +26,14 @@ const steps = [
 ]
 
 export function HowItWorks() {
+	const t = useTranslations('landing.howItWorks')
+
+	const steps = [
+		{ number: '01', title: t('step1Title'), description: t('step1Description') },
+		{ number: '02', title: t('step2Title'), description: t('step2Description') },
+		{ number: '03', title: t('step3Title'), description: t('step3Description') }
+	]
+
 	return (
 		<section className='bg-white px-6 md:px-20 py-20'>
 			<div className='max-w-5xl mx-auto'>
@@ -45,7 +44,7 @@ export function HowItWorks() {
 					viewport={{ once: true, amount: 0.5 }}
 					transition={{ duration: 0.5 }}
 				>
-					Как это работает
+					{t('label')}
 				</motion.p>
 
 				<motion.h2
@@ -55,9 +54,9 @@ export function HowItWorks() {
 					viewport={{ once: true, amount: 0.5 }}
 					transition={{ duration: 0.5, delay: 0.1 }}
 				>
-					Три шага до{' '}
+					{t('title')}{' '}
 					<span className='font-(family-name:--font-playfair) italic text-gray-400'>
-						результата.
+						{t('titleEmphasis')}
 					</span>
 				</motion.h2>
 
@@ -65,7 +64,7 @@ export function HowItWorks() {
 					{steps.map((step, i) => (
 						<motion.div
 							key={i}
-							className={`${step.bg} rounded-3xl p-8 flex flex-col justify-between min-h-60`}
+							className={`${stepStyles[i]!.bg} rounded-3xl p-8 flex flex-col justify-between min-h-60`}
 							initial={{ opacity: 0, y: 32 }}
 							whileInView={{ opacity: 1, y: 0 }}
 							viewport={{ once: true, amount: 0.3 }}
@@ -78,18 +77,18 @@ export function HowItWorks() {
 							}}
 						>
 							<span
-								className={`text-6xl font-bold ${step.numberColor} font-(family-name:--font-geist-sans) leading-none select-none`}
+								className={`text-6xl font-bold ${stepStyles[i]!.numberColor} font-(family-name:--font-geist-sans) leading-none select-none`}
 							>
 								{step.number}
 							</span>
 							<div>
 								<p
-									className={`text-xl font-bold ${step.titleColor} mb-2 font-(family-name:--font-geist-sans)`}
+									className={`text-xl font-bold ${stepStyles[i]!.titleColor} mb-2 font-(family-name:--font-geist-sans)`}
 								>
 									{step.title}
 								</p>
 								<p
-									className={`text-sm ${step.descColor} leading-relaxed font-(family-name:--font-geist-sans)`}
+									className={`text-sm ${stepStyles[i]!.descColor} leading-relaxed font-(family-name:--font-geist-sans)`}
 								>
 									{step.description}
 								</p>
@@ -106,7 +105,7 @@ export function HowItWorks() {
 					transition={{ duration: 0.5, delay: 0.4 }}
 				>
 					<div className='max-w-xs w-full'>
-						<ButtonLink text='Попробовать бесплатно' href='/registration' />
+						<ButtonLink text={t('cta')} href='/registration' />
 					</div>
 				</motion.div>
 			</div>

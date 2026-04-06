@@ -3,6 +3,7 @@
 import * as motion from 'motion/react-client'
 import Link from 'next/link'
 import { useRef, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { useSidebarDimensions } from '@/hooks/use-sidebar-dimensions'
 import {
 	background,
@@ -21,22 +22,25 @@ import type {
 	ISidebarDimensions
 } from '@/shared/types/sidebars-styles.types'
 
-const navItems = [
-	{ label: 'Главная', href: '/' },
-	{ label: 'Регистрация', href: '/registration' },
-	{ label: 'Войти', href: '/login' }
-]
+const Navigation = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+	const t = useTranslations('sidebar')
+	const navItems = [
+		{ label: t('home'), href: '/' },
+		{ label: t('registration'), href: '/registration' },
+		{ label: t('login'), href: '/login' }
+	]
 
-const Navigation = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => (
-	<motion.ul
-		style={{ ...list, pointerEvents: isOpen ? 'auto' : 'none' }}
-		variants={navVariants}
-	>
-		{navItems.map((item, i) => (
-			<MenuItem key={item.href} i={i} label={item.label} href={item.href} onClose={onClose} />
-		))}
-	</motion.ul>
-)
+	return (
+		<motion.ul
+			style={{ ...list, pointerEvents: isOpen ? 'auto' : 'none' }}
+			variants={navVariants}
+		>
+			{navItems.map((item, i) => (
+				<MenuItem key={item.href} i={i} label={item.label} href={item.href} onClose={onClose} />
+			))}
+		</motion.ul>
+	)
+}
 
 const MenuItem = ({
 	i,

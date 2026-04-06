@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslations } from 'next-intl'
 import { useDelayedError } from '@/hooks/useDelayedError'
 import { ButtonLink } from '@/components/buttons/ButtonLink'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
@@ -23,6 +24,14 @@ export function ChangePasswordForm() {
 	const [isLoading, setIsLoading] = useState(false)
 	const [isSuccess, setIsSuccess] = useState(false)
 	const [error, setError] = useState<string | null>(null)
+	const t = useTranslations('auth.changePassword')
+	const tValidation = useTranslations('auth.validation')
+	const tErrors = useTranslations('auth.errors')
+
+	const validationMessages: Record<string, string> = {
+		hasUppercase: tValidation('passwordUppercase'),
+		hasSpecial: tValidation('passwordSpecial')
+	}
 
 	const {
 		register,
@@ -45,7 +54,7 @@ export function ChangePasswordForm() {
 			)
 			setIsSuccess(true)
 		} catch {
-			setError('Не удалось сменить пароль. Попробуйте ещё раз.')
+			setError(tErrors('changePassword'))
 		} finally {
 			setIsLoading(false)
 		}
@@ -101,9 +110,9 @@ export function ChangePasswordForm() {
 		return (
 			<div className='h-screen relative bg-white flex items-center justify-center p-8'>
 				<div className='w-full max-w-lg flex flex-col gap-4'>
-					<h1 className='text-3xl font-bold text-black mb-4'>Успешно!</h1>
-					<p className='text-black'>Ваш пароль был сменён.</p>
-					<ButtonLink variant='primary' text='На главную' href='/' />
+					<h1 className='text-3xl font-bold text-black mb-4'>{t('successTitle')}</h1>
+					<p className='text-black'>{t('successMessage')}</p>
+					<ButtonLink variant='primary' text={t('home')} href='/' />
 				</div>
 			</div>
 		)
@@ -118,12 +127,12 @@ export function ChangePasswordForm() {
 				className='w-full max-w-lg flex flex-col gap-4'
 			>
 				<h1 className='text-3xl font-bold text-black mb-4 font-nunito'>
-					Введите новый пароль
+					{t('title')}
 				</h1>
 
 				<div className='space-y-5'>
 					<div className='space-y-2'>
-						<LabelComponent text='Пароль' error={passwordLabelError} />
+						<LabelComponent text={t('passwordLabel')} error={passwordLabelError} />
 						<PasswordInput
 							error={passwordLabelError}
 							{...register('password', {
@@ -136,7 +145,7 @@ export function ChangePasswordForm() {
 							<ul className='space-y-1 mt-1'>
 								{failingPwHints.map(hint => (
 									<li key={hint.key} className='text-xs text-[#ff4757]'>
-										{hint.message}
+										{validationMessages[hint.key]}
 									</li>
 								))}
 							</ul>
@@ -145,7 +154,7 @@ export function ChangePasswordForm() {
 
 					<div className='space-y-2'>
 						<LabelComponent
-							text='Повторите пароль'
+							text={t('confirmPasswordLabel')}
 							error={confirmPasswordLabelError}
 						/>
 						<PasswordInput
@@ -163,7 +172,7 @@ export function ChangePasswordForm() {
 
 				<ButtonSubmit
 					variant='primary'
-					text='Сменить пароль'
+					text={t('submit')}
 					className='mt-5'
 					disabled={isLoading}
 				/>

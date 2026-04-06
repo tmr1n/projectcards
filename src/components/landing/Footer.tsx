@@ -3,14 +3,17 @@
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-
-const links = [
-	{ label: 'Главная', href: '/' },
-	{ label: 'Регистрация', href: '/registration' },
-	{ label: 'Вход', href: '/login' }
-]
+import { useTranslations } from 'next-intl'
 
 export function Footer() {
+	const t = useTranslations('landing.footer')
+
+	const links = [
+		{ label: t('home'), href: '/' },
+		{ label: t('registration'), href: '/registration' },
+		{ label: t('login'), href: '/login' }
+	]
+
 	return (
 		<footer className='bg-white border-t border-gray-100 px-6 md:px-20 py-14'>
 			<div className='max-w-5xl mx-auto'>
@@ -32,7 +35,7 @@ export function Footer() {
 							/>
 						</Link>
 						<p className='text-gray-400 text-sm font-(family-name:--font-geist-sans) max-w-xs leading-relaxed'>
-							Интерактивные карточки для запоминания любого материала.
+							{t('description')}
 						</p>
 					</motion.div>
 
@@ -46,7 +49,7 @@ export function Footer() {
 					>
 						<div className='flex flex-col gap-3'>
 							<p className='text-xs font-semibold tracking-widest text-gray-300 uppercase font-(family-name:--font-geist-sans)'>
-								Продукт
+								{t('product')}
 							</p>
 							{links.map((link, i) => (
 								<motion.div
@@ -76,7 +79,7 @@ export function Footer() {
 					transition={{ duration: 0.5, delay: 0.3 }}
 				>
 					<p className='text-gray-300 text-xs font-(family-name:--font-geist-sans)'>
-						© {new Date().getFullYear()} Project Cards. Все права защищены.
+						{t('copyright', { year: new Date().getFullYear() })}
 					</p>
 				</motion.div>
 			</div>

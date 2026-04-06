@@ -1,0 +1,145 @@
+{
+	"header": {
+		"nav": {
+			"cards": "Karten",
+			"decks": "Stapel",
+			"howItWorks": "So funktioniert es"
+		},
+		"logout": "Abmelden",
+		"login": "Anmelden"
+	},
+	"sidebar": {
+		"home": "Startseite",
+		"registration": "Registrieren",
+		"login": "Anmelden"
+	},
+	"auth": {
+		"login": {
+			"title": "Anmelden",
+			"sideText": "Der beste Weg zu lernen und deinen Fortschritt zu speichern.",
+			"google": "Mit Google fortfahren",
+			"yandex": "Mit Yandex fortfahren",
+			"divider": "oder E-Mail verwenden",
+			"emailLabel": "E-Mail oder Benutzername",
+			"emailPlaceholder": "E-Mail oder Benutzername eingeben",
+			"passwordLabel": "Passwort",
+			"forgotPassword": "Passwort vergessen?",
+			"submit": "Anmelden",
+			"registerLink": "Neu bei LangCards? Registrieren"
+		},
+		"registration": {
+			"title": "Registrieren",
+			"sideText": "Der beste Weg zu lernen und deinen Fortschritt zu speichern.",
+			"emailLabel": "E-Mail",
+			"emailPlaceholder": "user@mail.com",
+			"usernameLabel": "Benutzername",
+			"usernamePlaceholder": "andrew123",
+			"passwordLabel": "Passwort",
+			"confirmPasswordLabel": "Passwort bestätigen",
+			"newsletter": "Ich möchte Neuigkeiten, Angebote, Updates und Tipps zur Nutzung von LangCards erhalten",
+			"terms": "Ich akzeptiere die {termsLink} und die {privacyLink}",
+			"termsLink": "Nutzungsbedingungen",
+			"privacyLink": "Datenschutzrichtlinie von LangCards",
+			"submit": "Registrieren",
+			"loginLink": "Bereits ein Konto? Anmelden"
+		},
+		"forgotPassword": {
+			"sideText": "Das schaffst du!",
+			"title": "Passwort zurücksetzen",
+			"description": "Gib die E-Mail-Adresse ein, die du bei der Registrierung verwendet hast. Wir senden dir einen Link zum Anmelden und Zurücksetzen deines Passworts.",
+			"emailLabel": "E-Mail",
+			"emailPlaceholder": "user@mail.com",
+			"submit": "Link zum Zurücksetzen senden",
+			"successTitle": "E-Mail überprüfen",
+			"successMessage": "Wir haben dir einen Link zum Zurücksetzen des Passworts gesendet. Bitte überprüfe deinen Posteingang.",
+			"home": "Zur Startseite"
+		},
+		"emailConfirmation": {
+			"title": "Bestätige deine E-Mail-Adresse, um fortzufahren",
+			"message": "Wir haben eine Nachricht an {email} gesendet. Bestätige, dass sie korrekt ist, indem du auf den Link in der E-Mail klickst.",
+			"hint": "Keine E-Mail erhalten? Überprüfe deinen Spam-Ordner oder fordere eine erneute Zusendung an.",
+			"resend": "E-Mail erneut senden",
+			"home": "Zurück zur Startseite"
+		},
+		"changePassword": {
+			"title": "Neues Passwort eingeben",
+			"passwordLabel": "Passwort",
+			"confirmPasswordLabel": "Passwort bestätigen",
+			"submit": "Passwort ändern",
+			"successTitle": "Erfolgreich!",
+			"successMessage": "Dein Passwort wurde geändert.",
+			"home": "Zur Startseite"
+		},
+		"validation": {
+			"usernameMin": "Der Benutzername ist zu kurz. Er muss mindestens 3 Zeichen enthalten.",
+			"usernameLatinStart": "Benutzernamen müssen mit A-Z beginnen und dürfen keine diakritischen Zeichen enthalten.",
+			"usernameChars": "Der Benutzername darf nur Buchstaben, Zahlen, Unterstriche und Bindestriche enthalten.",
+			"passwordMin": "Das Passwort ist zu kurz. Mindestlänge ist 8 Zeichen.",
+			"passwordUppercase": "Das Passwort muss mindestens einen Großbuchstaben enthalten.",
+			"passwordSpecial": "Das Passwort muss mindestens ein Sonderzeichen enthalten."
+		},
+		"errors": {
+			"sendEmail": "E-Mail konnte nicht gesendet werden. Bitte versuche es erneut.",
+			"changePassword": "Passwort konnte nicht geändert werden. Bitte versuche es erneut."
+		}
+	},
+	"landing": {
+		"hero": {
+			"title": "Karteikarten? Karteikarten!",
+			"subtitle": "Merke dir alles!",
+			"description": "Meistere jedes Thema mit interaktiven Karteikarten, Übungstests und Lernaktivitäten.",
+			"cta": "Kostenlos registrieren"
+		},
+		"second": {
+			"label": "Karten",
+			"title": "Lerne auf deine Art.",
+			"subtitle": "Wann du willst.",
+			"description": "Erstelle Stapel, füge Karten hinzu und lerne in deinem eigenen Tempo.",
+			"cta": "Kostenlos starten"
+		},
+		"decks": {
+			"label": "Beliebte Stapel",
+			"title": "Fertige Stapel für",
+			"titleEmphasis": "einen schnellen Start.",
+			"deck1Label": "Japanische Sprache",
+			"deck1Count": "120 Karten",
+			"deck2Label": "Menschliche Anatomie",
+			"deck2Count": "84 Karten",
+			"deck3Label": "Geschichte Russlands",
+			"deck3Count": "96 Karten"
+		},
+		"howItWorks": {
+			"label": "So funktioniert es",
+			"title": "Drei Schritte zum",
+			"titleEmphasis": "Ergebnis.",
+			"step1Title": "Stapel erstellen",
+			"step1Description": "Gib einen Namen an, wähle ein Thema und füge Karten hinzu — das dauert weniger als eine Minute.",
+			"step2Title": "Karten hinzufügen",
+			"step2Description": "Gib Begriff und Definition ein. Beide Seiten liegen in deinen Händen.",
+			"step3Title": "Lernen und merken",
+			"step3Description": "Karten durchblättern, Tests absolvieren, Fortschritt verfolgen.",
+			"cta": "Kostenlos ausprobieren"
+		},
+		"footer": {
+			"description": "Interaktive Karteikarten zum Memorieren von allem.",
+			"product": "Produkt",
+			"home": "Startseite",
+			"registration": "Registrieren",
+			"login": "Anmelden",
+			"copyright": "© {year} Project Cards. Alle Rechte vorbehalten."
+		}
+	},
+	"profile": {
+		"title": "Profil"
+	},
+	"errors": {
+		"somethingWrong": "Etwas ist schiefgelaufen",
+		"somethingWrongMessage": "Ein unerwarteter Fehler ist aufgetreten. Versuche die Seite zu aktualisieren oder gehe zurück zur Startseite.",
+		"retry": "Erneut versuchen",
+		"home": "Zur Startseite",
+		"notFoundCode": "404",
+		"notFoundTitle": "Seite nicht gefunden",
+		"notFoundMessage": "Die gesuchte Seite konnte leider nicht gefunden werden.",
+		"contactSupport": "Support kontaktieren"
+	}
+}
