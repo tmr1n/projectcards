@@ -2,8 +2,8 @@
 
 'use client'
 
-import React, { useState } from 'react'
 import { useTranslations } from 'next-intl'
+import React, { useState } from 'react'
 import { ButtonLink } from '@/components/buttons/ButtonLink'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
 import { FormLoader } from '@/components/ui/FormLoader'
@@ -54,7 +54,7 @@ const EnvelopeSVG = ({
 	</svg>
 )
 
-export default function page() {
+export default function Page() {
 	const pendingEmail = useAuthStore(state => state.pendingEmail)
 	const [isLoading, setIsLoading] = useState(false)
 	const t = useTranslations('auth.emailConfirmation')
@@ -93,11 +93,9 @@ export default function page() {
 					{t('title')}
 				</h1>
 				<p className='text-black text-m'>
-					{t('message', { email: pendingEmail })}
+					{t('message', { email: pendingEmail ?? '' })}
 				</p>
-				<p className='text-black text-sm'>
-					{t('hint')}
-				</p>
+				<p className='text-black text-sm'>{t('hint')}</p>
 				<div className='flex flex-row'>
 					<ButtonSubmit
 						className='text-xs md:text-sm m-1'
