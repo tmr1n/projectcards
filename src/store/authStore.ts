@@ -65,9 +65,7 @@ import {
 	logoutAction,
 	registerAction
 } from '@/server-actions/auth.actions'
-import type { components } from '@/shared/types/api-schema'
-
-type RegisterPayload = components['schemas']['RegistrationRequest']
+import type { IRegisterPayload } from '@/shared/types/auth.types'
 
 // ─────────────────────────────────────────────────────────────
 // ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ
@@ -118,7 +116,7 @@ interface AuthState {
 
 interface AuthActions {
 	login: (email: string, password: string) => Promise<void>
-	registration: (payload: RegisterPayload) => Promise<void>
+	registration: (payload: IRegisterPayload) => Promise<void>
 	logout: () => void
 	clearError: () => void
 }

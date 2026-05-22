@@ -22,3 +22,37 @@ export interface IAuthTokens {
 	accessToken: string  // Короткоживущий (15 мин) — используется в каждом API-запросе
 	refreshToken: string // Долгоживущий (30 дней) — используется для обновления accessToken
 }
+
+// ─── API Payload-типы (что отправляем на бэкенд) ────────────────────────────
+
+export interface ILoginPayload {
+	email: string
+	password: string
+}
+
+export interface IRegisterPayload {
+	name: string
+	email: string
+	password: string
+	password_confirmation: string
+	mailing_enabled?: boolean
+	terms_accepted: boolean
+}
+
+export interface IUpdatePasswordPayload {
+	old_password: string
+	password: string
+	password_confirmation: string
+}
+
+// ─── API Response-типы (что получаем от бэкенда) ────────────────────────────
+
+export type ILoginResponse =
+	| { access_token: string; email_is_verified: boolean }
+	| {
+			two_factor_token: string
+			two_factor_email_enabled: boolean
+			two_factor_google_authenticator_enabled: boolean
+	  }
+
+export type IRegisterResponse = { job_id?: string } | null
