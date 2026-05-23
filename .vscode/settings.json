@@ -1,4 +1,5 @@
 {
 	"cSpell.language": "en,ru",
-	"cSpell.words": ["дизайном"]
+	"cSpell.words": ["дизайном"],
+	"prisma.pinToPrisma6": true
 }
