@@ -8,11 +8,11 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useTranslations } from 'next-intl'
 import { useDelayedError } from '@/hooks/useDelayedError'
 import { ButtonLink } from '@/components/buttons/ButtonLink'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
@@ -72,12 +72,12 @@ export function RegistrationForm() {
 
 	const onSubmit = async (data: RegisterFormData) => {
 		await registration({
-			name: data.username,
+			username: data.username,
 			email: data.email,
 			password: data.password,
 			password_confirmation: data.confirmPassword,
 			mailing_enabled: data.newsletter ?? false,
-			terms_accepted: data.terms ?? false,
+			terms_accepted: data.terms ?? false
 		})
 
 		const { error } = useAuthStore.getState()
@@ -228,7 +228,10 @@ export function RegistrationForm() {
 
 				{/* Пароль */}
 				<div className='space-y-2'>
-					<LabelComponent text={t('passwordLabel')} error={passwordLabelError} />
+					<LabelComponent
+						text={t('passwordLabel')}
+						error={passwordLabelError}
+					/>
 					<PasswordInput
 						error={passwordLabelError}
 						{...register('password', {
@@ -266,28 +269,25 @@ export function RegistrationForm() {
 
 				{/* Чекбоксы */}
 				<div className='pb-2 pt-4'>
-					<Checkbox
-						text={t('newsletter')}
-						{...register('newsletter')}
-					/>
+					<Checkbox text={t('newsletter')} {...register('newsletter')} />
 					<Checkbox
 						text={
 							<>
-								{t('terms', {
-									termsLink: (
+								{t.rich('terms', {
+									termsLink: (chunks) => (
 										<Link
 											href='/terms'
 											className='underline text-blue-600 hover:text-blue-800'
 										>
-											{t('termsLink')}
+											{chunks}
 										</Link>
 									),
-									privacyLink: (
+									privacyLink: (chunks) => (
 										<Link
 											href='/privacy'
 											className='underline text-blue-600 hover:text-blue-800'
 										>
-											{t('privacyLink')}
+											{chunks}
 										</Link>
 									)
 								})}
@@ -313,11 +313,7 @@ export function RegistrationForm() {
 					text={t('submit')}
 					disabled={isLoading}
 				/>
-				<ButtonLink
-					variant='secondary'
-					text={t('loginLink')}
-					href='/login'
-				/>
+				<ButtonLink variant='secondary' text={t('loginLink')} href='/login' />
 			</form>
 		</div>
 	)

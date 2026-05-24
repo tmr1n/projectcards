@@ -14,12 +14,12 @@ export interface IUser {
 export interface ISession {
 	user: IUser
 	accessToken: string // JWT токен для API запросов (короткоживущий)
-	expiresAt: string   // Когда сессия истекает
+	expiresAt: string // Когда сессия истекает
 }
 
 // Токены — выдаются сервером после успешного входа в систему
 export interface IAuthTokens {
-	accessToken: string  // Короткоживущий (15 мин) — используется в каждом API-запросе
+	accessToken: string // Короткоживущий (15 мин) — используется в каждом API-запросе
 	refreshToken: string // Долгоживущий (30 дней) — используется для обновления accessToken
 }
 
@@ -31,7 +31,7 @@ export interface ILoginPayload {
 }
 
 export interface IRegisterPayload {
-	name: string
+	username: string
 	email: string
 	password: string
 	password_confirmation: string
