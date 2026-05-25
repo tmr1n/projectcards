@@ -1,7 +1,7 @@
 'use server'
 
 import { cookies } from 'next/headers'
-import { apiFetch } from '@/lib/api'
+import { ApiError, apiFetch } from '@/lib/api'
 import type {
 	ILoginPayload,
 	ILoginResponse,
@@ -10,33 +10,52 @@ import type {
 	IUpdatePasswordPayload
 } from '@/shared/types/auth.types'
 
+type TAuthActionResult<T> =
+	| { success: true; data: T }
+	| { success: false; message: string; fieldErrors?: unknown }
+
 export async function loginAction(
 	payload: ILoginPayload
-): Promise<ILoginResponse> {
-	const res = await apiFetch<ILoginResponse>('/login', {
-		method: 'POST',
-		body: payload
-	})
-
-	if ('access_token' in res.data) {
-		const cookieStore = await cookies()
-		cookieStore.set('token', res.data.access_token, {
-			httpOnly: true,
-			sameSite: 'lax',
-			maxAge: 60 * 15 // 15 минут — совпадает со сроком JWT
+): Promise<TAuthActionResult<ILoginResponse>> {
+	try {
+		const res = await apiFetch<ILoginResponse>('/login', {
+			method: 'POST',
+			body: payload
 		})
+
+		if ('access_token' in res.data) {
+			const cookieStore = await cookies()
+			cookieStore.set('token', res.data.access_token, {
+				httpOnly: true,
+				sameSite: 'lax',
+				maxAge: 60 * 15 // 15 минут — совпадает со сроком JWT
+			})
+		}
+
+		return { success: true, data: res.data }
+	} catch (err) {
+		if (err instanceof ApiError) {
+			return { success: false, message: err.message, fieldErrors: err.fieldErrors }
+		}
+		return { success: false, message: 'Ошибка соединения' }
 	}
-	return res.data
 }
 
 export async function registerAction(
 	payload: IRegisterPayload
-): Promise<IRegisterResponse> {
-	const res = await apiFetch<IRegisterResponse>('/registration', {
-		method: 'POST',
-		body: payload
-	})
-	return res.data
+): Promise<TAuthActionResult<IRegisterResponse>> {
+	try {
+		const res = await apiFetch<IRegisterResponse>('/registration', {
+			method: 'POST',
+			body: payload
+		})
+		return { success: true, data: res.data }
+	} catch (err) {
+		if (err instanceof ApiError) {
+			return { success: false, message: err.message, fieldErrors: err.fieldErrors }
+		}
+		return { success: false, message: 'Ошибка соединения' }
+	}
 }
 
 export async function updatePasswordAction(

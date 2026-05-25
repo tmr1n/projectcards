@@ -1,9 +1,9 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useTranslations } from 'next-intl'
 import { useDelayedError } from '@/hooks/useDelayedError'
 import { ButtonLink } from '@/components/buttons/ButtonLink'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
@@ -49,7 +49,11 @@ export function ChangePasswordForm() {
 		setError(null)
 		try {
 			await updatePasswordAction(
-				{ password: data.password, password_confirmation: data.confirmPassword },
+				{
+					password: data.password,
+					password_confirmation: data.confirmPassword,
+					old_password: ''
+				},
 				accessToken ?? ''
 			)
 			setIsSuccess(true)
@@ -110,7 +114,9 @@ export function ChangePasswordForm() {
 		return (
 			<div className='h-screen relative bg-white flex items-center justify-center p-8'>
 				<div className='w-full max-w-lg flex flex-col gap-4'>
-					<h1 className='text-3xl font-bold text-black mb-4'>{t('successTitle')}</h1>
+					<h1 className='text-3xl font-bold text-black mb-4'>
+						{t('successTitle')}
+					</h1>
 					<p className='text-black'>{t('successMessage')}</p>
 					<ButtonLink variant='primary' text={t('home')} href='/' />
 				</div>
@@ -132,7 +138,10 @@ export function ChangePasswordForm() {
 
 				<div className='space-y-5'>
 					<div className='space-y-2'>
-						<LabelComponent text={t('passwordLabel')} error={passwordLabelError} />
+						<LabelComponent
+							text={t('passwordLabel')}
+							error={passwordLabelError}
+						/>
 						<PasswordInput
 							error={passwordLabelError}
 							{...register('password', {

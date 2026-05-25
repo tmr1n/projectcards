@@ -177,90 +177,54 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 			//   обычная Error → нет сети / Next.js упал → общая ошибка
 
 			login: async (email, password) => {
-				set({ isLoading: true, error: null, serverFieldErrors: null })
+    set({ isLoading: true, error: null, serverFieldErrors: null })
 
-				try {
-					const response = await loginAction({ email, password })
+    const result = await loginAction({ email, password })
 
-					// Бэкенд возвращает один из двух вариантов:
-					// 1. Обычный логин: { access_token, email_is_verified }
-					// 2. Двухфакторка: { two_factor_token, ... }
-					if ('two_factor_token' in response) {
-						// 2FA — сохраняем токен, форма проверит и перенаправит
-						set({
-							twoFactorToken: response.two_factor_token,
-							pendingEmail: email,
-							isLoading: false,
-						})
-					} else {
-						// Обычный логин — email_is_verified определяет куда редиректить.
-						// Форма сама читает isAuthenticated и делает router.push.
-						set({
-							accessToken: response.access_token,
-							isAuthenticated: response.email_is_verified,
-							pendingEmail: email,
-							isLoading: false,
-							error: null,
-						})
-					}
-				} catch (err) {
-					if (err instanceof ApiError) {
-						set({
-							serverFieldErrors: err.fieldErrors
-								? flattenFieldErrors(err.fieldErrors)
-								: null,
-							error: err.fieldErrors ? null : err.message,
-							isLoading: false,
-						})
-					} else {
-						set({
-							error: 'Ошибка входа. Проверьте соединение и попробуйте ещё раз.',
-							isLoading: false,
-						})
-					}
-				}
-			},
+    if (!result.success) {
+        set({
+            serverFieldErrors: result.fieldErrors
+                ? flattenFieldErrors(result.fieldErrors as Record<string, string[]>)
+                : null,
+            error: result.fieldErrors ? null : result.message,
+            isLoading: false,
+        })
+        return
+    }
 
-			// ─────────────────────────────────────────────────
-			// ACTION: registration
-			// ─────────────────────────────────────────────────
-			//
-			// Вызывается из RegistrationForm при submit.
-			// Логика обработки ошибок аналогична login.
-			// Бэкенд может вернуть serverFieldErrors:
-			//   { email: "Email уже занят", username: "Имя уже занято" }
-			// Они автоматически появятся в label нужных полей формы.
+    const response = result.data
+    if ('two_factor_token' in response) {
+        set({ twoFactorToken: response.two_factor_token, pendingEmail: email, isLoading: false })
+    } else {
+        set({
+            accessToken: response.access_token,
+            isAuthenticated: response.email_is_verified,
+            pendingEmail: email,
+            isLoading: false,
+            error: null,
+        })
+    }
+},
 
-			registration: async (payload) => {
-				set({ isLoading: true, error: null, serverFieldErrors: null })
+registration: async (payload) => {
+    set({ isLoading: true, error: null, serverFieldErrors: null })
 
-				try {
-					// После регистрации бэкенд возвращает только job_id фоновой задачи.
-					// Юзера нет — нужно подтвердить email прежде чем логинить.
-					await registerAction(payload)
+    const result = await registerAction(payload)
 
-					set({
-						pendingEmail: payload.email,
-						isLoading: false,
-						error: null,
-					})
-				} catch (err) {
-					if (err instanceof ApiError) {
-						set({
-							serverFieldErrors: err.fieldErrors
-								? flattenFieldErrors(err.fieldErrors)
-								: null,
-							error: err.fieldErrors ? null : err.message,
-							isLoading: false,
-						})
-					} else {
-						set({
-							error: 'Ошибка регистрации. Проверьте соединение и попробуйте ещё раз.',
-							isLoading: false,
-						})
-					}
-				}
-			},
+    if (!result.success) {
+        set({
+            serverFieldErrors: result.fieldErrors
+                ? flattenFieldErrors(result.fieldErrors as Record<string, string[]>)
+                : null,
+            error: result.fieldErrors ? null : result.message,
+            isLoading: false,
+        })
+        return
+    }
+
+    set({ pendingEmail: payload.email, isLoading: false, error: null })
+},
+
 
 			// ─────────────────────────────────────────────────
 			// ACTION: logout
