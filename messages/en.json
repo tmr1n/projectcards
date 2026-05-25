@@ -141,5 +141,11 @@
 		"notFoundTitle": "Page not found",
 		"notFoundMessage": "Sorry, we couldn't find the page you're looking for.",
 		"contactSupport": "Contact support"
+	},
+	"dashboard": {
+		"title": "Dashboard"
+	},
+	"cards": {
+		"title": "Cards"
 	}
 }

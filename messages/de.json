@@ -141,5 +141,11 @@
 		"notFoundTitle": "Seite nicht gefunden",
 		"notFoundMessage": "Die gesuchte Seite konnte leider nicht gefunden werden.",
 		"contactSupport": "Support kontaktieren"
+	},
+	"dashboard": {
+		"title": "Dashboard"
+	},
+	"cards": {
+		"title": "Karten"
 	}
 }
