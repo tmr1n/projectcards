@@ -7,7 +7,7 @@ import type { INavBarProps } from '@/shared/types/form.types'
 
 export function NavBar({ text, href, onClick }: INavBarProps) {
 	const pathname = usePathname()
-	const active = pathname === href // авто-определение active состояния
+	const active = pathname === href || pathname.endsWith(href)
 
 	return (
 		<Link href={href} className='flex flex-col items-center gap-1'>

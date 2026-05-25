@@ -37,9 +37,7 @@
 			"passwordLabel": "Пароль",
 			"confirmPasswordLabel": "Повторите пароль",
 			"newsletter": "Я хочу получать новости, рекламные сообщения, обновления и советы о том, как использовать LangCards",
-			"terms": "Я принимаю положения, которые содержат {termsLink} и {privacyLink}",
-			"termsLink": "Условия предоставления услуг",
-			"privacyLink": "Политику конфиденциальности LangCards",
+			"terms": "Я принимаю положения, которые содержат <termsLink>Условия предоставления услуг</termsLink> и <privacyLink>Политику конфиденциальности LangCards</privacyLink>",
 			"submit": "Зарегистрироваться",
 			"loginLink": "Уже есть учётная запись? Войти"
 		},

@@ -37,9 +37,7 @@
 			"passwordLabel": "Password",
 			"confirmPasswordLabel": "Confirm password",
 			"newsletter": "I want to receive news, promotions, updates and tips on how to use LangCards",
-			"terms": "I accept the {termsLink} and {privacyLink}",
-			"termsLink": "Terms of Service",
-			"privacyLink": "LangCards Privacy Policy",
+			"terms": "I accept the <termsLink>Terms of Service</termsLink> and <privacyLink>LangCards Privacy Policy</privacyLink>",
 			"submit": "Sign up",
 			"loginLink": "Already have an account? Log in"
 		},

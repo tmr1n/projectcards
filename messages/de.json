@@ -37,9 +37,7 @@
 			"passwordLabel": "Passwort",
 			"confirmPasswordLabel": "Passwort bestätigen",
 			"newsletter": "Ich möchte Neuigkeiten, Angebote, Updates und Tipps zur Nutzung von LangCards erhalten",
-			"terms": "Ich akzeptiere die {termsLink} und die {privacyLink}",
-			"termsLink": "Nutzungsbedingungen",
-			"privacyLink": "Datenschutzrichtlinie von LangCards",
+			"terms": "Ich akzeptiere die <termsLink>Nutzungsbedingungen</termsLink> und die <privacyLink>Datenschutzrichtlinie von LangCards</privacyLink>",
 			"submit": "Registrieren",
 			"loginLink": "Bereits ein Konto? Anmelden"
 		},
