@@ -128,7 +128,13 @@
 		}
 	},
 	"profile": {
-		"title": "Профиль"
+		"title": "Профиль",
+		"actions": {
+			"changeName": "Изменить имя",
+			"changePassword": "Изменить пароль",
+			"deleteAccount": "Удалить аккаунт",
+			"logout": "Выйти"
+		}
 	},
 	"errors": {
 		"somethingWrong": "Что-то пошло не так",
@@ -155,7 +161,8 @@
 			"emailConfirmation": "Подтверждение почты",
 			"forgotPassword": "Сброс пароля",
 			"passwordChange": "Смена пароля",
-			"dashboard": "Панель управления"
+			"dashboard": "Панель управления",
+			"profile": "Профиль"
 		}
 	}
 }

@@ -128,7 +128,13 @@
 		}
 	},
 	"profile": {
-		"title": "Profil"
+		"title": "Profil",
+		"actions": {
+			"changeName": "Name ändern",
+			"changePassword": "Passwort ändern",
+			"deleteAccount": "Konto löschen",
+			"logout": "Abmelden"
+		}
 	},
 	"errors": {
 		"somethingWrong": "Etwas ist schiefgelaufen",
@@ -155,7 +161,8 @@
 			"emailConfirmation": "E-Mail-Bestätigung",
 			"forgotPassword": "Passwort zurücksetzen",
 			"passwordChange": "Passwort ändern",
-			"dashboard": "Dashboard"
+			"dashboard": "Dashboard",
+			"profile": "Profil"
 		}
 	}
 }

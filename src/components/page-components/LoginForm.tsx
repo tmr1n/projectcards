@@ -12,13 +12,12 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { FaYandex } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
-import { useTranslations } from 'next-intl'
 import { useDelayedError } from '@/hooks/useDelayedError'
 import { ButtonLink } from '@/components/buttons/ButtonLink'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
@@ -106,22 +105,10 @@ export function LoginForm() {
 					}
 				/>
 
-				<ButtonSubmit
-					variant='secondary'
-					text={t('yandex')}
-					icon={<FaYandex />}
-					onClick={() =>
-						(window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/yandex`)
-					}
-				/>
-
 				<LineComponent text={t('divider')} />
 
 				<div className='space-y-2'>
-					<LabelComponent
-						text={t('emailLabel')}
-						error={emailLabelError}
-					/>
+					<LabelComponent text={t('emailLabel')} error={emailLabelError} />
 					<InputComponent
 						placeholder={t('emailPlaceholder')}
 						error={emailLabelError}
@@ -135,7 +122,10 @@ export function LoginForm() {
 
 				<div className='space-y-2 pb-2'>
 					<div className='flex items-center justify-between'>
-						<LabelComponent text={t('passwordLabel')} error={passwordLabelError} />
+						<LabelComponent
+							text={t('passwordLabel')}
+							error={passwordLabelError}
+						/>
 
 						<LabelComponent
 							text={
@@ -161,7 +151,11 @@ export function LoginForm() {
 
 				<ErrorBanner error={error} />
 
-				<ButtonSubmit variant='primary' text={t('submit')} disabled={isLoading} />
+				<ButtonSubmit
+					variant='primary'
+					text={t('submit')}
+					disabled={isLoading}
+				/>
 
 				<ButtonLink
 					variant='secondary'

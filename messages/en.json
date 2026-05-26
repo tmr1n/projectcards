@@ -128,7 +128,13 @@
 		}
 	},
 	"profile": {
-		"title": "Profile"
+		"title": "Profile",
+		"actions": {
+			"changeName": "Change name",
+			"changePassword": "Change password",
+			"deleteAccount": "Delete account",
+			"logout": "Log out"
+		}
 	},
 	"errors": {
 		"somethingWrong": "Something went wrong",
@@ -155,7 +161,8 @@
 			"emailConfirmation": "Email Confirmation",
 			"forgotPassword": "Reset Password",
 			"passwordChange": "Change Password",
-			"dashboard": "Dashboard"
+			"dashboard": "Dashboard",
+			"profile": "Profile"
 		}
 	}
 }

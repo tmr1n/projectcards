@@ -11,6 +11,7 @@ import { LabelComponent } from '@/components/form-components/LabelComponent'
 import { PasswordInput } from '@/components/form-components/PasswordInput'
 import { ErrorBanner } from '@/components/ui/ErrorBanner'
 import { FormLoader } from '@/components/ui/FormLoader'
+import { BackButton } from '../buttons/BackButton'
 import { PASSWORD_HINTS, PASSWORD_VALIDATION } from '@/constants/validation'
 import {
 	changePasswordSchema,
@@ -125,67 +126,72 @@ export function ChangePasswordForm() {
 	}
 
 	return (
-		<div className='h-screen relative bg-white flex items-center justify-center p-8'>
-			<FormLoader isLoading={isLoading} />
+		<div className='min-h-screen flex flex-col'>
+			<div className='flex items-center gap-4 justify-start p-4'>
+				<BackButton href='/profile' />
+			</div>
+			<div className='flex-1 relative bg-white flex  justify-center p-8 pb-16'>
+				<FormLoader isLoading={isLoading} />
 
-			<form
-				onSubmit={handleSubmit(onSubmit)}
-				className='w-full max-w-lg flex flex-col gap-4'
-			>
-				<h1 className='text-3xl font-bold text-black mb-4 font-nunito'>
-					{t('title')}
-				</h1>
+				<form
+					onSubmit={handleSubmit(onSubmit)}
+					className='w-full max-w-lg flex flex-col gap-4 pt-15'
+				>
+					<h1 className='text-3xl font-bold text-black mb-4 font-nunito'>
+						{t('title')}
+					</h1>
 
-				<div className='space-y-5'>
-					<div className='space-y-2'>
-						<LabelComponent
-							text={t('passwordLabel')}
-							error={passwordLabelError}
-						/>
-						<PasswordInput
-							error={passwordLabelError}
-							{...register('password', {
-								onChange: () => {
-									if (error) setError(null)
-								}
-							})}
-						/>
-						{showPasswordHintsDelayed && failingPwHints.length > 0 && (
-							<ul className='space-y-1 mt-1'>
-								{failingPwHints.map(hint => (
-									<li key={hint.key} className='text-xs text-[#ff4757]'>
-										{validationMessages[hint.key]}
-									</li>
-								))}
-							</ul>
-						)}
+					<div className='space-y-5'>
+						<div className='space-y-2'>
+							<LabelComponent
+								text={t('passwordLabel')}
+								error={passwordLabelError}
+							/>
+							<PasswordInput
+								error={passwordLabelError}
+								{...register('password', {
+									onChange: () => {
+										if (error) setError(null)
+									}
+								})}
+							/>
+							{showPasswordHintsDelayed && failingPwHints.length > 0 && (
+								<ul className='space-y-1 mt-1'>
+									{failingPwHints.map(hint => (
+										<li key={hint.key} className='text-xs text-[#ff4757]'>
+											{validationMessages[hint.key]}
+										</li>
+									))}
+								</ul>
+							)}
+						</div>
+
+						<div className='space-y-2'>
+							<LabelComponent
+								text={t('confirmPasswordLabel')}
+								error={confirmPasswordLabelError}
+							/>
+							<PasswordInput
+								error={confirmPasswordLabelError}
+								{...register('confirmPassword', {
+									onChange: () => {
+										if (error) setError(null)
+									}
+								})}
+							/>
+						</div>
 					</div>
 
-					<div className='space-y-2'>
-						<LabelComponent
-							text={t('confirmPasswordLabel')}
-							error={confirmPasswordLabelError}
-						/>
-						<PasswordInput
-							error={confirmPasswordLabelError}
-							{...register('confirmPassword', {
-								onChange: () => {
-									if (error) setError(null)
-								}
-							})}
-						/>
-					</div>
-				</div>
+					<ErrorBanner error={error} />
 
-				<ErrorBanner error={error} />
-
-				<ButtonSubmit
-					variant='primary'
-					text={t('submit')}
-					className='mt-5'
-					disabled={isLoading}
-				/>
-			</form>
+					<ButtonSubmit
+						variant='primary'
+						text={t('submit')}
+						className='mt-5'
+						disabled={isLoading}
+					/>
+				</form>
+			</div>
 		</div>
 	)
 }
