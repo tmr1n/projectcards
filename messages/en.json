@@ -145,5 +145,17 @@
 	},
 	"cards": {
 		"title": "Cards"
+	},
+	"metadata": {
+		"title": "LangCards — learn with flashcards",
+		"description": "Learn any material with interactive flashcards, tests, and activities.",
+		"pages": {
+			"login": "Log In",
+			"registration": "Sign Up",
+			"emailConfirmation": "Email Confirmation",
+			"forgotPassword": "Reset Password",
+			"passwordChange": "Change Password",
+			"dashboard": "Dashboard"
+		}
 	}
 }

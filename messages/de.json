@@ -145,5 +145,17 @@
 	},
 	"cards": {
 		"title": "Karten"
+	},
+	"metadata": {
+		"title": "LangCards — lernen mit Karteikarten",
+		"description": "Lerne jedes Material mit interaktiven Karteikarten, Übungstests und Lernaktivitäten.",
+		"pages": {
+			"login": "Anmelden",
+			"registration": "Registrieren",
+			"emailConfirmation": "E-Mail-Bestätigung",
+			"forgotPassword": "Passwort zurücksetzen",
+			"passwordChange": "Passwort ändern",
+			"dashboard": "Dashboard"
+		}
 	}
 }

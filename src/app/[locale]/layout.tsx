@@ -1,12 +1,12 @@
-import { TopLoader } from '@/components/ui/TopLoader'
-import { QueryProvider } from '@/providers/QueryProvider'
 import '@/app/globals.css'
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono, Nunito, Playfair_Display } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
-import { getMessages } from 'next-intl/server'
+import { getMessages, getTranslations } from 'next-intl/server'
+import { Geist, Geist_Mono, Nunito, Playfair_Display } from 'next/font/google'
 import { notFound } from 'next/navigation'
+import { TopLoader } from '@/components/ui/TopLoader'
 import { routing } from '@/i18n/routing'
+import { QueryProvider } from '@/providers/QueryProvider'
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -29,15 +29,23 @@ const playfair = Playfair_Display({
 	style: ['normal', 'italic']
 })
 
-export const metadata: Metadata = {
-	title: {
-		template: '%s | LangCards',
-		default: 'LangCards — учи с карточками'
-	},
-	description:
-		'Учи любой материал с интерактивными карточками, практическими тестами и учебными активностями.',
-	icons: {
-		icon: '/images/Title-logo.svg'
+export async function generateMetadata({
+	params
+}: {
+	params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+	const { locale } = await params
+	const t = await getTranslations({ locale, namespace: 'metadata' })
+
+	return {
+		title: {
+			template: '%s | LangCards',
+			default: t('title')
+		},
+		description: t('description'),
+		icons: {
+			icon: '/images/Title-logo.svg'
+		}
 	}
 }
 
