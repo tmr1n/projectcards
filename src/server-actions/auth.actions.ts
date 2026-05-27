@@ -35,7 +35,11 @@ export async function loginAction(
 		return { success: true, data: res.data }
 	} catch (err) {
 		if (err instanceof ApiError) {
-			return { success: false, message: err.message, fieldErrors: err.fieldErrors }
+			return {
+				success: false,
+				message: err.message,
+				fieldErrors: err.fieldErrors
+			}
 		}
 		return { success: false, message: 'Ошибка соединения' }
 	}
@@ -52,7 +56,11 @@ export async function registerAction(
 		return { success: true, data: res.data }
 	} catch (err) {
 		if (err instanceof ApiError) {
-			return { success: false, message: err.message, fieldErrors: err.fieldErrors }
+			return {
+				success: false,
+				message: err.message,
+				fieldErrors: err.fieldErrors
+			}
 		}
 		return { success: false, message: 'Ошибка соединения' }
 	}
@@ -88,4 +96,13 @@ export async function refreshTokenAction(): Promise<{ access_token: string }> {
 		credentials: 'include'
 	})
 	return res.data
+}
+
+export async function oauthLoginAction(token: string): Promise<void> {
+	const cookieStore = await cookies()
+	cookieStore.set('token', token, {
+		httpOnly: true,
+		sameSite: 'lax',
+		maxAge: 60 * 15
+	})
 }

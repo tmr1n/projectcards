@@ -101,7 +101,7 @@ export function LoginForm() {
 					text={t('google')}
 					icon={<FcGoogle />}
 					onClick={() =>
-						(window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`)
+						(window.location.href = 'http://localhost:3001/api/v1/google')
 					}
 				/>
 

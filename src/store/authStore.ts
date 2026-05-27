@@ -59,10 +59,10 @@
 
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { ApiError } from '@/lib/api'
 import {
 	loginAction,
 	logoutAction,
+	oauthLoginAction,
 	registerAction
 } from '@/server-actions/auth.actions'
 import type { IRegisterPayload } from '@/shared/types/auth.types'
@@ -117,6 +117,7 @@ interface AuthState {
 interface AuthActions {
 	login: (email: string, password: string) => Promise<void>
 	registration: (payload: IRegisterPayload) => Promise<void>
+	loginWithOAuth: (token: string) => Promise<void>
 	logout: () => void
 	clearError: () => void
 }
@@ -177,54 +178,66 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 			//   обычная Error → нет сети / Next.js упал → общая ошибка
 
 			login: async (email, password) => {
-    set({ isLoading: true, error: null, serverFieldErrors: null })
+				set({ isLoading: true, error: null, serverFieldErrors: null })
 
-    const result = await loginAction({ email, password })
+				const result = await loginAction({ email, password })
 
-    if (!result.success) {
-        set({
-            serverFieldErrors: result.fieldErrors
-                ? flattenFieldErrors(result.fieldErrors as Record<string, string[]>)
-                : null,
-            error: result.fieldErrors ? null : result.message,
-            isLoading: false,
-        })
-        return
-    }
+				if (!result.success) {
+					set({
+						serverFieldErrors: result.fieldErrors
+							? flattenFieldErrors(
+									result.fieldErrors as Record<string, string[]>
+								)
+							: null,
+						error: result.fieldErrors ? null : result.message,
+						isLoading: false
+					})
+					return
+				}
 
-    const response = result.data
-    if ('two_factor_token' in response) {
-        set({ twoFactorToken: response.two_factor_token, pendingEmail: email, isLoading: false })
-    } else {
-        set({
-            accessToken: response.access_token,
-            isAuthenticated: response.email_is_verified,
-            pendingEmail: email,
-            isLoading: false,
-            error: null,
-        })
-    }
-},
+				const response = result.data
+				if ('two_factor_token' in response) {
+					set({
+						twoFactorToken: response.two_factor_token,
+						pendingEmail: email,
+						isLoading: false
+					})
+				} else {
+					set({
+						accessToken: response.access_token,
+						isAuthenticated: response.email_is_verified,
+						pendingEmail: email,
+						isLoading: false,
+						error: null
+					})
+				}
+			},
 
-registration: async (payload) => {
-    set({ isLoading: true, error: null, serverFieldErrors: null })
+			loginWithOAuth: async token => {
+				await oauthLoginAction(token)
+				set({ accessToken: token, isAuthenticated: true })
+			},
 
-    const result = await registerAction(payload)
+			registration: async payload => {
+				set({ isLoading: true, error: null, serverFieldErrors: null })
 
-    if (!result.success) {
-        set({
-            serverFieldErrors: result.fieldErrors
-                ? flattenFieldErrors(result.fieldErrors as Record<string, string[]>)
-                : null,
-            error: result.fieldErrors ? null : result.message,
-            isLoading: false,
-        })
-        return
-    }
+				const result = await registerAction(payload)
 
-    set({ pendingEmail: payload.email, isLoading: false, error: null })
-},
+				if (!result.success) {
+					set({
+						serverFieldErrors: result.fieldErrors
+							? flattenFieldErrors(
+									result.fieldErrors as Record<string, string[]>
+								)
+							: null,
+						error: result.fieldErrors ? null : result.message,
+						isLoading: false
+					})
+					return
+				}
 
+				set({ pendingEmail: payload.email, isLoading: false, error: null })
+			},
 
 			// ─────────────────────────────────────────────────
 			// ACTION: logout
