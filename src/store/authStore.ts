@@ -60,12 +60,13 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import {
+	getProfileAction,
 	loginAction,
 	logoutAction,
 	oauthLoginAction,
 	registerAction
 } from '@/server-actions/auth.actions'
-import type { IRegisterPayload } from '@/shared/types/auth.types'
+import type { IRegisterPayload, IUser } from '@/shared/types/auth.types'
 
 // ─────────────────────────────────────────────────────────────
 // ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ
@@ -99,7 +100,7 @@ function flattenFieldErrors(
 
 interface AuthState {
 	// null пока нет эндпоинта /profile — после логина объект юзера не приходит
-	user: null
+	user: IUser | null
 
 	accessToken: string | null
 	isAuthenticated: boolean
@@ -118,6 +119,8 @@ interface AuthActions {
 	login: (email: string, password: string) => Promise<void>
 	registration: (payload: IRegisterPayload) => Promise<void>
 	loginWithOAuth: (token: string) => Promise<void>
+	fetchProfile: () => Promise<void>
+
 	logout: () => void
 	clearError: () => void
 }
@@ -210,12 +213,21 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 						isLoading: false,
 						error: null
 					})
+					void get().fetchProfile()
 				}
+			},
+
+			fetchProfile: async () => {
+				const { accessToken } = get()
+				if (!accessToken) return
+				const user = await getProfileAction(accessToken)
+				if (user) set({ user })
 			},
 
 			loginWithOAuth: async token => {
 				await oauthLoginAction(token)
 				set({ accessToken: token, isAuthenticated: true })
+				void get().fetchProfile()
 			},
 
 			registration: async payload => {

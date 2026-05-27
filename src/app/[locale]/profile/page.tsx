@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 import { BackButton } from '@/components/buttons/BackButton'
 import { ProfileActions } from '@/components/profile/ProfileActions'
+import { ProfileUsername } from '@/components/profile/ProfileUsername'
 
 export async function generateMetadata(): Promise<Metadata> {
 	const t = await getTranslations('profile')
@@ -16,7 +17,7 @@ export default function Profile() {
 			</div>
 			<div className='flex items-center gap-5 flex-col'>
 				<div className='w-25 h-25 rounded-full bg-blue-700 shrink-0' />
-				<span className='text-xl text-gray-700 font-semibold'>Tom Cook</span>
+				<ProfileUsername />
 			</div>
 			<ProfileActions />
 		</div>

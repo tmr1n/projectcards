@@ -7,7 +7,8 @@ import type {
 	ILoginResponse,
 	IRegisterPayload,
 	IRegisterResponse,
-	IUpdatePasswordPayload
+	IUpdatePasswordPayload,
+	IUser
 } from '@/shared/types/auth.types'
 
 type TAuthActionResult<T> =
@@ -105,4 +106,13 @@ export async function oauthLoginAction(token: string): Promise<void> {
 		sameSite: 'lax',
 		maxAge: 60 * 15
 	})
+}
+
+export async function getProfileAction(token: string): Promise<IUser | null> {
+	try {
+		const res = await apiFetch<IUser>('/profile', { token })
+		return res.data
+	} catch {
+		return null
+	}
 }

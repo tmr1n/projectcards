@@ -3,7 +3,7 @@
 import { Folder, House, LogOut, Plus } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Logo from '@/components/Logo'
 import { useAuthStore } from '@/store/authStore'
 
@@ -23,6 +23,13 @@ export default function Sidebar() {
 	const [active, setActive] = useState(0)
 	const logout = useAuthStore(state => state.logout)
 	const router = useRouter()
+
+	const user = useAuthStore(state => state.user)
+	const fetchProfile = useAuthStore(state => state.fetchProfile)
+
+	useEffect(() => {
+		if (!user) fetchProfile()
+	}, [])
 
 	return (
 		<div className='hidden md:flex flex-col w-64 bg-white h-screen shrink-0'>
@@ -73,10 +80,15 @@ export default function Sidebar() {
 						className='flex items-center gap-3 flex-1 px-2 py-1.5 rounded-lg hover:bg-gray-100 transition-colors'
 					>
 						<div className='w-9 h-9 rounded-full bg-blue-700 shrink-0' />
-						<span className='text-sm text-gray-700 font-semibold'>Tom Cook</span>
+						<span className='text-m text-gray-700 font-semibold'>
+							{user?.username ?? '...'}
+						</span>
 					</Link>
 					<button
-						onClick={() => { logout(); router.push('/') }}
+						onClick={() => {
+							logout()
+							router.push('/')
+						}}
 						className='text-gray-400 hover:text-red-500 transition-colors cursor-pointer p-1.5'
 					>
 						<LogOut size={18} />
