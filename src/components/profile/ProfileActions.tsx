@@ -12,9 +12,9 @@ export function ProfileActions() {
 	const router = useRouter()
 
 	return (
-		<div className='w-full px-4 mt-8 flex flex-col gap-3'>
+		<div className='w-full px-4 mt-8 flex flex-col gap-3 items-center '>
 			<div className='rounded-2xl overflow-hidden border border-gray-100 divide-y divide-gray-100 cursor-pointer'>
-				<button className='w-full flex items-center gap-3 px-4 py-4 bg-white hover:bg-gray-50 transition-colors cursor-pointer'>
+				<button className='w-[350px] md:w-[375px] flex items-center gap-3 px-4 py-4 bg-white hover:bg-gray-50 transition-colors cursor-pointer'>
 					<span className='w-9 h-9 rounded-full bg-blue-50 flex items-center justify-center shrink-0'>
 						<Pencil size={16} className='text-blue-600' />
 					</span>
@@ -44,7 +44,7 @@ export function ProfileActions() {
 						logout()
 						router.push('/')
 					}}
-					className='w-full flex items-center gap-3 px-4 py-4 bg-white hover:bg-red-50 transition-colors cursor-pointer'
+					className='w-[350px] md:w-[375px] flex items-center gap-3 px-4 py-4 bg-white hover:bg-red-50 transition-colors cursor-pointer'
 				>
 					<span className='w-9 h-9 rounded-full bg-red-50 flex items-center justify-center shrink-0'>
 						<LogOut size={16} className='text-red-500' />
