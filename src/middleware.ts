@@ -28,7 +28,7 @@ export function middleware(request: NextRequest) {
 
 export const config = {
 	matcher: [
-		// Пропускаем внутренние пути Next.js и статические файлы
-		'/((?!_next|_vercel|.*\\..*).*)'
+		// Пропускаем внутренние пути Next.js, статические файлы и API роуты
+		'/((?!_next|_vercel|api|.*\\..*).*)'
 	]
 }

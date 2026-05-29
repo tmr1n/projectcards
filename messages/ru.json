@@ -128,10 +128,13 @@
 			"titleEmphasis": "быстрого старта.",
 			"deck1Label": "Японский язык",
 			"deck1Count": "120 карточек",
+			"deck1Tag": "@японский",
 			"deck2Label": "Анатомия человека",
 			"deck2Count": "84 карточки",
+			"deck2Tag": "@медицина",
 			"deck3Label": "История России",
-			"deck3Count": "96 карточек"
+			"deck3Count": "96 карточек",
+			"deck3Tag": "@история"
 		},
 		"howItWorks": {
 			"label": "Как это работает",
@@ -180,7 +183,13 @@
 		"contactSupport": "Написать в поддержку"
 	},
 	"dashboard": {
-		"title": "Панель управления"
+		"title": "Панель управления",
+		"nav": {
+			"home": "Главная",
+			"addModule": "Добавить модуль",
+			"modules": "Модули"
+		},
+		"lastModules": "Последние модули"
 	},
 	"cards": {
 		"title": "Карточки"

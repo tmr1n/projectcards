@@ -4,15 +4,10 @@ import { Folder, House, LogOut, Plus } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import Logo from '@/components/Logo'
 import { UserAvatar } from '@/components/profile/UserAvatar'
 import { useAuthStore } from '@/store/authStore'
-
-const navItems = [
-	{ icon: House, label: 'Dashboard', badge: '5' },
-	{ icon: Plus, label: 'Add module' },
-	{ icon: Folder, label: 'Modules', badge: '12' }
-]
 
 const teams = [
 	{ letter: 'V', name: 'Verben mit präposition', color: 'bg-gray-600' },
@@ -24,6 +19,7 @@ export default function Sidebar() {
 	const [active, setActive] = useState(0)
 	const logout = useAuthStore(state => state.logout)
 	const router = useRouter()
+	const t = useTranslations('dashboard')
 
 	const user = useAuthStore(state => state.user)
 	const fetchProfile = useAuthStore(state => state.fetchProfile)
@@ -39,7 +35,11 @@ export default function Sidebar() {
 			</div>
 
 			<nav className='flex-1 px-3 space-y-1 overflow-y-auto'>
-				{navItems.map(({ icon: Icon, label, badge }, i) => (
+				{([
+					{ icon: House, label: t('nav.home'), badge: '5' },
+					{ icon: Plus, label: t('nav.addModule') },
+					{ icon: Folder, label: t('nav.modules'), badge: '12' }
+				] as const).map(({ icon: Icon, label, badge }, i) => (
 					<button
 						key={i}
 						onClick={() => setActive(i)}
@@ -51,12 +51,13 @@ export default function Sidebar() {
 					>
 						<Icon size={20} />
 						<span className='flex-1 text-left'>{label}</span>
+						{badge && <span className='text-xs'>{badge}</span>}
 					</button>
 				))}
 
 				<div className='pt-6'>
 					<p className='px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2'>
-						Last modules
+						{t('lastModules')}
 					</p>
 					{teams.map(({ letter, name, color }) => (
 						<button

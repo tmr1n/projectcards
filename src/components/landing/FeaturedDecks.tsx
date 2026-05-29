@@ -4,34 +4,23 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 
-const featuredDecks = [
-	{
-		bg: 'bg-amber-50',
-		accent: 'bg-amber-400',
-		tag: '@японский'
-	},
-	{
-		bg: 'bg-sky-50',
-		accent: 'bg-sky-400',
-		tag: '@медицина'
-	},
-	{
-		bg: 'bg-rose-50',
-		accent: 'bg-rose-400',
-		tag: '@история'
-	}
+const deckStyles = [
+	{ bg: 'bg-amber-50', accent: 'bg-amber-400' },
+	{ bg: 'bg-sky-50', accent: 'bg-sky-400' },
+	{ bg: 'bg-rose-50', accent: 'bg-rose-400' }
 ]
 
 export function FeaturedDecks() {
 	const [active, setActive] = useState(0)
-	const deck = featuredDecks[active]
 	const t = useTranslations('landing.decks')
 
-	const deckLabels = [
-		{ label: t('deck1Label'), count: t('deck1Count') },
-		{ label: t('deck2Label'), count: t('deck2Count') },
-		{ label: t('deck3Label'), count: t('deck3Count') }
+	const decks = [
+		{ ...deckStyles[0], label: t('deck1Label'), count: t('deck1Count'), tag: t('deck1Tag') },
+		{ ...deckStyles[1], label: t('deck2Label'), count: t('deck2Count'), tag: t('deck2Tag') },
+		{ ...deckStyles[2], label: t('deck3Label'), count: t('deck3Count'), tag: t('deck3Tag') }
 	]
+
+	const deck = decks[active]
 
 	return (
 		<section className='bg-white px-6 md:px-20 py-20'>
@@ -108,10 +97,10 @@ export function FeaturedDecks() {
 							{/* Deck info center */}
 							<div className='absolute inset-0 flex flex-col items-center justify-center gap-2'>
 								<p className='text-2xl md:text-4xl font-bold text-gray-800 font-(family-name:--font-geist-sans)'>
-									{deckLabels[active]?.label}
+									{deck.label}
 								</p>
 								<p className='text-sm text-gray-500 font-(family-name:--font-geist-sans)'>
-									{deckLabels[active]?.count}
+									{deck.count}
 								</p>
 							</div>
 						</motion.div>
@@ -119,7 +108,7 @@ export function FeaturedDecks() {
 
 					{/* Dots */}
 					<div className='absolute top-5 right-5 flex gap-1.5 z-10'>
-						{featuredDecks.map((_, i) => (
+						{decks.map((_, i) => (
 							<button
 								key={i}
 								onClick={() => setActive(i)}

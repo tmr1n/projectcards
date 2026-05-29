@@ -128,10 +128,13 @@
 			"titleEmphasis": "einen schnellen Start.",
 			"deck1Label": "Japanische Sprache",
 			"deck1Count": "120 Karten",
+			"deck1Tag": "@japanisch",
 			"deck2Label": "Menschliche Anatomie",
 			"deck2Count": "84 Karten",
+			"deck2Tag": "@medizin",
 			"deck3Label": "Geschichte Russlands",
-			"deck3Count": "96 Karten"
+			"deck3Count": "96 Karten",
+			"deck3Tag": "@geschichte"
 		},
 		"howItWorks": {
 			"label": "So funktioniert es",
@@ -180,7 +183,13 @@
 		"contactSupport": "Support kontaktieren"
 	},
 	"dashboard": {
-		"title": "Dashboard"
+		"title": "Dashboard",
+		"nav": {
+			"home": "Dashboard",
+			"addModule": "Modul hinzufügen",
+			"modules": "Module"
+		},
+		"lastModules": "Letzte Module"
 	},
 	"cards": {
 		"title": "Karten"

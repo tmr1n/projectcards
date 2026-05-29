@@ -1,7 +1,9 @@
 'use client'
 
-import { Upload } from 'lucide-react'
+import { Loader2, Upload } from 'lucide-react'
 import Image from 'next/image'
+import { useRef } from 'react'
+import { useUploadThing } from '@/lib/uploadthing'
 import { useAuthStore } from '@/store/authStore'
 
 const PRESET_AVATARS = [
@@ -14,6 +16,21 @@ const PRESET_AVATARS = [
 
 export function AvatarPicker({ onClose }: { onClose: () => void }) {
 	const updateAvatar = useAuthStore(state => state.updateAvatar)
+	const fileInputRef = useRef<HTMLInputElement>(null)
+
+	const { startUpload, isUploading } = useUploadThing('avatarUploader', {
+		onClientUploadComplete: async res => {
+			const url = res[0]?.serverData?.url
+			if (!url) return
+			await updateAvatar(url)
+			onClose()
+		}
+	})
+
+	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.[0]
+		if (file) startUpload([file])
+	}
 
 	const handleSelect = async (url: string) => {
 		await updateAvatar(url)
@@ -32,17 +49,36 @@ export function AvatarPicker({ onClose }: { onClose: () => void }) {
 				<h2 className='text-base font-bold text-gray-900'>Выберите аватар</h2>
 
 				<div className='grid grid-cols-3 gap-3'>
-					{/* Заглушка загрузки */}
-					<div className='aspect-square rounded-2xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center gap-1 opacity-40 cursor-not-allowed select-none'>
-						<Upload size={20} className='text-gray-400' />
-						<span className='text-[10px] text-gray-400'>Загрузить</span>
-					</div>
+					{/* Загрузка своей фотки */}
+					<button
+						onClick={() => fileInputRef.current?.click()}
+						disabled={isUploading}
+						className='aspect-square rounded-2xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center gap-1 hover:border-blue-400 hover:bg-blue-50 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed'
+					>
+						{isUploading ? (
+							<Loader2 size={20} className='text-blue-500 animate-spin' />
+						) : (
+							<Upload size={20} className='text-gray-400' />
+						)}
+						<span className='text-[10px] text-gray-400'>
+							{isUploading ? 'Загрузка...' : 'Загрузить'}
+						</span>
+					</button>
+
+					<input
+						ref={fileInputRef}
+						type='file'
+						accept='image/*'
+						className='hidden'
+						onChange={handleFileChange}
+					/>
 
 					{PRESET_AVATARS.map(url => (
 						<button
 							key={url}
 							onClick={() => handleSelect(url)}
-							className='aspect-square rounded-2xl overflow-hidden ring-2 ring-transparent hover:ring-blue-500 transition-all cursor-pointer'
+							disabled={isUploading}
+							className='aspect-square rounded-2xl overflow-hidden ring-2 ring-transparent hover:ring-blue-500 transition-all cursor-pointer disabled:opacity-50'
 						>
 							<Image
 								src={url}
@@ -57,7 +93,8 @@ export function AvatarPicker({ onClose }: { onClose: () => void }) {
 
 				<button
 					onClick={onClose}
-					className='text-sm text-gray-400 hover:text-gray-600 transition-colors'
+					disabled={isUploading}
+					className='text-sm text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50'
 				>
 					Отмена
 				</button>

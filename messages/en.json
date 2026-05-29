@@ -128,10 +128,13 @@
 			"titleEmphasis": "a quick start.",
 			"deck1Label": "Japanese language",
 			"deck1Count": "120 cards",
+			"deck1Tag": "@japanese",
 			"deck2Label": "Human anatomy",
 			"deck2Count": "84 cards",
+			"deck2Tag": "@medicine",
 			"deck3Label": "History of Russia",
-			"deck3Count": "96 cards"
+			"deck3Count": "96 cards",
+			"deck3Tag": "@history"
 		},
 		"howItWorks": {
 			"label": "How it works",
@@ -180,7 +183,13 @@
 		"contactSupport": "Contact support"
 	},
 	"dashboard": {
-		"title": "Dashboard"
+		"title": "Dashboard",
+		"nav": {
+			"home": "Dashboard",
+			"addModule": "Add module",
+			"modules": "Modules"
+		},
+		"lastModules": "Last modules"
 	},
 	"cards": {
 		"title": "Cards"

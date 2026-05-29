@@ -2,11 +2,11 @@
 
 import { UserRound } from 'lucide-react'
 import { motion, useMotionValueEvent, useScroll } from 'motion/react'
+import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import { useTranslations } from 'next-intl'
 import SidebarMenu from './SidebarMenu'
 import { useAuthStore } from '@/store/authStore'
 
@@ -97,21 +97,37 @@ export function Header() {
 				{/* Right: auth */}
 				<div className='shrink-0 flex items-center gap-2'>
 					{isAuthenticated ? (
-						<button
-							onClick={logout}
-							className='w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors'
-							aria-label={t('logout')}
-						>
-							<UserRound size={18} />
-						</button>
+						<>
+							<button
+								onClick={logout}
+								className='hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors cursor-pointer'
+							>
+								{t('logout')}
+							</button>
+							<button
+								onClick={logout}
+								className='md:hidden w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors'
+								aria-label={t('logout')}
+							>
+								<UserRound size={18} />
+							</button>
+						</>
 					) : (
-						<Link
-							href='/login'
-							className='w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors'
-							aria-label={t('login')}
-						>
-							<UserRound size={18} />
-						</Link>
+						<>
+							<Link
+								href='/login'
+								className='hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors'
+							>
+								{t('login')}
+							</Link>
+							<Link
+								href='/login'
+								className='md:hidden w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center  text-gray-600 hover:bg-gray-50 transition-colors'
+								aria-label={t('login')}
+							>
+								<UserRound size={18} />
+							</Link>
+						</>
 					)}
 				</div>
 			</div>
