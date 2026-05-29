@@ -68,19 +68,29 @@
 			"successMessage": "Your password has been changed.",
 			"home": "Go home"
 		},
-		"validation": {
-			"usernameMin": "Username is too short. It must be at least 3 characters.",
-			"usernameLatinStart": "Usernames must start with A-Z letters and cannot contain diacritic characters.",
-			"usernameChars": "Username can only contain letters, numbers, underscores and hyphens.",
-			"passwordMin": "Password is too short. Minimum length is 8 characters.",
-			"passwordUppercase": "Password must contain at least one uppercase letter.",
-			"passwordSpecial": "Password must contain at least one special character."
-		},
-		"errors": {
-			"sendEmail": "Failed to send email. Please try again.",
-			"changePassword": "Failed to change password. Please try again."
+		"changeUsername": {
+			"title": "Change username",
+			"usernameLabel": "New username",
+			"submit": "Save",
+			"successTitle": "Done!",
+			"successMessage": "Your username has been updated.",
+			"home": "Go home"
 		}
 	},
+	"validation": {
+		"usernameMin": "Username is too short. It must be at least 3 characters.",
+		"usernameLatinStart": "Usernames must start with A-Z letters and cannot contain diacritic characters.",
+		"usernameChars": "Username can only contain letters, numbers, underscores and hyphens.",
+		"passwordMin": "Password is too short. Minimum length is 8 characters.",
+		"passwordUppercase": "Password must contain at least one uppercase letter.",
+		"passwordSpecial": "Password must contain at least one special character."
+	},
+	"errors": {
+		"sendEmail": "Failed to send email. Please try again.",
+		"changePassword": "Failed to change password. Please try again.",
+		"changeUsername": "Failed to update username. Please try again."
+	},
+
 	"landing": {
 		"hero": {
 			"title": "Flashcards? Flashcards!",

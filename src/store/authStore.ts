@@ -64,7 +64,8 @@ import {
 	loginAction,
 	logoutAction,
 	oauthLoginAction,
-	registerAction
+	registerAction,
+	updateUsernameAction
 } from '@/server-actions/auth.actions'
 import type { IRegisterPayload, IUser } from '@/shared/types/auth.types'
 
@@ -120,6 +121,7 @@ interface AuthActions {
 	registration: (payload: IRegisterPayload) => Promise<void>
 	loginWithOAuth: (token: string) => Promise<void>
 	fetchProfile: () => Promise<void>
+	updateUsername: (username: string) => Promise<void>
 
 	logout: () => void
 	clearError: () => void
@@ -224,6 +226,14 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 				if (user) set({ user })
 			},
 
+			updateUsername: async username => {
+				const { accessToken, user } = get()
+				if (!accessToken || !user) return
+				const result = await updateUsernameAction(username, accessToken)
+				if (result.success) {
+					set({ user: { ...user, username } })
+				}
+			},
 			loginWithOAuth: async token => {
 				await oauthLoginAction(token)
 				set({ accessToken: token, isAuthenticated: true })

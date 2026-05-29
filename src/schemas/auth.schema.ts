@@ -73,14 +73,35 @@ export const changePasswordSchema = z
 		password: z
 			.string()
 			.min(PASSWORD_VALIDATION.minLength, PASSWORD_VALIDATION.minLengthMessage)
-			.regex(PASSWORD_VALIDATION.hasUppercase, PASSWORD_VALIDATION.hasUppercaseMessage)
-			.regex(PASSWORD_VALIDATION.hasSpecial, PASSWORD_VALIDATION.hasSpecialMessage),
+			.regex(
+				PASSWORD_VALIDATION.hasUppercase,
+				PASSWORD_VALIDATION.hasUppercaseMessage
+			)
+			.regex(
+				PASSWORD_VALIDATION.hasSpecial,
+				PASSWORD_VALIDATION.hasSpecialMessage
+			),
 		confirmPassword: z.string()
 	})
 	.refine(d => d.password === d.confirmPassword, {
 		message: 'Пароли не совпадают',
 		path: ['confirmPassword']
 	})
+
+export const changeUsernameSchema = z.object({
+	username: z
+		.string()
+		.min(USERNAME_VALIDATION.minLength, USERNAME_VALIDATION.minLengthMessage)
+		.regex(
+			USERNAME_VALIDATION.startsWithLatin,
+			USERNAME_VALIDATION.startsWithLatinMessage
+		)
+		.regex(
+			USERNAME_VALIDATION.onlyValidChars,
+			USERNAME_VALIDATION.onlyValidCharsMessage
+		)
+})
+export type ChangeUsernameFormData = z.infer<typeof changeUsernameSchema>
 
 export type LoginFormData = z.infer<typeof loginSchema>
 export type RegisterFormData = z.infer<typeof registerSchema>

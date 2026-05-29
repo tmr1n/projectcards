@@ -14,7 +14,10 @@ export function ProfileActions() {
 	return (
 		<div className='w-full px-4 mt-8 flex flex-col gap-3 items-center '>
 			<div className='rounded-2xl overflow-hidden border border-gray-100 divide-y divide-gray-100 cursor-pointer'>
-				<button className='w-[350px] md:w-[375px] flex items-center gap-3 px-4 py-4 bg-white hover:bg-gray-50 transition-colors cursor-pointer'>
+				<Link
+					href='/username-change'
+					className='w-[350px] md:w-[375px] flex items-center gap-3 px-4 py-4 bg-white hover:bg-gray-50 transition-colors cursor-pointer'
+				>
 					<span className='w-9 h-9 rounded-full bg-blue-50 flex items-center justify-center shrink-0'>
 						<Pencil size={16} className='text-blue-600' />
 					</span>
@@ -22,7 +25,7 @@ export function ProfileActions() {
 						{t('changeName')}
 					</span>
 					<ChevronRight size={16} className='text-gray-400' />
-				</button>
+				</Link>
 
 				<Link
 					href='/password-change'

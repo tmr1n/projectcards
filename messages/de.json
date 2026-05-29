@@ -68,6 +68,14 @@
 			"successMessage": "Dein Passwort wurde geändert.",
 			"home": "Zur Startseite"
 		},
+		"changeUsername": {
+			"title": "Benutzername ändern",
+			"usernameLabel": "Neuer Benutzername",
+			"submit": "Speichern",
+			"successTitle": "Fertig!",
+			"successMessage": "Dein Benutzername wurde aktualisiert.",
+			"home": "Zur Startseite"
+		},
 		"validation": {
 			"usernameMin": "Der Benutzername ist zu kurz. Er muss mindestens 3 Zeichen enthalten.",
 			"usernameLatinStart": "Benutzernamen müssen mit A-Z beginnen und dürfen keine diakritischen Zeichen enthalten.",
@@ -78,7 +86,8 @@
 		},
 		"errors": {
 			"sendEmail": "E-Mail konnte nicht gesendet werden. Bitte versuche es erneut.",
-			"changePassword": "Passwort konnte nicht geändert werden. Bitte versuche es erneut."
+			"changePassword": "Passwort konnte nicht geändert werden. Bitte versuche es erneut.",
+			"changeUsername": "Benutzername konnte nicht aktualisiert werden. Bitte versuche es erneut."
 		}
 	},
 	"landing": {

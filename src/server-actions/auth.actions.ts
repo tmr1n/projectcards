@@ -116,3 +116,22 @@ export async function getProfileAction(token: string): Promise<IUser | null> {
 		return null
 	}
 }
+
+export async function updateUsernameAction(
+	username: string,
+	token: string
+): Promise<TAuthActionResult<null>> {
+	try {
+		await apiFetch('/profile', { method: 'PATCH', body: { username }, token })
+		return { success: true, data: null }
+	} catch (err) {
+		if (err instanceof ApiError) {
+			return {
+				success: false,
+				message: err.message,
+				fieldErrors: err.fieldErrors
+			}
+		}
+		return { success: false, message: 'Ошибка соединения' }
+	}
+}
