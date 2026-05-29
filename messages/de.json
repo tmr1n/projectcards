@@ -182,6 +182,11 @@
 		"notFoundMessage": "Die gesuchte Seite konnte leider nicht gefunden werden.",
 		"contactSupport": "Support kontaktieren"
 	},
+	"cookies": {
+		"message": "Wir verwenden Cookies, um die Website zu betreiben und deine Erfahrung zu verbessern.",
+		"accept": "Akzeptieren",
+		"decline": "Ablehnen"
+	},
 	"dashboard": {
 		"title": "Dashboard",
 		"nav": {

@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getTranslations } from 'next-intl/server'
 import { Geist, Geist_Mono, Nunito, Playfair_Display } from 'next/font/google'
 import { notFound } from 'next/navigation'
+import { CookieBanner } from '@/components/ui/CookieBanner'
 import { TopLoader } from '@/components/ui/TopLoader'
 import { routing } from '@/i18n/routing'
 import { QueryProvider } from '@/providers/QueryProvider'
@@ -72,6 +73,7 @@ export default async function RootLayout({
 				<NextIntlClientProvider messages={messages}>
 					<TopLoader />
 					<QueryProvider>{children}</QueryProvider>
+					<CookieBanner />
 				</NextIntlClientProvider>
 			</body>
 		</html>

@@ -1,28 +1,45 @@
-import { getTranslations } from 'next-intl/server'
+'use client'
 
-export default async function NotFound() {
-	const t = await getTranslations('errors')
+import Link from 'next/link'
+import { useTranslations } from 'next-intl'
+import Logo from '@/components/Logo'
+
+export default function NotFound() {
+	const t = useTranslations('errors')
 
 	return (
-		<div className='grid place-items-center min-h-screen bg-gray-900 px-6 sm:py-32 lg:px-8'>
-			<div className='text-center'>
-				<p className='text-base font-semibold text-indigo-400'>{t('notFoundCode')}</p>
-				<h1 className='mt-4 text-5xl font-semibold tracking-tight text-balance text-white sm:text-7xl'>
-					{t('notFoundTitle')}
-				</h1>
-				<p className='mt-6 text-lg font-medium text-pretty text-gray-400 sm:text-xl/8'>
-					{t('notFoundMessage')}
+		<div className='min-h-screen bg-white flex flex-col'>
+			<div className='p-6'>
+				<Logo size={44} />
+			</div>
+
+			<div className='flex-1 flex flex-col items-center justify-center px-6 pb-24'>
+				<p className='text-8xl md:text-[10rem] font-bold text-gray-100 select-none leading-none'>
+					{t('notFoundCode')}
 				</p>
-				<div className='mt-10 flex items-center justify-center gap-x-6'>
-					<a
+
+				<div className='mt-4 text-center space-y-3'>
+					<h1 className='text-2xl md:text-3xl font-bold text-gray-900'>
+						{t('notFoundTitle')}
+					</h1>
+					<p className='text-gray-500 max-w-sm'>
+						{t('notFoundMessage')}
+					</p>
+				</div>
+
+				<div className='mt-10 flex items-center gap-4'>
+					<Link
 						href='/'
-						className='rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500'
+						className='px-6 py-3 bg-blue-600 text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-colors'
 					>
 						{t('home')}
-					</a>
-					<a href='#' className='text-sm font-semibold text-white'>
-						{t('contactSupport')} <span aria-hidden='true'>&rarr;</span>
-					</a>
+					</Link>
+					<Link
+						href='mailto:support@langcards.com'
+						className='text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors'
+					>
+						{t('contactSupport')} →
+					</Link>
 				</div>
 			</div>
 		</div>

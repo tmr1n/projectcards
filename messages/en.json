@@ -182,6 +182,11 @@
 		"notFoundMessage": "Sorry, we couldn't find the page you're looking for.",
 		"contactSupport": "Contact support"
 	},
+	"cookies": {
+		"message": "We use cookies to keep the site working and improve your experience.",
+		"accept": "Accept",
+		"decline": "Decline"
+	},
 	"dashboard": {
 		"title": "Dashboard",
 		"nav": {
