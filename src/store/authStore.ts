@@ -66,6 +66,7 @@ import {
 	logoutAction,
 	oauthLoginAction,
 	registerAction,
+	updateAvatarAction,
 	updateUsernameAction
 } from '@/server-actions/auth.actions'
 import type { IRegisterPayload, IUser } from '@/shared/types/auth.types'
@@ -123,6 +124,7 @@ interface AuthActions {
 	loginWithOAuth: (token: string) => Promise<void>
 	fetchProfile: () => Promise<void>
 	updateUsername: (username: string) => Promise<void>
+	updateAvatar: (avatarUrl: string) => Promise<void>
 
 	logout: () => void
 	deleteAccount: () => Promise<void>
@@ -234,6 +236,15 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 				const result = await updateUsernameAction(username, accessToken)
 				if (result.success) {
 					set({ user: { ...user, username } })
+				}
+			},
+
+			updateAvatar: async avatarUrl => {
+				const { accessToken, user } = get()
+				if (!accessToken || !user) return
+				const result = await updateAvatarAction(avatarUrl, accessToken)
+				if (result.success) {
+					set({ user: { ...user, avatarUrl } })
 				}
 			},
 			loginWithOAuth: async token => {

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 import { BackButton } from '@/components/buttons/BackButton'
 import { ProfileActions } from '@/components/profile/ProfileActions'
+import { ProfileAvatar } from '@/components/profile/ProfileAvatar'
 import { ProfileUsername } from '@/components/profile/ProfileUsername'
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -16,7 +17,7 @@ export default function Profile() {
 				<BackButton href='/dashboard' />
 			</div>
 			<div className='flex items-center gap-5 flex-col'>
-				<div className='w-25 h-25 rounded-full bg-blue-700 shrink-0' />
+				<ProfileAvatar />
 				<ProfileUsername />
 			</div>
 			<ProfileActions />

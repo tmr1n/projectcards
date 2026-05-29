@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Logo from '@/components/Logo'
 import BottomNav from '@/components/page-components/BottomNav'
 import Sidebar from '@/components/page-components/Sidebar'
+import { UserAvatar } from '@/components/profile/UserAvatar'
 
 export async function generateMetadata(): Promise<Metadata> {
 	const t = await getTranslations('dashboard')
@@ -20,7 +21,7 @@ export default function Dashboard() {
 				<div className='flex justify-between items-center p-4 md:hidden'>
 					<Logo size={55} />
 					<Link href='/profile'>
-						<div className='h-15 w-15 bg-blue-950 rounded-full cursor-pointer' />
+						<UserAvatar size={60} />
 					</Link>
 				</div>
 

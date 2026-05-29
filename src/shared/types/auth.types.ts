@@ -7,7 +7,8 @@ export interface IUser {
 	id: string
 	email: string
 	username: string
-	createdAt: string // ISO 8601 формат: "2024-01-15T10:30:00Z"
+	avatarUrl: string | null
+	createdAt: string
 }
 
 // Сессия — хранит данные текущего залогиненного пользователя

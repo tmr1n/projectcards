@@ -54,10 +54,16 @@
 		},
 		"emailConfirmation": {
 			"title": "Bestätige deine E-Mail-Adresse, um fortzufahren",
-			"message": "Wir haben eine Nachricht an {email} gesendet. Bestätige, dass sie korrekt ist, indem du auf den Link in der E-Mail klickst.",
+			"message": "Wir haben eine Nachricht an {email} gesendet. Klicke auf den Link in der E-Mail, um dein Konto zu bestätigen.",
 			"hint": "Keine E-Mail erhalten? Überprüfe deinen Spam-Ordner oder fordere eine erneute Zusendung an.",
 			"resend": "E-Mail erneut senden",
-			"home": "Zurück zur Startseite"
+			"resendSent": "E-Mail gesendet! Überprüfe deinen Posteingang.",
+			"home": "Zur Startseite",
+			"login": "Anmelden",
+			"successTitle": "E-Mail bestätigt!",
+			"successMessage": "Dein Konto ist jetzt aktiv. Du kannst dich anmelden.",
+			"errorTitle": "Ungültiger Link",
+			"errorMessage": "Der Bestätigungslink ist abgelaufen oder wurde bereits verwendet."
 		},
 		"changePassword": {
 			"title": "Neues Passwort eingeben",
@@ -75,6 +81,7 @@
 			"submit": "Speichern",
 			"successTitle": "Fertig!",
 			"successMessage": "Dein Benutzername wurde aktualisiert.",
+			"home": "Zurück zum Profil",
 			"back": "Zurück zum Profil"
 		},
 		"validation": {
@@ -96,6 +103,8 @@
 			"emailTaken": "Diese E-Mail-Adresse ist bereits vergeben.",
 			"usernameTaken": "Dieser Benutzername ist bereits vergeben.",
 			"passwordsMismatch": "Passwörter stimmen nicht überein.",
+			"invalidResetToken": "Der Link ist ungültig oder abgelaufen. Bitte fordere einen neuen an.",
+			"invalidVerificationToken": "Der Bestätigungslink ist ungültig oder abgelaufen.",
 			"serverError": "Serverfehler. Bitte versuche es erneut."
 		}
 	},
@@ -186,7 +195,8 @@
 			"forgotPassword": "Passwort zurücksetzen",
 			"passwordChange": "Passwort ändern",
 			"dashboard": "Dashboard",
-			"profile": "Profil"
+			"profile": "Profil",
+			"usernameChange": "Benutzername ändern"
 		}
 	}
 }

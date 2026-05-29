@@ -18,6 +18,7 @@ import {
 	forgotPasswordSchema,
 	type ForgotPasswordFormData
 } from '@/schemas/auth.schema'
+import { sendResetLinkAction } from '@/server-actions/auth.actions'
 
 export function ForgotPasswordForm() {
 	const [isLoading, setIsLoading] = useState(false)
@@ -37,17 +38,16 @@ export function ForgotPasswordForm() {
 		defaultValues: { email: '' }
 	})
 
-	const onSubmit: SubmitHandler<ForgotPasswordFormData> = async _data => {
+	const onSubmit: SubmitHandler<ForgotPasswordFormData> = async data => {
 		setIsLoading(true)
 		setError(null)
-		try {
-			// TODO: await sendResetLinkAction(_data.email)
+		const result = await sendResetLinkAction(data.email)
+		if (!result.success) {
+			setError(result.message)
+		} else {
 			setIsSuccess(true)
-		} catch {
-			setError(tErrors('sendEmail'))
-		} finally {
-			setIsLoading(false)
 		}
+		setIsLoading(false)
 	}
 
 	const emailValue = watch('email') ?? ''

@@ -15,15 +15,21 @@ export async function translateApiError(err: ApiError): Promise<{
 
 	// Статус-код надёжнее строки сообщения — NestJS может менять формат
 	let message: string
-	switch (err.statusCode) {
-		case 401:
-			message = t('invalidCredentials')
-			break
-		case 404:
-			message = t('userNotFound')
-			break
-		default:
-			message = t('serverError')
+	if (err.message === 'Invalid or expired reset token') {
+		message = t('invalidResetToken')
+	} else if (err.message === 'Invalid or expired verification token') {
+		message = t('invalidVerificationToken')
+	} else {
+		switch (err.statusCode) {
+			case 401:
+				message = t('invalidCredentials')
+				break
+			case 404:
+				message = t('userNotFound')
+				break
+			default:
+				message = t('serverError')
+		}
 	}
 
 	const fieldErrors = err.fieldErrors

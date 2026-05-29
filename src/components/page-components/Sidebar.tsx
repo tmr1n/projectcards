@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import Logo from '@/components/Logo'
+import { UserAvatar } from '@/components/profile/UserAvatar'
 import { useAuthStore } from '@/store/authStore'
 
 const navItems = [
@@ -79,7 +80,7 @@ export default function Sidebar() {
 						href='/profile'
 						className='flex items-center gap-3 flex-1 px-2 py-1.5 rounded-lg hover:bg-gray-100 transition-colors'
 					>
-						<div className='w-9 h-9 rounded-full bg-blue-700 shrink-0' />
+						<UserAvatar size={36} />
 						<span className='text-m text-gray-700 font-semibold'>
 							{user?.username ?? '...'}
 						</span>

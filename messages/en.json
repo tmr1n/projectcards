@@ -54,10 +54,16 @@
 		},
 		"emailConfirmation": {
 			"title": "Confirm your email address to continue",
-			"message": "We sent a message to {email}. Confirm it's correct by clicking the link in the email.",
+			"message": "We sent a message to {email}. Click the link in the email to confirm your account.",
 			"hint": "Didn't receive an email? Check your spam folder or request another one.",
 			"resend": "Resend email",
-			"home": "Back to home"
+			"resendSent": "Email sent! Check your inbox.",
+			"home": "Go home",
+			"login": "Log in",
+			"successTitle": "Email confirmed!",
+			"successMessage": "Your account is now active. You can log in.",
+			"errorTitle": "Invalid link",
+			"errorMessage": "The confirmation link has expired or was already used."
 		},
 		"changePassword": {
 			"title": "Enter a new password",
@@ -75,7 +81,21 @@
 			"submit": "Save",
 			"successTitle": "Done!",
 			"successMessage": "Your username has been updated.",
-			"back": "Go back to profile"
+			"home": "Back to profile",
+			"back": "Back to profile"
+		},
+		"validation": {
+			"usernameMin": "Username is too short. It must be at least 3 characters.",
+			"usernameLatinStart": "Usernames must start with A-Z letters and cannot contain diacritic characters.",
+			"usernameChars": "Username can only contain letters, numbers, underscores and hyphens.",
+			"passwordMin": "Password is too short. Minimum length is 8 characters.",
+			"passwordUppercase": "Password must contain at least one uppercase letter.",
+			"passwordSpecial": "Password must contain at least one special character."
+		},
+		"errors": {
+			"sendEmail": "Failed to send email. Please try again.",
+			"changePassword": "Failed to change password. Please try again.",
+			"changeUsername": "Failed to update username. Please try again."
 		},
 		"serverErrors": {
 			"invalidCredentials": "Invalid email or password.",
@@ -83,23 +103,11 @@
 			"emailTaken": "This email is already taken.",
 			"usernameTaken": "This username is already taken.",
 			"passwordsMismatch": "Passwords do not match.",
+			"invalidResetToken": "The link is invalid or has expired. Please request a new one.",
+			"invalidVerificationToken": "The verification link is invalid or has expired.",
 			"serverError": "Server error. Please try again."
 		}
 	},
-	"validation": {
-		"usernameMin": "Username is too short. It must be at least 3 characters.",
-		"usernameLatinStart": "Usernames must start with A-Z letters and cannot contain diacritic characters.",
-		"usernameChars": "Username can only contain letters, numbers, underscores and hyphens.",
-		"passwordMin": "Password is too short. Minimum length is 8 characters.",
-		"passwordUppercase": "Password must contain at least one uppercase letter.",
-		"passwordSpecial": "Password must contain at least one special character."
-	},
-	"errors": {
-		"sendEmail": "Failed to send email. Please try again.",
-		"changePassword": "Failed to change password. Please try again.",
-		"changeUsername": "Failed to update username. Please try again."
-	},
-
 	"landing": {
 		"hero": {
 			"title": "Flashcards? Flashcards!",
@@ -187,7 +195,8 @@
 			"forgotPassword": "Reset Password",
 			"passwordChange": "Change Password",
 			"dashboard": "Dashboard",
-			"profile": "Profile"
+			"profile": "Profile",
+			"usernameChange": "Change Username"
 		}
 	}
 }

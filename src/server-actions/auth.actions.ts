@@ -122,6 +122,87 @@ export async function deleteAccountAction(token: string): Promise<void> {
 	cookieStore.delete('token')
 }
 
+export async function verifyEmailAction(
+	token: string
+): Promise<TAuthActionResult<null>> {
+	try {
+		await apiFetch('/verify-email', { method: 'POST', body: { token } })
+		return { success: true, data: null }
+	} catch (err) {
+		if (err instanceof ApiError) {
+			const translated = await translateApiError(err)
+			return { success: false, ...translated }
+		}
+		return { success: false, message: 'Ошибка соединения' }
+	}
+}
+
+export async function resendVerificationAction(
+	email: string
+): Promise<TAuthActionResult<null>> {
+	try {
+		await apiFetch('/resend-verification', { method: 'POST', body: { email } })
+		return { success: true, data: null }
+	} catch (err) {
+		if (err instanceof ApiError) {
+			const translated = await translateApiError(err)
+			return { success: false, ...translated }
+		}
+		return { success: false, message: 'Ошибка соединения' }
+	}
+}
+
+export async function sendResetLinkAction(
+	email: string
+): Promise<TAuthActionResult<null>> {
+	try {
+		await apiFetch('/forgot-password', { method: 'POST', body: { email } })
+		return { success: true, data: null }
+	} catch (err) {
+		if (err instanceof ApiError) {
+			const translated = await translateApiError(err)
+			return { success: false, ...translated }
+		}
+		return { success: false, message: 'Ошибка соединения' }
+	}
+}
+
+export async function resetPasswordAction(
+	token: string,
+	password: string,
+	passwordConfirmation: string
+): Promise<TAuthActionResult<null>> {
+	try {
+		await apiFetch('/reset-password', {
+			method: 'POST',
+			body: { token, password, password_confirmation: passwordConfirmation }
+		})
+		return { success: true, data: null }
+	} catch (err) {
+		if (err instanceof ApiError) {
+			const translated = await translateApiError(err)
+			return { success: false, ...translated }
+		}
+		return { success: false, message: 'Ошибка соединения' }
+	}
+}
+
+export async function updateAvatarAction(
+	avatarUrl: string,
+	token: string
+): Promise<TAuthActionResult<null>> {
+	try {
+		await apiFetch('/profile', { method: 'PATCH', body: { avatarUrl }, token })
+		return { success: true, data: null }
+	} catch (err) {
+		if (err instanceof ApiError) {
+			const translated = await translateApiError(err)
+			return { success: false, ...translated }
+		}
+		return { success: false, message: 'Ошибка соединения' }
+	}
+}
+
 export async function updateUsernameAction(
 	username: string,
 	token: string

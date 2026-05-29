@@ -17,10 +17,16 @@ import {
 	changePasswordSchema,
 	type ChangePasswordFormData
 } from '@/schemas/auth.schema'
-import { updatePasswordAction } from '@/server-actions/auth.actions'
+import { resetPasswordAction, updatePasswordAction } from '@/server-actions/auth.actions'
 import { useAuthStore } from '@/store/authStore'
 
-export function ChangePasswordForm({ fromProfile = false }: { fromProfile?: boolean }) {
+export function ChangePasswordForm({
+	fromProfile = false,
+	resetToken
+}: {
+	fromProfile?: boolean
+	resetToken?: string
+}) {
 	const accessToken = useAuthStore(state => state.accessToken)
 	const [isLoading, setIsLoading] = useState(false)
 	const [isSuccess, setIsSuccess] = useState(false)
@@ -49,14 +55,19 @@ export function ChangePasswordForm({ fromProfile = false }: { fromProfile?: bool
 		setIsLoading(true)
 		setError(null)
 		try {
-			await updatePasswordAction(
-				{
-					password: data.password,
-					password_confirmation: data.confirmPassword,
-					old_password: ''
-				},
-				accessToken ?? ''
-			)
+			if (resetToken) {
+				const result = await resetPasswordAction(resetToken, data.password, data.confirmPassword)
+				if (!result.success) {
+					setError(result.message)
+					setIsLoading(false)
+					return
+				}
+			} else {
+				await updatePasswordAction(
+					{ password: data.password, password_confirmation: data.confirmPassword, old_password: '' },
+					accessToken ?? ''
+				)
+			}
 			setIsSuccess(true)
 		} catch {
 			setError(tErrors('changePassword'))
@@ -122,7 +133,7 @@ export function ChangePasswordForm({ fromProfile = false }: { fromProfile?: bool
 					<ButtonLink
 						variant='primary'
 						text={fromProfile ? t('back') : t('home')}
-						href={fromProfile ? '/profile' : '/'}
+						href={fromProfile ? '/profile' : resetToken ? '/login' : '/'}
 					/>
 				</div>
 			</div>
