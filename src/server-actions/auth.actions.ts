@@ -2,6 +2,7 @@
 
 import { cookies } from 'next/headers'
 import { ApiError, apiFetch } from '@/lib/api'
+import { translateApiError } from '@/lib/translateBackendError'
 import type {
 	ILoginPayload,
 	ILoginResponse,
@@ -36,11 +37,8 @@ export async function loginAction(
 		return { success: true, data: res.data }
 	} catch (err) {
 		if (err instanceof ApiError) {
-			return {
-				success: false,
-				message: err.message,
-				fieldErrors: err.fieldErrors
-			}
+			const translated = await translateApiError(err)
+			return { success: false, ...translated }
 		}
 		return { success: false, message: 'Ошибка соединения' }
 	}
@@ -57,11 +55,8 @@ export async function registerAction(
 		return { success: true, data: res.data }
 	} catch (err) {
 		if (err instanceof ApiError) {
-			return {
-				success: false,
-				message: err.message,
-				fieldErrors: err.fieldErrors
-			}
+			const translated = await translateApiError(err)
+			return { success: false, ...translated }
 		}
 		return { success: false, message: 'Ошибка соединения' }
 	}
@@ -117,6 +112,16 @@ export async function getProfileAction(token: string): Promise<IUser | null> {
 	}
 }
 
+export async function deleteAccountAction(token: string): Promise<void> {
+	try {
+		await apiFetch('/profile', { method: 'DELETE', token })
+	} catch {
+		// игнорируем — стор всё равно сбросит состояние
+	}
+	const cookieStore = await cookies()
+	cookieStore.delete('token')
+}
+
 export async function updateUsernameAction(
 	username: string,
 	token: string
@@ -126,11 +131,8 @@ export async function updateUsernameAction(
 		return { success: true, data: null }
 	} catch (err) {
 		if (err instanceof ApiError) {
-			return {
-				success: false,
-				message: err.message,
-				fieldErrors: err.fieldErrors
-			}
+			const translated = await translateApiError(err)
+			return { success: false, ...translated }
 		}
 		return { success: false, message: 'Ошибка соединения' }
 	}

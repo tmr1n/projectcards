@@ -7,8 +7,8 @@ import { useForm } from 'react-hook-form'
 import { useDelayedError } from '@/hooks/useDelayedError'
 import { ButtonLink } from '@/components/buttons/ButtonLink'
 import { ButtonSubmit } from '@/components/buttons/ButtonSubmit'
-import { LabelComponent } from '@/components/form-components/LabelComponent'
 import { InputComponent } from '@/components/form-components/InputComponent'
+import { LabelComponent } from '@/components/form-components/LabelComponent'
 import { ErrorBanner } from '@/components/ui/ErrorBanner'
 import { FormLoader } from '@/components/ui/FormLoader'
 import { BackButton } from '../buttons/BackButton'
@@ -71,7 +71,7 @@ export function ChangeUsernameForm() {
 						{t('successTitle')}
 					</h1>
 					<p className='text-black'>{t('successMessage')}</p>
-					<ButtonLink variant='primary' text={t('home')} href='/' />
+					<ButtonLink variant='primary' text={t('home')} href='/profile' />
 				</div>
 			</div>
 		)

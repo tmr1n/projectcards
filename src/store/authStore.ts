@@ -60,6 +60,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import {
+	deleteAccountAction,
 	getProfileAction,
 	loginAction,
 	logoutAction,
@@ -124,6 +125,7 @@ interface AuthActions {
 	updateUsername: (username: string) => Promise<void>
 
 	logout: () => void
+	deleteAccount: () => Promise<void>
 	clearError: () => void
 }
 
@@ -277,6 +279,18 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 				// logoutAction глотает ошибки внутри себя (см. auth.actions.ts)
 				if (accessToken) void logoutAction(accessToken)
 
+				set({
+					user: null,
+					accessToken: null,
+					isAuthenticated: false,
+					error: null,
+					serverFieldErrors: null
+				})
+			},
+
+			deleteAccount: async () => {
+				const { accessToken } = get()
+				if (accessToken) await deleteAccountAction(accessToken)
 				set({
 					user: null,
 					accessToken: null,

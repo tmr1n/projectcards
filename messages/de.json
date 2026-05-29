@@ -66,7 +66,8 @@
 			"submit": "Passwort ändern",
 			"successTitle": "Erfolgreich!",
 			"successMessage": "Dein Passwort wurde geändert.",
-			"home": "Zur Startseite"
+			"home": "Zur Startseite",
+			"back": "Zurück zum Profil"
 		},
 		"changeUsername": {
 			"title": "Benutzername ändern",
@@ -74,7 +75,7 @@
 			"submit": "Speichern",
 			"successTitle": "Fertig!",
 			"successMessage": "Dein Benutzername wurde aktualisiert.",
-			"home": "Zur Startseite"
+			"back": "Zurück zum Profil"
 		},
 		"validation": {
 			"usernameMin": "Der Benutzername ist zu kurz. Er muss mindestens 3 Zeichen enthalten.",
@@ -88,6 +89,14 @@
 			"sendEmail": "E-Mail konnte nicht gesendet werden. Bitte versuche es erneut.",
 			"changePassword": "Passwort konnte nicht geändert werden. Bitte versuche es erneut.",
 			"changeUsername": "Benutzername konnte nicht aktualisiert werden. Bitte versuche es erneut."
+		},
+		"serverErrors": {
+			"invalidCredentials": "Ungültige E-Mail oder Passwort.",
+			"userNotFound": "Benutzer nicht gefunden.",
+			"emailTaken": "Diese E-Mail-Adresse ist bereits vergeben.",
+			"usernameTaken": "Dieser Benutzername ist bereits vergeben.",
+			"passwordsMismatch": "Passwörter stimmen nicht überein.",
+			"serverError": "Serverfehler. Bitte versuche es erneut."
 		}
 	},
 	"landing": {
@@ -143,6 +152,12 @@
 			"changePassword": "Passwort ändern",
 			"deleteAccount": "Konto löschen",
 			"logout": "Abmelden"
+		},
+		"deleteModal": {
+			"title": "Konto löschen?",
+			"description": "Diese Aktion kann nicht rückgängig gemacht werden. Alle deine Decks und Karten werden dauerhaft gelöscht.",
+			"confirm": "Löschen",
+			"cancel": "Abbrechen"
 		}
 	},
 	"errors": {

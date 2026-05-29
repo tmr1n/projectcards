@@ -20,7 +20,7 @@ import {
 import { updatePasswordAction } from '@/server-actions/auth.actions'
 import { useAuthStore } from '@/store/authStore'
 
-export function ChangePasswordForm() {
+export function ChangePasswordForm({ fromProfile = false }: { fromProfile?: boolean }) {
 	const accessToken = useAuthStore(state => state.accessToken)
 	const [isLoading, setIsLoading] = useState(false)
 	const [isSuccess, setIsSuccess] = useState(false)
@@ -119,7 +119,11 @@ export function ChangePasswordForm() {
 						{t('successTitle')}
 					</h1>
 					<p className='text-black'>{t('successMessage')}</p>
-					<ButtonLink variant='primary' text={t('home')} href='/' />
+					<ButtonLink
+						variant='primary'
+						text={fromProfile ? t('back') : t('home')}
+						href={fromProfile ? '/profile' : '/'}
+					/>
 				</div>
 			</div>
 		)
@@ -127,9 +131,11 @@ export function ChangePasswordForm() {
 
 	return (
 		<div className='min-h-screen flex flex-col'>
-			<div className='flex items-center gap-4 justify-start p-4'>
-				<BackButton href='/profile' />
-			</div>
+			{fromProfile && (
+				<div className='flex items-center gap-4 justify-start p-4'>
+					<BackButton href='/profile' />
+				</div>
+			)}
 			<div className='flex-1 relative bg-white flex  justify-center p-8 pb-16'>
 				<FormLoader isLoading={isLoading} />
 
