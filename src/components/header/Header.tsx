@@ -5,6 +5,7 @@ import { motion, useMotionValueEvent, useScroll } from 'motion/react'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
+import { AnimatedLogo } from './AnimatedLogo'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import SidebarMenu from './SidebarMenu'
@@ -58,14 +59,7 @@ export function Header() {
 
 				{/* Логотип */}
 				<Link href='/' className='shrink-0'>
-					<Image
-						src='/images/Logo.svg'
-						alt='Project Cards Logo'
-						width={100}
-						height={67}
-						className='hidden md:block cursor-pointer'
-						priority
-					/>
+					<AnimatedLogo className='hidden md:block cursor-pointer' />
 					<Image
 						src='/images/Logo-adaptive.svg'
 						alt='Project Cards Logo'
