@@ -340,7 +340,8 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 			partialize: state => ({
 				user: state.user,
 				accessToken: state.accessToken,
-				isAuthenticated: state.isAuthenticated
+				isAuthenticated: state.isAuthenticated,
+				pendingEmail: state.pendingEmail
 			})
 		}
 	)

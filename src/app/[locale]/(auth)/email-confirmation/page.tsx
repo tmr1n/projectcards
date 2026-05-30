@@ -1,6 +1,6 @@
 import { EmailConfirmationPage } from '@/components/page-components/EmailConfirmationPage'
 
-export default async function Page({
+export default async function EmailConfirmation({
 	searchParams
 }: {
 	searchParams: Promise<{ token?: string }>

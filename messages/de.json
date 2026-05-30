@@ -84,6 +84,16 @@
 			"home": "Zurück zum Profil",
 			"back": "Zurück zum Profil"
 		},
+		"alreadyExist": {
+			"title": "Konto existiert bereits",
+			"description": "Du hast bereits ein Konto mit dieser E-Mail-Adresse. Melde dich mit deinem Passwort an.",
+			"login": "Anmelden",
+			"passwordLabel": "Passwort",
+			"forgotPassword": "Passwort vergessen?",
+			"switchAccount": "Mit einem anderen Konto anmelden",
+			"home": "Zur Startseite"
+		},
+
 		"validation": {
 			"usernameMin": "Der Benutzername ist zu kurz. Er muss mindestens 3 Zeichen enthalten.",
 			"usernameLatinStart": "Benutzernamen müssen mit A-Z beginnen und dürfen keine diakritischen Zeichen enthalten.",
@@ -210,7 +220,8 @@
 			"passwordChange": "Passwort ändern",
 			"dashboard": "Dashboard",
 			"profile": "Profil",
-			"usernameChange": "Benutzername ändern"
+			"usernameChange": "Benutzername ändern",
+			"alreadyExist": "Konto existiert bereits"
 		}
 	}
 }

@@ -120,6 +120,7 @@ export async function deleteAccountAction(token: string): Promise<void> {
 	}
 	const cookieStore = await cookies()
 	cookieStore.delete('token')
+	cookieStore.delete('refresh_token')
 }
 
 export async function verifyEmailAction(
@@ -178,6 +179,31 @@ export async function resetPasswordAction(
 			body: { token, password, password_confirmation: passwordConfirmation }
 		})
 		return { success: true, data: null }
+	} catch (err) {
+		if (err instanceof ApiError) {
+			const translated = await translateApiError(err)
+			return { success: false, ...translated }
+		}
+		return { success: false, message: 'Ошибка соединения' }
+	}
+}
+
+export async function linkGoogleAccountAction(
+	pendingToken: string,
+	password: string
+): Promise<TAuthActionResult<{ access_token: string }>> {
+	try {
+		const res = await apiFetch<{ access_token: string }>('/google/link-account', {
+			method: 'POST',
+			body: { token: pendingToken, password }
+		})
+		const cookieStore = await cookies()
+		cookieStore.set('token', res.data.access_token, {
+			httpOnly: true,
+			sameSite: 'lax',
+			maxAge: 60 * 15
+		})
+		return { success: true, data: res.data }
 	} catch (err) {
 		if (err instanceof ApiError) {
 			const translated = await translateApiError(err)

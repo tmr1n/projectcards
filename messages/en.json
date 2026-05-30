@@ -84,6 +84,15 @@
 			"home": "Back to profile",
 			"back": "Back to profile"
 		},
+		"alreadyExist": {
+			"title": "Account already exists",
+			"description": "You already have an account with this email address. Log in using your password.",
+			"login": "Log in",
+			"passwordLabel": "Password",
+			"forgotPassword": "Forgot password?",
+			"switchAccount": "Sign in with a different account",
+			"home": "Go home"
+		},
 		"validation": {
 			"usernameMin": "Username is too short. It must be at least 3 characters.",
 			"usernameLatinStart": "Usernames must start with A-Z letters and cannot contain diacritic characters.",
@@ -210,7 +219,8 @@
 			"passwordChange": "Change Password",
 			"dashboard": "Dashboard",
 			"profile": "Profile",
-			"usernameChange": "Change Username"
+			"usernameChange": "Change Username",
+			"alreadyExist": "Account Already Exists"
 		}
 	}
 }
