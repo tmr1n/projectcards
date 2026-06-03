@@ -1,18 +1,29 @@
 'use client'
 
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useRef, useState } from 'react'
-import { ChevronLeft, ChevronRight, EllipsisVertical } from 'lucide-react'
+import DeckCard from './DeckCard'
+import DeckMini from './DeckMini'
 
 const MOCK_DECKS = [
 	{ id: 1, title: 'Verben mit pr', progress: 23 },
 	{ id: 2, title: 'TADES. NVV', progress: 24 },
 	{ id: 3, title: 'Grammar', progress: 45 },
-	{ id: 4, title: 'Vocabulary', progress: 67 },
+	{ id: 4, title: 'Vocabulary', progress: 67 }
 ]
 
 export default function DecksList() {
+	const [decks, setDecks] = useState(MOCK_DECKS)
 	const [current, setCurrent] = useState(0)
 	const trackRef = useRef<HTMLDivElement>(null)
+
+	const removeById = (id: number) => {
+		setDecks(prev => {
+			const next = prev.filter(d => d.id !== id)
+			setCurrent(c => Math.min(c, next.length - 1))
+			return next
+		})
+	}
 
 	const goTo = (index: number) => {
 		setCurrent(index)
@@ -21,44 +32,25 @@ export default function DecksList() {
 		trackRef.current.scrollTo({ left: card.offsetLeft, behavior: 'smooth' })
 	}
 
-	const next = () => goTo(Math.min(current + 1, MOCK_DECKS.length - 1))
+	const next = () => goTo(Math.min(current + 1, decks.length - 1))
 	const prev = () => goTo(Math.max(current - 1, 0))
 
 	return (
-		<div className='p-20'>
-			<h2 className='text-2xl font-bold mb-4'>Продолжить учёбу</h2>
+		<div className='p-4 md:p-20'>
+			<h2 className='text-2xl font-bold mb-6'>Продолжить учёбу</h2>
 
-			<div className='relative w-[60%]'>
+			<div className='relative w-full md:w-[60%]'>
 				{/* Track with blur fade edges */}
 				<div className='relative'>
-					<div
-						ref={trackRef}
-						className='flex gap-4 overflow-x-hidden'
-					>
-						{MOCK_DECKS.map((deck) => (
-							<div
+					<div ref={trackRef} className='flex gap-4 overflow-x-hidden'>
+						{decks.map(deck => (
+							<DeckCard
 								key={deck.id}
-								className='min-w-[88%] p-6 bg-white shadow flex flex-col gap-4 rounded-3xl border border-gray-300'
-							>
-								<div className='flex justify-between items-center'>
-									<h3 className='text-xl font-semibold'>{deck.title}</h3>
-									<button className='p-2 rounded-full hover:bg-gray-200 transition cursor-pointer'>
-										<EllipsisVertical />
-									</button>
-								</div>
-								<div className='w-[60%] h-4 bg-gray-200 rounded-full overflow-hidden'>
-									<div
-										className='h-full rounded-full bg-blue-500'
-										style={{ width: `${deck.progress}%` }}
-									/>
-								</div>
-								<p className='text-gray-600 font-bold text-sm'>
-									{deck.progress}% вопросов пройдено
-								</p>
-								<button className='mt-2 px-4 py-2 w-fit bg-blue-500 text-white rounded-2xl cursor-pointer hover:bg-blue-600 transition'>
-									Продолжить
-								</button>
-							</div>
+								title={deck.title}
+								progress={deck.progress}
+								canRemove={decks.length > 2}
+									onHide={() => removeById(deck.id)}
+							/>
 						))}
 					</div>
 
@@ -68,7 +60,7 @@ export default function DecksList() {
 					)}
 
 					{/* Right blur fade */}
-					{current < MOCK_DECKS.length - 1 && (
+					{current < decks.length - 1 && (
 						<div className='absolute inset-y-0 right-0 w-16 bg-linear-to-l from-white to-transparent pointer-events-none rounded-r-3xl backdrop-blur-[2px] mask-[linear-gradient(to_left,white_40%,transparent)]' />
 					)}
 				</div>
@@ -84,7 +76,7 @@ export default function DecksList() {
 				)}
 
 				{/* Forward button */}
-				{current < MOCK_DECKS.length - 1 && (
+				{current < decks.length - 1 && (
 					<button
 						onClick={next}
 						className='absolute -right-4 top-1/2 -translate-y-1/2 w-9 h-9 bg-white border border-gray-300 shadow rounded-full flex items-center justify-center hover:bg-gray-100 transition cursor-pointer z-10'
@@ -95,7 +87,7 @@ export default function DecksList() {
 
 				{/* Dots */}
 				<div className='flex justify-center gap-2 mt-4'>
-					{MOCK_DECKS.map((_, i) => (
+					{decks.map((_, i) => (
 						<button
 							key={i}
 							onClick={() => goTo(i)}
@@ -104,6 +96,16 @@ export default function DecksList() {
 							}`}
 						/>
 					))}
+				</div>
+			</div>
+
+			<div className='mt-12'>
+				<h2 className='text-2xl font-bold mb-6'>Недавние</h2>
+				<div className='grid grid-cols-1 gap-3 md:gap-1 md:grid-cols-[auto_auto] md:justify-start'>
+					<DeckMini />
+					<DeckMini />
+					<DeckMini />
+					<DeckMini />
 				</div>
 			</div>
 		</div>
