@@ -29,7 +29,7 @@ export default function DeckCard({ title, progress, canRemove, onHide }: DeckCar
 	}
 
 	return (
-		<div className='min-w-[90%] md:min-w-[88%] p-6 bg-white shadow flex flex-col gap-4 rounded-3xl border border-gray-300 cursor-pointer'>
+		<div className='min-w-[90%] md:min-w-[88%] p-6 bg-white shadow-[0_-2px_6px_rgba(0,0,0,0.08)] flex flex-col gap-4 rounded-3xl border border-gray-300 cursor-pointer'>
 			<div className='flex justify-between items-center'>
 				<h3 className='text-xl font-semibold'>{title}</h3>
 
