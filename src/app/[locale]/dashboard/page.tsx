@@ -17,7 +17,7 @@ export default function Dashboard() {
 		<div className='h-screen flex'>
 			<Sidebar />
 
-			<div className='flex-1 bg-blue-100  flex flex-col'>
+			<div className='flex-1 bg-white  flex flex-col'>
 				{/* Mobile: logo left, avatar right */}
 				<div className='flex justify-between items-center p-4 md:hidden'>
 					<Logo size={55} />

@@ -198,7 +198,7 @@
 		"decline": "Отклонить"
 	},
 	"dashboard": {
-		"title": "Панель управления",
+		"title": "Главная",
 		"nav": {
 			"home": "Главная",
 			"addModule": "Добавить модуль",
@@ -218,7 +218,7 @@
 			"emailConfirmation": "Подтверждение почты",
 			"forgotPassword": "Сброс пароля",
 			"passwordChange": "Смена пароля",
-			"dashboard": "Панель управления",
+			"dashboard": "Главная",
 			"profile": "Профиль",
 			"usernameChange": "Смена имени пользователя",
 			"alreadyExist": "Аккаунт уже существует"

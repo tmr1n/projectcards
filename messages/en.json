@@ -197,7 +197,7 @@
 		"decline": "Decline"
 	},
 	"dashboard": {
-		"title": "Dashboard",
+		"title": "Main page",
 		"nav": {
 			"home": "Dashboard",
 			"addModule": "Add module",
@@ -217,7 +217,7 @@
 			"emailConfirmation": "Email Confirmation",
 			"forgotPassword": "Reset Password",
 			"passwordChange": "Change Password",
-			"dashboard": "Dashboard",
+			"dashboard": "Main page",
 			"profile": "Profile",
 			"usernameChange": "Change Username",
 			"alreadyExist": "Account Already Exists"

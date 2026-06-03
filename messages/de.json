@@ -198,7 +198,7 @@
 		"decline": "Ablehnen"
 	},
 	"dashboard": {
-		"title": "Dashboard",
+		"title": "Hauptseite",
 		"nav": {
 			"home": "Dashboard",
 			"addModule": "Modul hinzufügen",
@@ -218,7 +218,7 @@
 			"emailConfirmation": "E-Mail-Bestätigung",
 			"forgotPassword": "Passwort zurücksetzen",
 			"passwordChange": "Passwort ändern",
-			"dashboard": "Dashboard",
+			"dashboard": "Hauptseite",
 			"profile": "Profil",
 			"usernameChange": "Benutzername ändern",
 			"alreadyExist": "Konto existiert bereits"
