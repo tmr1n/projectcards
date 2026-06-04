@@ -204,7 +204,71 @@
 			"addModule": "Добавить модуль",
 			"modules": "Модули"
 		},
-		"lastModules": "Последние модули"
+		"lastModules": "Последние модули",
+		"continueLearning": "Продолжить учёбу",
+		"recent": "Недавние",
+		"noModules": "У вас пока нет модулей. Создайте первый!"
+	},
+	"modules": {
+		"title": "Мои модули",
+		"newModule": "Новый модуль",
+		"searchPlaceholder": "Поиск модуля...",
+		"cards": "карточек",
+		"notFound": "Модули не найдены",
+		"notFoundHint": "Попробуйте другой запрос или создайте новый модуль"
+	},
+	"flashCard": {
+		"backToHome": "На главную",
+		"cards": "Карточки",
+		"test": "Тест",
+		"hint": "Подсказка",
+		"edit": "Редактировать",
+		"pronounce": "Произношение",
+		"favorite": "В избранное",
+		"shuffle": "Перемешать",
+		"termsInModule": "Термины в модуле ({count})",
+		"addOrRemoveTerms": "Добавить или удалить термины",
+		"selectAnswer": "Выберите ответ",
+		"termOf": "Термин {index} из {total}",
+		"testResults": "Результаты теста",
+		"correct": "Правильно",
+		"wrong": "Неправильно",
+		"retake": "Пройти снова",
+		"backToCards": "К карточкам",
+		"submitTest": "Отправить тест",
+		"noCardsForTest": "Нужно минимум 2 карточки для теста",
+		"noCards": "В этом модуле пока нет карточек",
+		"addCards": "Добавить карточки",
+		"moduleNotFound": "Модуль не найден",
+		"backToModules": "К модулям",
+		"save": "Сохранить",
+		"cancel": "Отмена"
+	},
+	"createModule": {
+		"titleLabel": "Название модуля",
+		"titlePlaceholder": "Введите название...",
+		"descriptionPlaceholder": "Добавьте описание...",
+		"backToModules": "Мои модули",
+		"create": "Создать",
+		"creating": "Создание...",
+		"term": "Термин",
+		"definition": "Определение",
+		"addCard": "Добавить карточку",
+		"dragToReorder": "Перетащите, чтобы поменять порядок",
+		"errorTitle": "Введите название модуля",
+		"errorCards": "Добавьте хотя бы одну карточку"
+	},
+	"addCard": {
+		"titleLabel": "Название",
+		"backToModule": "Назад к модулю",
+		"done": "Готово",
+		"saving": "Сохранение...",
+		"term": "Термин",
+		"definition": "Определение",
+		"addCard": "Добавить карточку",
+		"dragToReorder": "Перетащите, чтобы поменять порядок",
+		"moduleNotFound": "Модуль не найден",
+		"descriptionPlaceholder": "Добавьте описание..."
 	},
 
 	"cards": {

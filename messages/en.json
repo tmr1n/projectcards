@@ -203,7 +203,71 @@
 			"addModule": "Add module",
 			"modules": "Modules"
 		},
-		"lastModules": "Last modules"
+		"lastModules": "Last modules",
+		"continueLearning": "Continue studying",
+		"recent": "Recent",
+		"noModules": "You don't have any modules yet. Create your first one!"
+	},
+	"modules": {
+		"title": "My modules",
+		"newModule": "New module",
+		"searchPlaceholder": "Search module...",
+		"cards": "cards",
+		"notFound": "No modules found",
+		"notFoundHint": "Try a different query or create a new module"
+	},
+	"flashCard": {
+		"backToHome": "Back to home",
+		"cards": "Cards",
+		"test": "Test",
+		"hint": "Hint",
+		"edit": "Edit",
+		"pronounce": "Pronounce",
+		"favorite": "Favourite",
+		"shuffle": "Shuffle",
+		"termsInModule": "Terms in module ({count})",
+		"addOrRemoveTerms": "Add or remove terms",
+		"selectAnswer": "Choose an answer",
+		"termOf": "Term {index} of {total}",
+		"testResults": "Test results",
+		"correct": "Correct",
+		"wrong": "Incorrect",
+		"retake": "Retake test",
+		"backToCards": "Back to cards",
+		"submitTest": "Submit test",
+		"noCardsForTest": "At least 2 cards are needed for the test",
+		"noCards": "This module has no cards yet",
+		"addCards": "Add cards",
+		"moduleNotFound": "Module not found",
+		"backToModules": "To modules",
+		"save": "Save",
+		"cancel": "Cancel"
+	},
+	"createModule": {
+		"titleLabel": "Module name",
+		"titlePlaceholder": "Enter name...",
+		"descriptionPlaceholder": "Add description...",
+		"backToModules": "My modules",
+		"create": "Create",
+		"creating": "Creating...",
+		"term": "Term",
+		"definition": "Definition",
+		"addCard": "Add card",
+		"dragToReorder": "Drag to reorder",
+		"errorTitle": "Enter a module name",
+		"errorCards": "Add at least one card"
+	},
+	"addCard": {
+		"titleLabel": "Name",
+		"backToModule": "Back to module",
+		"done": "Done",
+		"saving": "Saving...",
+		"term": "Term",
+		"definition": "Definition",
+		"addCard": "Add card",
+		"dragToReorder": "Drag to reorder",
+		"moduleNotFound": "Module not found",
+		"descriptionPlaceholder": "Add description..."
 	},
 	"cards": {
 		"title": "Cards"

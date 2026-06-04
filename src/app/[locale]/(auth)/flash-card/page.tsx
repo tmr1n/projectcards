@@ -12,47 +12,13 @@ import {
 	X
 } from 'lucide-react'
 import Link from 'next/link'
-import { useRef, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { useTranslations } from 'next-intl'
+import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-
-const MOCK_TERMS = [
-	{
-		id: 1,
-		term: 'fragen nach (+ D) — Die Journalistin fragt nach den Konsequenzen der Gesetzesänderung.',
-		translation: 'спрашивать о',
-		learned: true
-	},
-	{
-		id: 2,
-		term: 'sich erholen von (+ D) — Von dem Schock muss ich mich erst erholen.',
-		translation: 'восстанавливаться от / оправляться от',
-		learned: true
-	},
-	{
-		id: 3,
-		term: 'achten auf (+ A) — Du solltest mehr auf deine Gesundheit achten.',
-		translation: 'обращать внимание на',
-		learned: true
-	},
-	{
-		id: 4,
-		term: 'warten auf (+ A) — Ich warte seit einer Stunde auf den Bus.',
-		translation: 'ждать',
-		learned: false
-	},
-	{
-		id: 5,
-		term: 'denken an (+ A) — Ich denke oft an meine Kindheit.',
-		translation: 'думать о',
-		learned: false
-	},
-	{
-		id: 6,
-		term: 'sich freuen auf (+ A) — Ich freue mich auf den Urlaub.',
-		translation: 'радоваться (предстоящему)',
-		learned: false
-	}
-]
+import { getDeckAction } from '@/server-actions/decks.actions'
+import { pushRecentDeck } from '@/hooks/useRecentDecks'
+import type { ICard, IDeckWithCards } from '@/shared/types/deck.types'
 
 function EditModal({
 	term,
@@ -65,61 +31,55 @@ function EditModal({
 	onSave: (term: string, translation: string) => void
 	onClose: () => void
 }) {
-	const [t, setT] = useState(term)
-	const [d, setD] = useState(translation)
+	const t = useTranslations('flashCard')
+	const [termVal, setTermVal] = useState(term)
+	const [defVal, setDefVal] = useState(translation)
 
 	return createPortal(
 		<>
 			<div className='fixed inset-0 bg-black/40 z-50' onClick={onClose} />
 			<div className='fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-3xl shadow-2xl w-full max-w-2xl mx-4 p-8'>
 				<div className='flex items-center justify-between mb-6'>
-					<h2 className='text-2xl font-bold'>Редактировать</h2>
-					<button
-						onClick={onClose}
-						className='p-2 rounded-full hover:bg-gray-100 transition cursor-pointer'
-					>
+					<h2 className='text-2xl font-bold'>{t('edit')}</h2>
+					<button onClick={onClose} className='p-2 rounded-full hover:bg-gray-100 transition cursor-pointer'>
 						<X size={20} className='text-gray-500' />
 					</button>
 				</div>
-
 				<div className='flex flex-col gap-8'>
-					<div>
-						<input
-							value={t}
-							onChange={e => setT(e.target.value)}
-							className='w-full border-b-2 border-gray-800 pb-2 text-base outline-none text-gray-800'
-						/>
-					</div>
-					<div>
-						<input
-							value={d}
-							onChange={e => setD(e.target.value)}
-							className='w-full border-b border-gray-300 focus:border-gray-800 pb-2 text-base outline-none text-gray-800 transition'
-						/>
-					</div>
+					<input
+						value={termVal}
+						onChange={e => setTermVal(e.target.value)}
+						className='w-full border-b-2 border-gray-800 pb-2 text-base outline-none text-gray-800'
+					/>
+					<input
+						value={defVal}
+						onChange={e => setDefVal(e.target.value)}
+						className='w-full border-b border-gray-300 focus:border-gray-800 pb-2 text-base outline-none text-gray-800 transition'
+					/>
 				</div>
-
 				<div className='flex justify-end gap-6 mt-10'>
-					<button
-						onClick={onClose}
-						className='text-blue-600 font-semibold hover:text-blue-800 transition cursor-pointer'
-					>
-						Отмена
+					<button onClick={onClose} className='text-blue-600 font-semibold hover:text-blue-800 transition cursor-pointer'>
+						{t('cancel')}
 					</button>
 					<button
-						onClick={() => {
-							onSave(t, d)
-							onClose()
-						}}
+						onClick={() => { onSave(termVal, defVal); onClose() }}
 						className='text-blue-600 font-semibold hover:text-blue-800 transition cursor-pointer'
 					>
-						Сохранить
+						{t('save')}
 					</button>
 				</div>
 			</div>
 		</>,
 		document.body
 	)
+}
+
+function speak(text: string) {
+	const utterance = new SpeechSynthesisUtterance(text)
+	utterance.lang = 'de-DE'
+	utterance.rate = 0.9
+	window.speechSynthesis.cancel()
+	window.speechSynthesis.speak(utterance)
 }
 
 function IconBtn({
@@ -136,10 +96,7 @@ function IconBtn({
 	return (
 		<div className='relative group'>
 			<button
-				onClick={e => {
-					e.stopPropagation()
-					onClick?.(e)
-				}}
+				onClick={e => { e.stopPropagation(); onClick?.(e) }}
 				className={`rounded-full p-2 hover:bg-gray-100 transition cursor-pointer ${className}`}
 			>
 				{children}
@@ -151,57 +108,39 @@ function IconBtn({
 	)
 }
 
-function TermCard({
-	term: initialTerm,
-	translation: initialTranslation
-}: {
-	term: string
-	translation: string
-}) {
+function TermCard({ card }: { card: ICard }) {
+	const t = useTranslations('flashCard')
 	const [starred, setStarred] = useState(false)
 	const [editing, setEditing] = useState(false)
-	const [term, setTerm] = useState(initialTerm)
-	const [translation, setTranslation] = useState(initialTranslation)
+	const [term, setTerm] = useState(card.front)
+	const [translation, setTranslation] = useState(card.back)
 
 	return (
 		<>
 			<div className='bg-white rounded-2xl shadow-[0_0_12px_rgba(0,0,0,0.07)] p-4'>
 				<div className='flex justify-end gap-1 mb-2'>
-					<IconBtn tooltip='В избранное' onClick={() => setStarred(v => !v)}>
-						<Star
-							size={18}
-							className={
-								starred ? 'fill-yellow-400 text-yellow-400' : 'text-gray-400'
-							}
-						/>
+					<IconBtn tooltip={t('favorite')} onClick={() => setStarred(v => !v)}>
+						<Star size={18} className={starred ? 'fill-yellow-400 text-yellow-400' : 'text-gray-400'} />
 					</IconBtn>
-					<IconBtn tooltip='Произношение'>
+					<IconBtn tooltip={t('pronounce')} onClick={() => speak(term)}>
 						<Volume2 size={18} className='text-gray-400' />
 					</IconBtn>
-					<IconBtn tooltip='Редактировать' onClick={() => setEditing(true)}>
+					<IconBtn tooltip={t('edit')} onClick={() => setEditing(true)}>
 						<Pencil size={18} className='text-gray-400' />
 					</IconBtn>
 				</div>
 				<div className='flex flex-col md:flex-row gap-3 md:gap-6'>
-					<p className='flex-1 text-sm text-gray-800 font-medium leading-relaxed'>
-						{term}
-					</p>
+					<p className='flex-1 text-sm text-gray-800 font-medium leading-relaxed'>{term}</p>
 					<div className='hidden md:block w-px bg-gray-200 shrink-0' />
 					<div className='block md:hidden h-px bg-gray-200' />
-					<p className='flex-1 text-sm text-gray-600 leading-relaxed'>
-						{translation}
-					</p>
+					<p className='flex-1 text-sm text-gray-600 leading-relaxed'>{translation}</p>
 				</div>
 			</div>
-
 			{editing && (
 				<EditModal
 					term={term}
 					translation={translation}
-					onSave={(t, d) => {
-						setTerm(t)
-						setTranslation(d)
-					}}
+					onSave={(t, d) => { setTerm(t); setTranslation(d) }}
 					onClose={() => setEditing(false)}
 				/>
 			)}
@@ -213,56 +152,45 @@ function shuffle<T>(arr: T[]): T[] {
 	return [...arr].sort(() => Math.random() - 0.5)
 }
 
-function buildQuestions() {
-	return MOCK_TERMS.map(term => {
-		const wrong = shuffle(MOCK_TERMS.filter(t => t.id !== term.id)).slice(0, 3)
-		const options = shuffle([
-			term.translation,
-			...wrong.map(t => t.translation)
-		])
-		return { id: term.id, term: term.term, correct: term.translation, options }
+function buildQuestions(cards: ICard[]) {
+	return cards.map(card => {
+		const wrong = shuffle(cards.filter(c => c.id !== card.id)).slice(0, 3)
+		const options = shuffle([card.back, ...wrong.map(c => c.back)])
+		return { id: card.id, term: card.front, correct: card.back, options }
 	})
 }
 
 type Question = ReturnType<typeof buildQuestions>[number]
 
 function TestQuestion({
-	question,
-	index,
-	selected,
-	onSelect,
-	result
+	question, index, total, selected, onSelect, result
 }: {
 	question: Question
 	index: number
+	total: number
 	selected: string | null
 	onSelect: (answer: string) => void
 	result: 'correct' | 'wrong' | null
 }) {
+	const t = useTranslations('flashCard')
+
 	return (
 		<div className='bg-white rounded-2xl shadow-[0_0_12px_rgba(0,0,0,0.07)] p-6'>
 			<p className='text-xs text-gray-400 font-semibold mb-1'>
-				Термин {index + 1} из {MOCK_TERMS.length}
+				{t('termOf', { index: index + 1, total })}
 			</p>
-			<p className='text-base font-semibold text-gray-800 mb-5 leading-relaxed'>
-				{question.term}
-			</p>
-			<p className='text-xs text-gray-400 uppercase tracking-wide mb-3'>
-				Выберите ответ
-			</p>
-			<div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
+			<p className='text-base font-semibold text-gray-800 mb-5 leading-relaxed'>{question.term}</p>
+			<p className='text-xs text-gray-400 uppercase tracking-wide mb-3'>{t('selectAnswer')}</p>
+			<div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
 				{question.options.map(opt => {
-					let style =
-						'border border-gray-200 text-gray-800 hover:border-blue-400 hover:bg-blue-50'
+					let style = 'border border-gray-200 text-gray-800 hover:border-blue-400 hover:bg-blue-50'
+					if (!result && selected === opt) style = 'border-2 border-blue-500 bg-blue-50 text-blue-800'
 					if (result && selected === opt) {
-						style =
-							result === 'correct'
-								? 'border-2 border-green-500 bg-green-50 text-green-800'
-								: 'border-2 border-red-400 bg-red-50 text-red-800'
+						style = result === 'correct'
+							? 'border-2 border-green-500 bg-green-50 text-green-800'
+							: 'border-2 border-red-400 bg-red-50 text-red-800'
 					}
-					if (result && result === 'wrong' && opt === question.correct) {
-						style = 'border-2 border-green-500 bg-green-50 text-green-800'
-					}
+					if (result === 'wrong' && opt === question.correct) style = 'border-2 border-green-500 bg-green-50 text-green-800'
 					return (
 						<button
 							key={opt}
@@ -279,49 +207,40 @@ function TestQuestion({
 	)
 }
 
-function TestMode({ onBack }: { onBack: () => void }) {
-	const [questions] = useState<Question[]>(() => buildQuestions())
-	const [answers, setAnswers] = useState<Record<number, string>>({})
+function TestMode({ cards, onBack }: { cards: ICard[]; onBack: () => void }) {
+	const t = useTranslations('flashCard')
+	const [questions] = useState<Question[]>(() => buildQuestions(cards))
+	const [answers, setAnswers] = useState<Record<string, string>>({})
 	const [submitted, setSubmitted] = useState(false)
 
+	if (cards.length < 2) {
+		return (
+			<div className='flex flex-col items-center gap-4 py-20'>
+				<p className='text-gray-400'>{t('noCardsForTest')}</p>
+				<button onClick={onBack} className='text-blue-600 font-semibold hover:underline'>
+					{t('backToCards')}
+				</button>
+			</div>
+		)
+	}
+
 	const allAnswered = questions.every(q => answers[q.id] != null)
-
 	const results = submitted
-		? questions.map(q => ({
-				...q,
-				selected: answers[q.id] ?? null,
-				correct: q.correct,
-				isCorrect: answers[q.id] === q.correct
-			}))
+		? questions.map(q => ({ ...q, selected: answers[q.id] ?? null, isCorrect: answers[q.id] === q.correct }))
 		: null
-
 	const correctCount = results?.filter(r => r.isCorrect).length ?? 0
 	const wrongCount = results ? results.length - correctCount : 0
 
 	if (submitted && results) {
 		return (
-			<div className='flex flex-col gap-6'>
-				{/* Results summary */}
+			<div className='flex flex-col gap-6 w-full md:max-w-3xl mx-auto'>
 				<div className='bg-white rounded-2xl shadow-[0_0_12px_rgba(0,0,0,0.07)] p-6'>
-					<h3 className='text-xl font-bold mb-4'>Результаты теста</h3>
+					<h3 className='text-xl font-bold mb-4'>{t('testResults')}</h3>
 					<div className='flex items-center gap-8'>
 						<div className='relative w-24 h-24 shrink-0'>
 							<svg viewBox='0 0 36 36' className='w-full h-full -rotate-90'>
-								<circle
-									cx='18'
-									cy='18'
-									r='15.9'
-									fill='none'
-									stroke='#f97316'
-									strokeWidth='3'
-								/>
-								<circle
-									cx='18'
-									cy='18'
-									r='15.9'
-									fill='none'
-									stroke='#22c55e'
-									strokeWidth='3'
+								<circle cx='18' cy='18' r='15.9' fill='none' stroke='#f97316' strokeWidth='3' />
+								<circle cx='18' cy='18' r='15.9' fill='none' stroke='#22c55e' strokeWidth='3'
 									strokeDasharray={`${(correctCount / questions.length) * 100} 100`}
 									strokeLinecap='round'
 								/>
@@ -332,93 +251,80 @@ function TestMode({ onBack }: { onBack: () => void }) {
 						</div>
 						<div className='flex flex-col gap-2'>
 							<div className='flex items-center gap-3'>
-								<span className='text-green-600 font-semibold'>Правильно</span>
-								<span className='bg-green-100 text-green-700 font-bold px-3 py-0.5 rounded-full text-sm'>
-									{correctCount}
-								</span>
+								<span className='text-green-600 font-semibold'>{t('correct')}</span>
+								<span className='bg-green-100 text-green-700 font-bold px-3 py-0.5 rounded-full text-sm'>{correctCount}</span>
 							</div>
 							<div className='flex items-center gap-3'>
-								<span className='text-orange-500 font-semibold'>
-									Неправильно
-								</span>
-								<span className='bg-orange-100 text-orange-600 font-bold px-3 py-0.5 rounded-full text-sm'>
-									{wrongCount}
-								</span>
+								<span className='text-orange-500 font-semibold'>{t('wrong')}</span>
+								<span className='bg-orange-100 text-orange-600 font-bold px-3 py-0.5 rounded-full text-sm'>{wrongCount}</span>
 							</div>
 						</div>
 					</div>
 				</div>
 
-				{/* Per-question review */}
 				<div className='flex flex-col gap-4'>
 					{results.map((r, i) => (
-						<TestQuestion
-							key={r.id}
-							question={r}
-							index={i}
-							selected={r.selected}
-							onSelect={() => {}}
-							result={r.isCorrect ? 'correct' : 'wrong'}
-						/>
+						<TestQuestion key={r.id} question={r} index={i} total={questions.length}
+							selected={r.selected} onSelect={() => {}} result={r.isCorrect ? 'correct' : 'wrong'} />
 					))}
 				</div>
 
-				<button
-					onClick={() => {
-						setAnswers({})
-						setSubmitted(false)
-					}}
-					className='w-full py-3 rounded-2xl bg-blue-500 text-white font-semibold hover:bg-blue-600 transition cursor-pointer'
-				>
-					Пройти снова
+				<button onClick={() => { setAnswers({}); setSubmitted(false) }}
+					className='w-full py-3 rounded-2xl bg-blue-500 text-white font-semibold hover:bg-blue-600 transition cursor-pointer'>
+					{t('retake')}
 				</button>
-				<button
-					onClick={onBack}
-					className='w-full py-3 rounded-2xl border border-gray-300 text-gray-600 font-semibold hover:bg-gray-50 transition cursor-pointer'
-				>
-					К карточкам
+				<button onClick={onBack}
+					className='w-full py-3 rounded-2xl border border-gray-300 text-gray-600 font-semibold hover:bg-gray-50 transition cursor-pointer'>
+					{t('backToCards')}
 				</button>
 			</div>
 		)
 	}
 
 	return (
-		<div className='flex flex-col gap-6'>
+		<div className='flex flex-col gap-6 w-full md:max-w-3xl mx-auto'>
 			{questions.map((q, i) => (
-				<TestQuestion
-					key={q.id}
-					question={q}
-					index={i}
+				<TestQuestion key={q.id} question={q} index={i} total={questions.length}
 					selected={answers[q.id] ?? null}
 					onSelect={ans => setAnswers(prev => ({ ...prev, [q.id]: ans }))}
-					result={null}
-				/>
+					result={null} />
 			))}
-
-			<button
-				disabled={!allAnswered}
-				onClick={() => setSubmitted(true)}
-				className='w-full py-3 rounded-2xl bg-blue-500 text-white font-semibold hover:bg-blue-600 transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed'
-			>
-				Отправить тест
+			<button disabled={!allAnswered} onClick={() => setSubmitted(true)}
+				className='w-full py-3 rounded-2xl bg-blue-500 text-white font-semibold hover:bg-blue-600 transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed'>
+				{t('submitTest')}
 			</button>
 		</div>
 	)
 }
 
-const flashCard = () => {
+export default function FlashCardPage() {
+	const t = useTranslations('flashCard')
+	const searchParams = useSearchParams()
+	const deckId = searchParams.get('id')
+
+	const [deck, setDeck] = useState<IDeckWithCards | null>(null)
+	const [loading, setLoading] = useState(true)
 	const [flipped, setFlipped] = useState(false)
 	const [starred, setStarred] = useState(false)
 	const [mode, setMode] = useState<'cards' | 'test'>('cards')
 	const [editing, setEditing] = useState(false)
-	const [cardTerm, setCardTerm] = useState(
-		'sich erholen von (+ D) — Von dem Schock muss ich mich erst erholen.'
-	)
-	const [cardTranslation, setCardTranslation] = useState(
-		'восстанавливаться от / оправляться от'
-	)
+	const [cardIndex, setCardIndex] = useState(0)
+	const [shuffled, setShuffled] = useState(false)
+	const [displayCards, setDisplayCards] = useState<ICard[]>([])
 	const [showScrollTop, setShowScrollTop] = useState(false)
 	const scrollRef = useRef<HTMLDivElement>(null)
+
+	useEffect(() => {
+		if (!deckId) { setLoading(false); return }
+		getDeckAction(deckId).then(res => {
+			if (res.success) {
+				setDeck(res.data)
+				setDisplayCards(res.data.cards)
+				pushRecentDeck({ id: res.data.id, title: res.data.title })
+			}
+			setLoading(false)
+		})
+	}, [deckId])
 
 	const handleScroll = () => {
 		if (!scrollRef.current) return
@@ -426,173 +332,128 @@ const flashCard = () => {
 		setShowScrollTop(scrollTop + clientHeight > scrollHeight - 300)
 	}
 
-	const scrollToTop = () =>
-		scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
+	const scrollToTop = () => scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
+	const currentCard = displayCards[cardIndex]
 
-	const learned = MOCK_TERMS.filter(t => t.learned)
-	const unlearned = MOCK_TERMS.filter(t => !t.learned)
+	const handleShuffle = () => {
+		setDisplayCards(shuffled ? (deck?.cards ?? []) : shuffle([...(deck?.cards ?? [])]))
+		setShuffled(v => !v)
+		setCardIndex(0)
+		setFlipped(false)
+	}
+
+	if (loading) {
+		return (
+			<div className='h-dvh flex items-center justify-center'>
+				<div className='w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin' />
+			</div>
+		)
+	}
+
+	if (!deck || !deckId) {
+		return (
+			<div className='h-dvh flex flex-col items-center justify-center gap-4'>
+				<p className='text-gray-500'>{t('moduleNotFound')}</p>
+				<Link href='/modules' className='text-blue-600 font-semibold hover:underline'>
+					{t('backToModules')}
+				</Link>
+			</div>
+		)
+	}
 
 	return (
 		<div className='h-dvh flex flex-col overflow-hidden'>
-			{/* Header with back button */}
 			<div className='flex items-center px-4 md:px-10 py-4 border-b border-gray-100 bg-white shrink-0'>
-				<Link
-					href='/dashboard'
-					className='flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:text-blue-800 transition'
-				>
+				<Link href='/dashboard' className='flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:text-blue-800 transition'>
 					<ChevronLeft size={18} />
-					На главную
+					{t('backToHome')}
 				</Link>
 			</div>
 
-			<div className='flex-1 flex flex-col items-center  overflow-hidden'>
-				<div
-					ref={scrollRef}
-					onScroll={handleScroll}
-					className='flex-1 overflow-y-auto p-4 md:p-10'
-				>
-					<h2 className='text-2xl font-bold mb-6'>Verben mit pr</h2>
+			<div className='flex-1 flex flex-col items-center overflow-hidden'>
+				<div ref={scrollRef} onScroll={handleScroll} className='w-full flex-1 overflow-y-auto p-4 md:p-10'>
+				<div className='w-full flex flex-col items-center'>
+					<h2 className='text-2xl font-bold mb-6 self-start'>{deck.title}</h2>
+
 					<div className='inline-flex bg-gray-100 rounded-2xl p-1 gap-1 mb-6'>
 						{(['cards', 'test'] as const).map(m => (
-							<button
-								key={m}
-								onClick={() => setMode(m)}
-								className={`px-6 py-2 rounded-xl text-sm font-semibold transition-all duration-200 cursor-pointer ${
-									mode === m
-										? 'bg-white text-blue-600 shadow-sm'
-										: 'text-gray-500 hover:text-gray-800'
-								}`}
-							>
-								{m === 'cards' ? 'Карточки' : 'Тест'}
+							<button key={m} onClick={() => setMode(m)}
+								className={`px-6 py-2 rounded-xl text-sm font-semibold transition-all duration-200 cursor-pointer ${mode === m ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-800'}`}>
+								{m === 'cards' ? t('cards') : t('test')}
 							</button>
 						))}
 					</div>
 
 					{mode === 'test' ? (
-						<TestMode onBack={() => setMode('cards')} />
+						<TestMode cards={deck.cards} onBack={() => setMode('cards')} />
+					) : displayCards.length === 0 ? (
+						<div className='flex flex-col items-center gap-4 py-20'>
+							<p className='text-gray-400'>{t('noCards')}</p>
+							<Link href={`/add-card?id=${deckId}`} className='text-blue-600 font-semibold hover:underline'>
+								{t('addCards')}
+							</Link>
+						</div>
 					) : (
 						<>
-							<div
-								className='w-full md:w-187.5 h-60 md:h-100 rounded-lg cursor-pointer perspective-[1000px]'
-								onClick={() => setFlipped(v => !v)}
-							>
-								<div
-									className={`relative w-full h-full transition-transform duration-500 transform-3d ${flipped ? 'transform-[rotateY(180deg)]' : ''}`}
-								>
-									{/* Front */}
-									<div className='absolute inset-0 bg-white shadow-[0_0_20px_rgba(0,0,0,0.12)] rounded-lg [backface-visibility:hidden]'>
-										<div className='flex flex-row items-start justify-between p-4'>
-											<IconBtn tooltip='Подсказка'>
-												<Lightbulb />
-											</IconBtn>
-											<div className='flex flex-row items-start gap-2 md:gap-4'>
-												<IconBtn
-													tooltip='Редактировать'
-													onClick={() => setEditing(true)}
-												>
-													<Pencil />
-												</IconBtn>
-												<IconBtn tooltip='Произношение'>
-													<Volume2 />
-												</IconBtn>
-												<IconBtn
-													tooltip='В избранное'
-													onClick={() => setStarred(v => !v)}
-												>
-													<Star
-														size={24}
-														className={
-															starred ? 'fill-yellow-400 text-yellow-400' : ''
-														}
-													/>
-												</IconBtn>
+							{currentCard && (
+								<div className='w-full md:w-187.5 h-60 md:h-100 rounded-lg cursor-pointer perspective-[1000px]'
+									onClick={() => setFlipped(v => !v)}>
+									<div className={`relative w-full h-full transition-transform duration-500 transform-3d ${flipped ? 'transform-[rotateY(180deg)]' : ''}`}>
+										<div className='absolute inset-0 bg-white shadow-[0_0_20px_rgba(0,0,0,0.12)] rounded-lg backface-hidden'>
+											<div className='flex flex-row items-start justify-between p-4'>
+												<IconBtn tooltip={t('hint')}><Lightbulb /></IconBtn>
+												<div className='flex flex-row items-start gap-2 md:gap-4'>
+													<IconBtn tooltip={t('edit')} onClick={() => setEditing(true)}><Pencil /></IconBtn>
+													<IconBtn tooltip={t('pronounce')} onClick={() => speak(currentCard.front)}><Volume2 /></IconBtn>
+													<IconBtn tooltip={t('favorite')} onClick={() => setStarred(v => !v)}>
+														<Star size={24} className={starred ? 'fill-yellow-400 text-yellow-400' : ''} />
+													</IconBtn>
+												</div>
 											</div>
+											<p className='text-lg md:text-2xl text-center font-medium select-none justify-center items-center flex flex-1 px-6 h-[calc(100%-80px)]'>
+												{currentCard.front}
+											</p>
 										</div>
-										<p className='text-lg md:text-2xl text-center font-medium select-none justify-center items-center flex flex-1 px-6 h-[calc(100%-80px)]'>
-											{cardTerm}
-										</p>
-									</div>
-
-									{/* Back */}
-									<div className='absolute inset-0 bg-white shadow-[0_0_20px_rgba(0,0,0,0.12)] rounded-lg [backface-visibility:hidden] [transform:rotateY(180deg)]'>
-										<p className='flex items-center justify-center h-full text-xl md:text-2xl font-medium select-none text-gray-600 px-6 text-center'>
-											{cardTranslation}
-										</p>
+										<div className='absolute inset-0 bg-white shadow-[0_0_20px_rgba(0,0,0,0.12)] rounded-lg backface-hidden transform-[rotateY(180deg)]'>
+											<p className='flex items-center justify-center h-full text-xl md:text-2xl font-medium select-none text-gray-600 px-6 text-center'>
+												{currentCard.back}
+											</p>
+										</div>
 									</div>
 								</div>
-							</div>
+							)}
 
 							<div className='flex items-center justify-between mt-6 w-full md:w-187.5'>
 								<div className='w-10' />
 								<div className='flex items-center gap-4'>
-									<button className='bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-full transition cursor-pointer'>
+									<button onClick={() => { setCardIndex(i => Math.max(i - 1, 0)); setFlipped(false) }}
+										disabled={cardIndex === 0}
+										className='bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-full transition cursor-pointer disabled:opacity-40'>
 										<ChevronLeft size={18} />
 									</button>
-									<span className='text-gray-800 font-bold py-2 px-4'>
-										1/20
-									</span>
-									<button className='bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-full transition cursor-pointer'>
+									<span className='text-gray-800 font-bold py-2 px-4'>{cardIndex + 1}/{displayCards.length}</span>
+									<button onClick={() => { setCardIndex(i => Math.min(i + 1, displayCards.length - 1)); setFlipped(false) }}
+										disabled={cardIndex === displayCards.length - 1}
+										className='bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-full transition cursor-pointer disabled:opacity-40'>
 										<ChevronRight size={18} />
 									</button>
 								</div>
-								<IconBtn tooltip='Перемешать'>
-									<Repeat />
+								<IconBtn tooltip={t('shuffle')} onClick={handleShuffle}>
+									<Repeat className={shuffled ? 'text-blue-500' : ''} />
 								</IconBtn>
 							</div>
 
-							{/* Terms list */}
 							<div className='mt-12 w-full md:w-187.5'>
 								<h3 className='text-xl font-bold mb-4'>
-									Термины в модуле ({MOCK_TERMS.length})
+									{t('termsInModule', { count: deck.cards.length })}
 								</h3>
-
-								<div className='bg-gray-50 rounded-2xl p-4 md:p-5 mb-4'>
-									<div className='flex items-center justify-between mb-1'>
-										<span className='text-orange-500 font-bold'>
-											Изучено ({learned.length})
-										</span>
-										<button className='flex items-center gap-1 text-sm text-gray-500 hover:text-gray-800 transition cursor-pointer'>
-											<Star size={14} />
-											Выбрать {learned.length}
-										</button>
-									</div>
-									<p className='text-sm text-gray-500 mb-4'>
-										Вы начали изучать эти термины. Продолжайте!
-									</p>
-									<div className='flex flex-col gap-3'>
-										{learned.map(t => (
-											<TermCard
-												key={t.id}
-												term={t.term}
-												translation={t.translation}
-											/>
-										))}
-									</div>
+								<div className='flex flex-col gap-3 mb-4'>
+									{deck.cards.map(c => <TermCard key={c.id} card={c} />)}
 								</div>
-
-								<div className='bg-gray-50 rounded-2xl p-4 md:p-5'>
-									<div className='flex items-center justify-between mb-4'>
-										<span className='text-gray-700 font-bold'>
-											Не изучено ({unlearned.length})
-										</span>
-									</div>
-									<div className='flex flex-col gap-3'>
-										{unlearned.map(t => (
-											<TermCard
-												key={t.id}
-												term={t.term}
-												translation={t.translation}
-											/>
-										))}
-									</div>
-								</div>
-
-								<Link
-									className='mt-4 w-full flex items-center justify-center gap-2 py-3 px-6 rounded-2xl border border-gray-300 text-gray-600 hover:bg-gray-50 transition cursor-pointer text-sm font-medium'
-									href='/add-card'
-								>
+								<Link className='mt-4 w-full flex items-center justify-center gap-2 py-3 px-6 rounded-2xl border border-gray-300 text-gray-600 hover:bg-gray-50 transition cursor-pointer text-sm font-medium'
+									href={`/add-card?id=${deckId}`}>
 									<Pencil size={16} />
-									Добавить или удалить термины
+									{t('addOrRemoveTerms')}
 								</Link>
 							</div>
 						</>
@@ -600,31 +461,20 @@ const flashCard = () => {
 
 					<div className='h-10' />
 				</div>
+				</div>
 			</div>
 
-			{editing && (
-				<EditModal
-					term={cardTerm}
-					translation={cardTranslation}
-					onSave={(t, d) => {
-						setCardTerm(t)
-						setCardTranslation(d)
-					}}
-					onClose={() => setEditing(false)}
-				/>
+			{editing && currentCard && (
+				<EditModal term={currentCard.front} translation={currentCard.back}
+					onSave={() => {}} onClose={() => setEditing(false)} />
 			)}
 
-			{/* Scroll to top */}
 			{showScrollTop && (
-				<button
-					onClick={scrollToTop}
-					className='fixed bottom-6 right-6 w-11 h-11 bg-white border border-gray-200 shadow-md rounded-full flex items-center justify-center hover:bg-gray-50 transition cursor-pointer z-50'
-				>
+				<button onClick={scrollToTop}
+					className='fixed bottom-6 right-6 w-11 h-11 bg-white border border-gray-200 shadow-md rounded-full flex items-center justify-center hover:bg-gray-50 transition cursor-pointer z-50'>
 					<ArrowUp size={18} className='text-gray-600' />
 				</button>
 			)}
 		</div>
 	)
 }
-
-export default flashCard

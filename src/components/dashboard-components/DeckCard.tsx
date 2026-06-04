@@ -6,15 +6,15 @@ import { useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
 interface DeckCardProps {
+	id: string
 	title: string
-	progress: number
 	canRemove: boolean
 	onHide: () => void
 }
 
 export default function DeckCard({
+	id,
 	title,
-	progress,
 	canRemove,
 	onHide
 }: DeckCardProps) {
@@ -37,7 +37,7 @@ export default function DeckCard({
 	return (
 		<>
 			<Link
-				href='/flash-card'
+				href={`/flash-card?id=${id}`}
 				className='min-w-[90%] md:min-w-[88%] p-6 bg-white shadow-[0_-2px_6px_rgba(0,0,0,0.08)] flex flex-col gap-4 rounded-3xl border border-gray-300 cursor-pointer'
 			>
 				<div className='flex justify-between items-center'>
@@ -52,15 +52,6 @@ export default function DeckCard({
 					</button>
 				</div>
 
-				<div className='w-[60%] h-4 bg-gray-200 rounded-full overflow-hidden'>
-					<div
-						className='h-full rounded-full bg-blue-500'
-						style={{ width: `${progress}%` }}
-					/>
-				</div>
-				<p className='text-gray-600 font-bold text-sm'>
-					{progress}% вопросов пройдено
-				</p>
 				<span className='mt-2 px-4 py-2 w-fit bg-blue-500 text-white rounded-2xl cursor-pointer hover:bg-blue-600 transition'>
 					Продолжить
 				</span>

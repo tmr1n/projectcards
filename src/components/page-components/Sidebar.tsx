@@ -3,17 +3,12 @@
 import { Folder, House, LogOut, Plus } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import Logo from '@/components/Logo'
 import { UserAvatar } from '@/components/profile/UserAvatar'
+import { getRecentDecks, type RecentDeck } from '@/hooks/useRecentDecks'
 import { useAuthStore } from '@/store/authStore'
-
-const teams = [
-	{ letter: 'V', name: 'Verben mit präposition', color: 'bg-gray-600' },
-	{ letter: 'E', name: 'English', color: 'bg-indigo-600' },
-	{ letter: 'A', name: 'Adjektive', color: 'bg-emerald-600' }
-]
 
 export default function Sidebar() {
 	const logout = useAuthStore(state => state.logout)
@@ -23,15 +18,17 @@ export default function Sidebar() {
 
 	const user = useAuthStore(state => state.user)
 	const fetchProfile = useAuthStore(state => state.fetchProfile)
+	const [recentDecks, setRecentDecks] = useState<RecentDeck[]>([])
 
 	useEffect(() => {
 		if (!user) fetchProfile()
+		setRecentDecks(getRecentDecks())
 	}, [])
 
 	const navItems = [
-		{ icon: House, label: t('nav.home'), badge: '5', href: '/dashboard' },
+		{ icon: House, label: t('nav.home'), href: '/dashboard' },
 		{ icon: Plus, label: t('nav.addModule'), href: '/create-module' },
-		{ icon: Folder, label: t('nav.modules'), badge: '12', href: '/modules' }
+		{ icon: Folder, label: t('nav.modules'), href: '/modules' }
 	] as const
 
 	const activeIndex = navItems.findIndex(item => pathname.includes(item.href))
@@ -43,40 +40,40 @@ export default function Sidebar() {
 			</div>
 
 			<nav className='flex-1 px-3 space-y-1 overflow-y-auto'>
-				{navItems.map(({ icon: Icon, label, badge, href }, i) => (
+				{navItems.map(({ icon: Icon, label, href }, i) => (
 					<Link
 						key={i}
 						href={href}
 						className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
 							activeIndex === i
 								? 'bg-blue-100 text-blue-700 font-semibold'
-								: 'text-gray-400 hover:bg-gray-100 '
+								: 'text-gray-400 hover:bg-gray-100'
 						}`}
 					>
 						<Icon size={20} />
 						<span className='flex-1 text-left'>{label}</span>
-						{badge && <span className='text-xs'>{badge}</span>}
 					</Link>
 				))}
 
-				<div className='pt-6'>
-					<p className='px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2'>
-						{t('lastModules')}
-					</p>
-					{teams.map(({ letter, name, color }) => (
-						<button
-							key={name}
-							className='w-full flex font-semibold items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-100 transition-colors cursor-pointer'
-						>
-							<span
-								className={`${color} text-white text-xs font-bold w-6 h-6 rounded flex items-center justify-center shrink-0`}
+				{recentDecks.length > 0 && (
+					<div className='pt-6'>
+						<p className='px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2'>
+							{t('lastModules')}
+						</p>
+						{recentDecks.map(deck => (
+							<Link
+								key={deck.id}
+								href={`/flash-card?id=${deck.id}`}
+								className='w-full flex font-semibold items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-100 transition-colors cursor-pointer'
 							>
-								{letter}
-							</span>
-							{name}
-						</button>
-					))}
-				</div>
+								<span className='bg-blue-500 text-white text-xs font-bold w-6 h-6 rounded flex items-center justify-center shrink-0'>
+									{deck.title.charAt(0).toUpperCase()}
+								</span>
+								<span className='truncate'>{deck.title}</span>
+							</Link>
+						))}
+					</div>
+				)}
 			</nav>
 
 			<div className='p-4 border-t-2 border-gray-300'>

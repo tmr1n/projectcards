@@ -204,7 +204,71 @@
 			"addModule": "Modul hinzufügen",
 			"modules": "Module"
 		},
-		"lastModules": "Letzte Module"
+		"lastModules": "Letzte Module",
+		"continueLearning": "Weiter lernen",
+		"recent": "Zuletzt geöffnet",
+		"noModules": "Du hast noch keine Module. Erstelle dein erstes!"
+	},
+	"modules": {
+		"title": "Meine Module",
+		"newModule": "Neues Modul",
+		"searchPlaceholder": "Modul suchen...",
+		"cards": "Karten",
+		"notFound": "Keine Module gefunden",
+		"notFoundHint": "Versuche eine andere Suche oder erstelle ein neues Modul"
+	},
+	"flashCard": {
+		"backToHome": "Zur Startseite",
+		"cards": "Karten",
+		"test": "Test",
+		"hint": "Hinweis",
+		"edit": "Bearbeiten",
+		"pronounce": "Aussprechen",
+		"favorite": "Favorit",
+		"shuffle": "Mischen",
+		"termsInModule": "Begriffe im Modul ({count})",
+		"addOrRemoveTerms": "Begriffe hinzufügen oder entfernen",
+		"selectAnswer": "Antwort wählen",
+		"termOf": "Begriff {index} von {total}",
+		"testResults": "Testergebnisse",
+		"correct": "Richtig",
+		"wrong": "Falsch",
+		"retake": "Erneut testen",
+		"backToCards": "Zurück zu Karten",
+		"submitTest": "Test abgeben",
+		"noCardsForTest": "Mindestens 2 Karten werden für den Test benötigt",
+		"noCards": "Dieses Modul hat noch keine Karten",
+		"addCards": "Karten hinzufügen",
+		"moduleNotFound": "Modul nicht gefunden",
+		"backToModules": "Zu den Modulen",
+		"save": "Speichern",
+		"cancel": "Abbrechen"
+	},
+	"createModule": {
+		"titleLabel": "Modulname",
+		"titlePlaceholder": "Name eingeben...",
+		"descriptionPlaceholder": "Beschreibung hinzufügen...",
+		"backToModules": "Meine Module",
+		"create": "Erstellen",
+		"creating": "Wird erstellt...",
+		"term": "Begriff",
+		"definition": "Definition",
+		"addCard": "Karte hinzufügen",
+		"dragToReorder": "Zum Neuanordnen ziehen",
+		"errorTitle": "Bitte einen Modulnamen eingeben",
+		"errorCards": "Bitte mindestens eine Karte hinzufügen"
+	},
+	"addCard": {
+		"titleLabel": "Name",
+		"backToModule": "Zurück zum Modul",
+		"done": "Fertig",
+		"saving": "Wird gespeichert...",
+		"term": "Begriff",
+		"definition": "Definition",
+		"addCard": "Karte hinzufügen",
+		"dragToReorder": "Zum Neuanordnen ziehen",
+		"moduleNotFound": "Modul nicht gefunden",
+		"descriptionPlaceholder": "Beschreibung hinzufügen..."
 	},
 	"cards": {
 		"title": "Karten"
