@@ -103,8 +103,8 @@ function SortableCard({
 	)
 }
 
-export default function AddCardPage() {
-	const [title, setTitle] = useState('Verben mit pr')
+export default function CreateModulePage() {
+	const [title, setTitle] = useState('')
 	const [description, setDescription] = useState('')
 	const [cards, setCards] = useState<Card[]>([
 		{ id: 1, term: '', definition: '' }
@@ -125,20 +125,20 @@ export default function AddCardPage() {
 		<div className='min-h-dvh bg-gray-50'>
 			<div className='flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200'>
 				<Link
-					href='/flash-card'
+					href='/modules'
 					className='flex items-center gap-1 text-blue-600 font-semibold hover:text-blue-800 transition text-sm'
 				>
 					<ChevronLeft size={18} />
-					Назад к модулю
+					Мои модули
 				</Link>
 				<button className='bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2.5 rounded-full transition cursor-pointer text-sm'>
-					Готово
+					Создать
 				</button>
 			</div>
 
 			<div className='max-w-4xl mx-auto px-6 py-8 flex flex-col gap-4'>
 				<div className='bg-white rounded-xl border border-gray-200 px-5 py-4'>
-					<p className='text-xs text-gray-400 mb-1'>Название</p>
+					<p className='text-xs text-gray-400 mb-1'>Название модуля</p>
 					<input
 						value={title}
 						onChange={e => setTitle(e.target.value)}
@@ -203,7 +203,7 @@ export default function AddCardPage() {
 					</button>
 					<div className='flex-1 flex justify-end'>
 						<button className='bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2.5 rounded-full transition cursor-pointer text-sm'>
-							Готово
+							Создать
 						</button>
 					</div>
 				</div>

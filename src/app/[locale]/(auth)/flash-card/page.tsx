@@ -11,13 +11,9 @@ import {
 	Volume2,
 	X
 } from 'lucide-react'
-import NextLink from 'next/link'
+import Link from 'next/link'
 import { useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import Logo from '@/components/Logo'
-import BottomNav from '@/components/page-components/BottomNav'
-import Sidebar from '@/components/page-components/Sidebar'
-import { UserAvatar } from '@/components/profile/UserAvatar'
 
 const MOCK_TERMS = [
 	{
@@ -213,13 +209,214 @@ function TermCard({
 	)
 }
 
+function shuffle<T>(arr: T[]): T[] {
+	return [...arr].sort(() => Math.random() - 0.5)
+}
+
+function buildQuestions() {
+	return MOCK_TERMS.map(term => {
+		const wrong = shuffle(MOCK_TERMS.filter(t => t.id !== term.id)).slice(0, 3)
+		const options = shuffle([
+			term.translation,
+			...wrong.map(t => t.translation)
+		])
+		return { id: term.id, term: term.term, correct: term.translation, options }
+	})
+}
+
+type Question = ReturnType<typeof buildQuestions>[number]
+
+function TestQuestion({
+	question,
+	index,
+	selected,
+	onSelect,
+	result
+}: {
+	question: Question
+	index: number
+	selected: string | null
+	onSelect: (answer: string) => void
+	result: 'correct' | 'wrong' | null
+}) {
+	return (
+		<div className='bg-white rounded-2xl shadow-[0_0_12px_rgba(0,0,0,0.07)] p-6'>
+			<p className='text-xs text-gray-400 font-semibold mb-1'>
+				Термин {index + 1} из {MOCK_TERMS.length}
+			</p>
+			<p className='text-base font-semibold text-gray-800 mb-5 leading-relaxed'>
+				{question.term}
+			</p>
+			<p className='text-xs text-gray-400 uppercase tracking-wide mb-3'>
+				Выберите ответ
+			</p>
+			<div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
+				{question.options.map(opt => {
+					let style =
+						'border border-gray-200 text-gray-800 hover:border-blue-400 hover:bg-blue-50'
+					if (result && selected === opt) {
+						style =
+							result === 'correct'
+								? 'border-2 border-green-500 bg-green-50 text-green-800'
+								: 'border-2 border-red-400 bg-red-50 text-red-800'
+					}
+					if (result && result === 'wrong' && opt === question.correct) {
+						style = 'border-2 border-green-500 bg-green-50 text-green-800'
+					}
+					return (
+						<button
+							key={opt}
+							disabled={!!result}
+							onClick={() => onSelect(opt)}
+							className={`text-left px-4 py-3 rounded-xl text-sm transition cursor-pointer disabled:cursor-default ${style}`}
+						>
+							{opt}
+						</button>
+					)
+				})}
+			</div>
+		</div>
+	)
+}
+
+function TestMode({ onBack }: { onBack: () => void }) {
+	const [questions] = useState<Question[]>(() => buildQuestions())
+	const [answers, setAnswers] = useState<Record<number, string>>({})
+	const [submitted, setSubmitted] = useState(false)
+
+	const allAnswered = questions.every(q => answers[q.id] != null)
+
+	const results = submitted
+		? questions.map(q => ({
+				...q,
+				selected: answers[q.id] ?? null,
+				correct: q.correct,
+				isCorrect: answers[q.id] === q.correct
+			}))
+		: null
+
+	const correctCount = results?.filter(r => r.isCorrect).length ?? 0
+	const wrongCount = results ? results.length - correctCount : 0
+
+	if (submitted && results) {
+		return (
+			<div className='flex flex-col gap-6'>
+				{/* Results summary */}
+				<div className='bg-white rounded-2xl shadow-[0_0_12px_rgba(0,0,0,0.07)] p-6'>
+					<h3 className='text-xl font-bold mb-4'>Результаты теста</h3>
+					<div className='flex items-center gap-8'>
+						<div className='relative w-24 h-24 shrink-0'>
+							<svg viewBox='0 0 36 36' className='w-full h-full -rotate-90'>
+								<circle
+									cx='18'
+									cy='18'
+									r='15.9'
+									fill='none'
+									stroke='#f97316'
+									strokeWidth='3'
+								/>
+								<circle
+									cx='18'
+									cy='18'
+									r='15.9'
+									fill='none'
+									stroke='#22c55e'
+									strokeWidth='3'
+									strokeDasharray={`${(correctCount / questions.length) * 100} 100`}
+									strokeLinecap='round'
+								/>
+							</svg>
+							<span className='absolute inset-0 flex items-center justify-center text-sm font-bold text-gray-700'>
+								{Math.round((correctCount / questions.length) * 100)}%
+							</span>
+						</div>
+						<div className='flex flex-col gap-2'>
+							<div className='flex items-center gap-3'>
+								<span className='text-green-600 font-semibold'>Правильно</span>
+								<span className='bg-green-100 text-green-700 font-bold px-3 py-0.5 rounded-full text-sm'>
+									{correctCount}
+								</span>
+							</div>
+							<div className='flex items-center gap-3'>
+								<span className='text-orange-500 font-semibold'>
+									Неправильно
+								</span>
+								<span className='bg-orange-100 text-orange-600 font-bold px-3 py-0.5 rounded-full text-sm'>
+									{wrongCount}
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				{/* Per-question review */}
+				<div className='flex flex-col gap-4'>
+					{results.map((r, i) => (
+						<TestQuestion
+							key={r.id}
+							question={r}
+							index={i}
+							selected={r.selected}
+							onSelect={() => {}}
+							result={r.isCorrect ? 'correct' : 'wrong'}
+						/>
+					))}
+				</div>
+
+				<button
+					onClick={() => {
+						setAnswers({})
+						setSubmitted(false)
+					}}
+					className='w-full py-3 rounded-2xl bg-blue-500 text-white font-semibold hover:bg-blue-600 transition cursor-pointer'
+				>
+					Пройти снова
+				</button>
+				<button
+					onClick={onBack}
+					className='w-full py-3 rounded-2xl border border-gray-300 text-gray-600 font-semibold hover:bg-gray-50 transition cursor-pointer'
+				>
+					К карточкам
+				</button>
+			</div>
+		)
+	}
+
+	return (
+		<div className='flex flex-col gap-6'>
+			{questions.map((q, i) => (
+				<TestQuestion
+					key={q.id}
+					question={q}
+					index={i}
+					selected={answers[q.id] ?? null}
+					onSelect={ans => setAnswers(prev => ({ ...prev, [q.id]: ans }))}
+					result={null}
+				/>
+			))}
+
+			<button
+				disabled={!allAnswered}
+				onClick={() => setSubmitted(true)}
+				className='w-full py-3 rounded-2xl bg-blue-500 text-white font-semibold hover:bg-blue-600 transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed'
+			>
+				Отправить тест
+			</button>
+		</div>
+	)
+}
+
 const flashCard = () => {
 	const [flipped, setFlipped] = useState(false)
 	const [starred, setStarred] = useState(false)
 	const [mode, setMode] = useState<'cards' | 'test'>('cards')
 	const [editing, setEditing] = useState(false)
-	const [cardTerm, setCardTerm] = useState('sich erholen von (+ D) — Von dem Schock muss ich mich erst erholen.')
-	const [cardTranslation, setCardTranslation] = useState('восстанавливаться от / оправляться от')
+	const [cardTerm, setCardTerm] = useState(
+		'sich erholen von (+ D) — Von dem Schock muss ich mich erst erholen.'
+	)
+	const [cardTranslation, setCardTranslation] = useState(
+		'восстанавливаться от / оправляться от'
+	)
 	const [showScrollTop, setShowScrollTop] = useState(false)
 	const scrollRef = useRef<HTMLDivElement>(null)
 
@@ -236,18 +433,19 @@ const flashCard = () => {
 	const unlearned = MOCK_TERMS.filter(t => !t.learned)
 
 	return (
-		<div className='h-dvh flex overflow-hidden'>
-			<Sidebar />
+		<div className='h-dvh flex flex-col overflow-hidden'>
+			{/* Header with back button */}
+			<div className='flex items-center px-4 md:px-10 py-4 border-b border-gray-100 bg-white shrink-0'>
+				<Link
+					href='/dashboard'
+					className='flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:text-blue-800 transition'
+				>
+					<ChevronLeft size={18} />
+					На главную
+				</Link>
+			</div>
 
-			<div className='flex-1 flex flex-col overflow-hidden'>
-				{/* Mobile header */}
-				<div className='flex justify-between items-center p-4 md:hidden shrink-0'>
-					<Logo size={55} />
-					<NextLink href='/profile'>
-						<UserAvatar size={60} />
-					</NextLink>
-				</div>
-
+			<div className='flex-1 flex flex-col items-center  overflow-hidden'>
 				<div
 					ref={scrollRef}
 					onScroll={handleScroll}
@@ -270,128 +468,137 @@ const flashCard = () => {
 						))}
 					</div>
 
-					<div
-						className='w-full md:w-187.5 h-60 md:h-100 rounded-lg cursor-pointer perspective-[1000px]'
-						onClick={() => setFlipped(v => !v)}
-					>
-						<div
-							className={`relative w-full h-full transition-transform duration-500 transform-3d ${flipped ? 'transform-[rotateY(180deg)]' : ''}`}
-						>
-							{/* Front */}
-							<div className='absolute inset-0 bg-white shadow-[0_0_20px_rgba(0,0,0,0.12)] rounded-lg [backface-visibility:hidden]'>
-								<div className='flex flex-row items-start justify-between p-4'>
-									<IconBtn tooltip='Подсказка'>
-										<Lightbulb />
-									</IconBtn>
-									<div className='flex flex-row items-start gap-2 md:gap-4'>
-										<IconBtn tooltip='Редактировать' onClick={() => setEditing(true)}>
-											<Pencil />
-										</IconBtn>
-										<IconBtn tooltip='Произношение'>
-											<Volume2 />
-										</IconBtn>
-										<IconBtn
-											tooltip='В избранное'
-											onClick={() => setStarred(v => !v)}
-										>
-											<Star
-												size={24}
-												className={
-													starred ? 'fill-yellow-400 text-yellow-400' : ''
-												}
-											/>
-										</IconBtn>
+					{mode === 'test' ? (
+						<TestMode onBack={() => setMode('cards')} />
+					) : (
+						<>
+							<div
+								className='w-full md:w-187.5 h-60 md:h-100 rounded-lg cursor-pointer perspective-[1000px]'
+								onClick={() => setFlipped(v => !v)}
+							>
+								<div
+									className={`relative w-full h-full transition-transform duration-500 transform-3d ${flipped ? 'transform-[rotateY(180deg)]' : ''}`}
+								>
+									{/* Front */}
+									<div className='absolute inset-0 bg-white shadow-[0_0_20px_rgba(0,0,0,0.12)] rounded-lg [backface-visibility:hidden]'>
+										<div className='flex flex-row items-start justify-between p-4'>
+											<IconBtn tooltip='Подсказка'>
+												<Lightbulb />
+											</IconBtn>
+											<div className='flex flex-row items-start gap-2 md:gap-4'>
+												<IconBtn
+													tooltip='Редактировать'
+													onClick={() => setEditing(true)}
+												>
+													<Pencil />
+												</IconBtn>
+												<IconBtn tooltip='Произношение'>
+													<Volume2 />
+												</IconBtn>
+												<IconBtn
+													tooltip='В избранное'
+													onClick={() => setStarred(v => !v)}
+												>
+													<Star
+														size={24}
+														className={
+															starred ? 'fill-yellow-400 text-yellow-400' : ''
+														}
+													/>
+												</IconBtn>
+											</div>
+										</div>
+										<p className='text-lg md:text-2xl text-center font-medium select-none justify-center items-center flex flex-1 px-6 h-[calc(100%-80px)]'>
+											{cardTerm}
+										</p>
+									</div>
+
+									{/* Back */}
+									<div className='absolute inset-0 bg-white shadow-[0_0_20px_rgba(0,0,0,0.12)] rounded-lg [backface-visibility:hidden] [transform:rotateY(180deg)]'>
+										<p className='flex items-center justify-center h-full text-xl md:text-2xl font-medium select-none text-gray-600 px-6 text-center'>
+											{cardTranslation}
+										</p>
 									</div>
 								</div>
-								<p className='text-lg md:text-2xl text-center font-medium select-none justify-center items-center flex flex-1 px-6 h-[calc(100%-80px)]'>
-									{cardTerm}
-								</p>
 							</div>
 
-							{/* Back */}
-							<div className='absolute inset-0 bg-white shadow-[0_0_20px_rgba(0,0,0,0.12)] rounded-lg [backface-visibility:hidden] [transform:rotateY(180deg)]'>
-								<p className='flex items-center justify-center h-full text-xl md:text-2xl font-medium select-none text-gray-600 px-6 text-center'>
-									{cardTranslation}
-								</p>
+							<div className='flex items-center justify-between mt-6 w-full md:w-187.5'>
+								<div className='w-10' />
+								<div className='flex items-center gap-4'>
+									<button className='bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-full transition cursor-pointer'>
+										<ChevronLeft size={18} />
+									</button>
+									<span className='text-gray-800 font-bold py-2 px-4'>
+										1/20
+									</span>
+									<button className='bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-full transition cursor-pointer'>
+										<ChevronRight size={18} />
+									</button>
+								</div>
+								<IconBtn tooltip='Перемешать'>
+									<Repeat />
+								</IconBtn>
 							</div>
-						</div>
-					</div>
 
-					<div className='flex items-center justify-between mt-6 w-full md:w-187.5'>
-						<div className='w-10' />
-						<div className='flex items-center gap-4'>
-							<button className='bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-full transition cursor-pointer'>
-								<ChevronLeft size={18} />
-							</button>
-							<span className='text-gray-800 font-bold py-2 px-4'>1/20</span>
-							<button className='bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-full transition cursor-pointer'>
-								<ChevronRight size={18} />
-							</button>
-						</div>
-						<IconBtn tooltip='Перемешать'>
-							<Repeat />
-						</IconBtn>
-					</div>
+							{/* Terms list */}
+							<div className='mt-12 w-full md:w-187.5'>
+								<h3 className='text-xl font-bold mb-4'>
+									Термины в модуле ({MOCK_TERMS.length})
+								</h3>
 
-					{/* Terms list */}
-					<div className='mt-12 w-full md:w-187.5'>
-						<h3 className='text-xl font-bold mb-4'>
-							Термины в модуле ({MOCK_TERMS.length})
-						</h3>
+								<div className='bg-gray-50 rounded-2xl p-4 md:p-5 mb-4'>
+									<div className='flex items-center justify-between mb-1'>
+										<span className='text-orange-500 font-bold'>
+											Изучено ({learned.length})
+										</span>
+										<button className='flex items-center gap-1 text-sm text-gray-500 hover:text-gray-800 transition cursor-pointer'>
+											<Star size={14} />
+											Выбрать {learned.length}
+										</button>
+									</div>
+									<p className='text-sm text-gray-500 mb-4'>
+										Вы начали изучать эти термины. Продолжайте!
+									</p>
+									<div className='flex flex-col gap-3'>
+										{learned.map(t => (
+											<TermCard
+												key={t.id}
+												term={t.term}
+												translation={t.translation}
+											/>
+										))}
+									</div>
+								</div>
 
-						<div className='bg-gray-50 rounded-2xl p-4 md:p-5 mb-4'>
-							<div className='flex items-center justify-between mb-1'>
-								<span className='text-orange-500 font-bold'>
-									Изучено ({learned.length})
-								</span>
-								<button className='flex items-center gap-1 text-sm text-gray-500 hover:text-gray-800 transition cursor-pointer'>
-									<Star size={14} />
-									Выбрать {learned.length}
-								</button>
+								<div className='bg-gray-50 rounded-2xl p-4 md:p-5'>
+									<div className='flex items-center justify-between mb-4'>
+										<span className='text-gray-700 font-bold'>
+											Не изучено ({unlearned.length})
+										</span>
+									</div>
+									<div className='flex flex-col gap-3'>
+										{unlearned.map(t => (
+											<TermCard
+												key={t.id}
+												term={t.term}
+												translation={t.translation}
+											/>
+										))}
+									</div>
+								</div>
+
+								<Link
+									className='mt-4 w-full flex items-center justify-center gap-2 py-3 px-6 rounded-2xl border border-gray-300 text-gray-600 hover:bg-gray-50 transition cursor-pointer text-sm font-medium'
+									href='/add-card'
+								>
+									<Pencil size={16} />
+									Добавить или удалить термины
+								</Link>
 							</div>
-							<p className='text-sm text-gray-500 mb-4'>
-								Вы начали изучать эти термины. Продолжайте!
-							</p>
-							<div className='flex flex-col gap-3'>
-								{learned.map(t => (
-									<TermCard
-										key={t.id}
-										term={t.term}
-										translation={t.translation}
-									/>
-								))}
-							</div>
-						</div>
-
-						<div className='bg-gray-50 rounded-2xl p-4 md:p-5'>
-							<div className='flex items-center justify-between mb-4'>
-								<span className='text-gray-700 font-bold'>
-									Не изучено ({unlearned.length})
-								</span>
-							</div>
-							<div className='flex flex-col gap-3'>
-								{unlearned.map(t => (
-									<TermCard
-										key={t.id}
-										term={t.term}
-										translation={t.translation}
-									/>
-								))}
-							</div>
-						</div>
-
-						<button className='mt-4 w-full flex items-center justify-center gap-2 py-3 px-6 rounded-2xl border border-gray-300 text-gray-600 hover:bg-gray-50 transition cursor-pointer text-sm font-medium'>
-							<Pencil size={16} />
-							Добавить или удалить термины
-						</button>
-					</div>
+						</>
+					)}
 
 					<div className='h-10' />
-				</div>
-
-				{/* Mobile bottom nav */}
-				<div className='flex justify-center md:hidden shrink-0'>
-					<BottomNav />
 				</div>
 			</div>
 
@@ -399,7 +606,10 @@ const flashCard = () => {
 				<EditModal
 					term={cardTerm}
 					translation={cardTranslation}
-					onSave={(t, d) => { setCardTerm(t); setCardTranslation(d) }}
+					onSave={(t, d) => {
+						setCardTerm(t)
+						setCardTranslation(d)
+					}}
 					onClose={() => setEditing(false)}
 				/>
 			)}

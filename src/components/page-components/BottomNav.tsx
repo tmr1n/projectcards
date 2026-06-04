@@ -1,23 +1,25 @@
 'use client'
 
 import { Folder, House, Plus } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-const popups: Record<number, { Icon: typeof Plus; label: string }> = {
-	1: { Icon: Plus, label: 'Добавить модуль' },
-	2: { Icon: Folder, label: 'Мои модули' },
+const popups: Record<number, { Icon: typeof Plus; label: string; href: string }> = {
+	1: { Icon: Plus, label: 'Добавить модуль', href: '/create-module' },
+	2: { Icon: Folder, label: 'Мои модули', href: '/modules' }
 }
 
 export default function BottomNav() {
-	const [active, setActive] = useState(0)
 	const [openIndex, setOpenIndex] = useState<number | null>(null)
 	const [displayIndex, setDisplayIndex] = useState<number>(1)
 	const router = useRouter()
+	const pathname = usePathname()
+
+	const isModules = pathname.includes('/modules')
+	const activeIndex = isModules ? 2 : 0
 
 	const handleNavClick = (i: number) => {
 		if (i === 0) {
-			setActive(0)
 			setOpenIndex(null)
 			router.push('/dashboard')
 		} else if (openIndex === i) {
@@ -46,7 +48,10 @@ export default function BottomNav() {
 					}`}
 				>
 					<button
-						onClick={() => setOpenIndex(null)}
+						onClick={() => {
+							setOpenIndex(null)
+							router.push(popup.href)
+						}}
 						className='flex items-center gap-3 whitespace-nowrap rounded-2xl bg-blue-600 px-5 py-3.5 text-white font-medium text-sm shadow-lg transition-colors duration-200 hover:bg-blue-700 active:bg-blue-800'
 					>
 						<span className='bg-white/20 rounded-full p-1.5'>
@@ -63,7 +68,7 @@ export default function BottomNav() {
 							key={i}
 							onClick={() => handleNavClick(i)}
 							className={`rounded-full w-15 h-15 m-2 flex items-center justify-center cursor-pointer transition-colors duration-200 ${
-								(i === 0 ? active === 0 : openIndex === i) ? 'bg-blue-900' : 'bg-blue-600'
+								(openIndex === i || (openIndex === null && activeIndex === i)) ? 'bg-blue-900' : 'bg-blue-600'
 							}`}
 						>
 							<Icon size={40} color='white' />

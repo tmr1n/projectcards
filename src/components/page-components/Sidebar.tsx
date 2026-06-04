@@ -2,8 +2,8 @@
 
 import { Folder, House, LogOut, Plus } from 'lucide-react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import Logo from '@/components/Logo'
 import { UserAvatar } from '@/components/profile/UserAvatar'
@@ -16,9 +16,9 @@ const teams = [
 ]
 
 export default function Sidebar() {
-	const [active, setActive] = useState(0)
 	const logout = useAuthStore(state => state.logout)
 	const router = useRouter()
+	const pathname = usePathname()
 	const t = useTranslations('dashboard')
 
 	const user = useAuthStore(state => state.user)
@@ -28,6 +28,14 @@ export default function Sidebar() {
 		if (!user) fetchProfile()
 	}, [])
 
+	const navItems = [
+		{ icon: House, label: t('nav.home'), badge: '5', href: '/dashboard' },
+		{ icon: Plus, label: t('nav.addModule'), href: '/create-module' },
+		{ icon: Folder, label: t('nav.modules'), badge: '12', href: '/modules' }
+	] as const
+
+	const activeIndex = navItems.findIndex(item => pathname.includes(item.href))
+
 	return (
 		<div className='hidden md:flex flex-col w-64 bg-white h-screen shrink-0'>
 			<div className='p-6'>
@@ -35,16 +43,12 @@ export default function Sidebar() {
 			</div>
 
 			<nav className='flex-1 px-3 space-y-1 overflow-y-auto'>
-				{([
-					{ icon: House, label: t('nav.home'), badge: '5' },
-					{ icon: Plus, label: t('nav.addModule') },
-					{ icon: Folder, label: t('nav.modules'), badge: '12' }
-				] as const).map(({ icon: Icon, label, badge }, i) => (
-					<button
+				{navItems.map(({ icon: Icon, label, badge, href }, i) => (
+					<Link
 						key={i}
-						onClick={() => setActive(i)}
+						href={href}
 						className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
-							active === i
+							activeIndex === i
 								? 'bg-blue-100 text-blue-700 font-semibold'
 								: 'text-gray-400 hover:bg-gray-100 '
 						}`}
@@ -52,7 +56,7 @@ export default function Sidebar() {
 						<Icon size={20} />
 						<span className='flex-1 text-left'>{label}</span>
 						{badge && <span className='text-xs'>{badge}</span>}
-					</button>
+					</Link>
 				))}
 
 				<div className='pt-6'>
