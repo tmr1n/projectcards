@@ -3,7 +3,7 @@ import type { IFirstSideComponentProps } from '@/shared/types/layout.types'
 
 export function FirstSideComponent({ text }: IFirstSideComponentProps) {
 	return (
-		<div className="hidden md:w-[50%] md:bg-[url('/images/Registration-img.png')] md:bg-cover md:bg-center md:flex md:flex-col md:justify-between md:p-8">
+		<div className='hidden md:w-[50%] md:bg-gradient-to-br md:from-blue-100 md:via-indigo-100 md:to-violet-200 md:flex md:flex-col md:justify-between md:p-8'>
 			<p className='text-[2.75rem] max-w-sm font-nunito wrap-break-word text-[#333333] font-bold leading-[1.3]'>
 				{text}
 			</p>

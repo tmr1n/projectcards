@@ -2,7 +2,7 @@
 
 # LangCards
 
-**Flashcard-based language learning app — your personal Quizlet, built from scratch.**
+**Lernkarten-App zum Sprachenlernen — dein eigenes Quizlet, von Grund auf selbst gebaut.**
 
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)](https://typescriptlang.org)
@@ -13,64 +13,52 @@
 
 ---
 
-## What is this
+> Nicht-kommerzielles Lernprojekt.
 
-LangCards is a flashcard learning platform. Create decks, study words with spaced repetition, track your progress. Think Quizlet — but you own the code.
+## Worum geht es
 
-## Stack
+LangCards ist eine Lernplattform mit Karteikarten: Stapel anlegen, Vokabeln lernen, Fortschritt verfolgen. Wie Quizlet — nur mit eigenem Code. Dies ist das Frontend; das [Backend (NestJS)](https://github.com/tmr1n/cards-api) liegt in einem separaten Repository.
 
-| Layer | Tech |
+## Tech-Stack
+
+| Bereich | Technologie |
 |---|---|
 | Framework | Next.js 16 (App Router) |
-| Language | TypeScript 5 |
+| Sprache | TypeScript 5 |
 | Styling | Tailwind CSS 4 |
-| State | Zustand 5 (with persist) |
-| Forms | React Hook Form + Zod |
-| Animations | Framer Motion |
+| State | Zustand 5 (mit persist) |
+| Daten | TanStack Query |
+| Formulare | React Hook Form + Zod |
+| Sprachen | next-intl (Deutsch, Englisch, Russisch) |
+| Animationen | Framer Motion |
 | Runtime | Bun |
 
-## Getting started
+## Lokal starten
+
+Voraussetzung: das laufende [Backend](https://github.com/tmr1n/cards-api).
 
 ```bash
 bun install
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+App öffnen: [http://localhost:3000](http://localhost:3000).
 
-## Project structure
+## Struktur
 
 ```
 src/
-├── app/
-│   ├── (auth)/        # login, registration, forgot-password
-│   ├── (public)/      # landing page
-│   └── (app)/         # protected: decks, study, profile
-├── components/        # reusable UI components
-├── store/             # Zustand stores
-├── schemas/           # Zod validation schemas
-├── hooks/             # custom React hooks
-└── server-actions/    # Next.js server actions
+├── app/[locale]/
+│   ├── (auth)/        # Login, Registrierung, Passwort-Reset
+│   ├── (public)/      # Landingpage, Nutzungsbedingungen
+│   └── dashboard/ profile/ modules/   # geschützte Bereiche
+├── components/        # UI-Komponenten
+├── store/             # Zustand-Stores
+├── server-actions/    # Next.js Server Actions
+├── i18n/              # next-intl Konfiguration
+└── messages/          # Übersetzungen (de, en, ru)
 ```
 
-## Roadmap
+## Hinweis
 
-- [x] Auth pages (login, registration, forgot password)
-- [x] Landing page with animations
-- [ ] Deck management (create, edit, delete)
-- [ ] Flashcard study mode
-- [ ] Spaced repetition (FSRS algorithm)
-- [ ] Test mode
-- [ ] Match game
-- [ ] OAuth (Google, Microsoft, Yandex)
-- [ ] Progress tracking
-
-## Commit convention
-
-This project follows [Conventional Commits](https://www.conventionalcommits.org):
-
-```
-feat(decks): add create deck form
-fix(auth): redirect loop on login
-chore: update dependencies
-```
+Nicht-kommerzielles Lernprojekt, inspiriert von Quizlet. Nutzungsbedingungen in der App unter `/terms`.

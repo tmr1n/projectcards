@@ -1,4 +1,34 @@
 {
+	"datenschutz": {
+		"title": "Datenschutzerklärung",
+		"note": "Vereinfachte Fassung für ein Lernprojekt — keine rechtsverbindliche Erklärung.",
+		"intro": "LangCards ist ein nicht-kommerzielles Lernprojekt. Personenbezogene Daten werden nur im notwendigen Umfang verarbeitet.",
+		"dataTitle": "Welche Daten",
+		"data": "Bei der Registrierung: E-Mail, Benutzername und Passwort (verschlüsselt gespeichert). Beim Login mit Google: Google-ID, E-Mail, Name und Profilbild.",
+		"purposeTitle": "Zweck",
+		"purpose": "Die Daten dienen ausschließlich dem Nutzerkonto, der Anmeldung und den Lernkarten-Funktionen.",
+		"thirdTitle": "Externe Dienste",
+		"third": "Für einzelne Funktionen werden Drittanbieter genutzt (z. B. Google-Login, E-Mail-Versand, Datei-Upload). Dabei können Daten an diese Anbieter übermittelt werden.",
+		"rightsTitle": "Deine Rechte",
+		"rights": "Du kannst dein Konto jederzeit löschen — dabei werden deine Daten entfernt. Du hast das Recht auf Auskunft, Berichtigung und Löschung.",
+		"contactTitle": "Kontakt",
+		"contact": "Bei Fragen zum Datenschutz: artemart1337@gmail.com",
+		"back": "Zurück zur Startseite"
+	},
+	"terms": {
+		"title": "Nutzungsbedingungen",
+		"updated": "Hinweis zu diesem Projekt",
+		"intro": "LangCards ist ein nicht-kommerzielles Lernprojekt. Es dient ausschließlich dazu, meine Fähigkeiten in der Web-Entwicklung zu demonstrieren.",
+		"purposeTitle": "Zweck",
+		"purpose": "Diese Anwendung ist ein Portfolio- und Lernprojekt. Sie zeigt die Funktionalität einer Lernkarten-App und ist nicht für den kommerziellen Einsatz bestimmt.",
+		"inspirationTitle": "Inspiration",
+		"inspiration": "Das Projekt ist in gewisser Weise von Quizlet inspiriert. Es werden jedoch keine Inhalte zu kommerziellen Zwecken kopiert oder verwertet.",
+		"openSourceTitle": "Offener Code",
+		"openSource": "Der gesamte Quellcode ist frei zugänglich und dient ausschließlich zu Lern- und Demonstrationszwecken.",
+		"warrantyTitle": "Haftung",
+		"warranty": "Die Anwendung wird ohne Gewähr bereitgestellt. Es besteht kein Anspruch auf Verfügbarkeit, Vollständigkeit oder Fehlerfreiheit.",
+		"back": "Zurück zur Startseite"
+	},
 	"header": {
 		"nav": {
 			"cards": "Karten",
@@ -164,6 +194,8 @@
 			"home": "Startseite",
 			"registration": "Registrieren",
 			"login": "Anmelden",
+			"terms": "Nutzungsbedingungen",
+			"privacy": "Datenschutz",
 			"copyright": "© {year} Project Cards. Alle Rechte vorbehalten."
 		}
 	},
@@ -285,7 +317,9 @@
 			"dashboard": "Hauptseite",
 			"profile": "Profil",
 			"usernameChange": "Benutzername ändern",
-			"alreadyExist": "Konto existiert bereits"
+			"alreadyExist": "Konto existiert bereits",
+			"flash-cards": "Karteikarten",
+			"add-card": "Karte hinzufügen"
 		}
 	}
 }

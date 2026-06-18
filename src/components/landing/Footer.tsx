@@ -11,7 +11,9 @@ export function Footer() {
 	const links = [
 		{ label: t('home'), href: '/' },
 		{ label: t('registration'), href: '/registration' },
-		{ label: t('login'), href: '/login' }
+		{ label: t('login'), href: '/login' },
+		{ label: t('terms'), href: '/terms' },
+		{ label: t('privacy'), href: '/datenschutz' }
 	]
 
 	return (

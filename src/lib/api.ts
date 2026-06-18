@@ -90,71 +90,49 @@ interface ApiFetchOptions extends Omit<RequestInit, 'body'> {
 	token?: string
 }
 
-// ─────────────────────────────────────────────────────────────
-// apiFetch — главная функция
-// ─────────────────────────────────────────────────────────────
-//
-// T — generic (шаблон): тип данных которые вернёт бэкенд в поле data.
-// Пример вызовов:
-//   apiFetch<AuthResponse>('/login', { method: 'POST', body: {...} })
-//   apiFetch<IUser>('/profile', { token: accessToken })
-//
-// Возвращает всегда IApiResponse<T>:
-//   { data: T, message: string, success: boolean }
-
 export async function apiFetch<T>(
-	// endpoint — путь БЕЗ базового URL: '/login', '/registration', '/profile'
 	endpoint: string,
 	options: ApiFetchOptions = {}
 ): Promise<IApiResponse<T>> {
-	// Деструктурируем наши кастомные поля от стандартных опций fetch
 	const { body, token, ...restOptions } = options
 
-	// Собираем заголовки запроса
 	const headers: Record<string, string> = {
 		'Content-Type': 'application/json',
 		Accept: 'application/json',
 
-		// Добавляем Authorization только если токен передан.
-		// Оператор && с spread: если token falsy — ничего не добавляем.
+		// Если token есть — добавляем заголовок Authorization
 		...(token && { Authorization: `Bearer ${token}` }),
 
-		// Если caller передал свои headers — они перезапишут наши
-		// (полезно для переопределения Content-Type, например для FormData)
-		...(restOptions.headers as Record<string, string>),
+		// Если в options были переданы свои заголовки — добавляем их (например, для CORS)
+		...(restOptions.headers as Record<string, string>)
 	}
 
-	// Делаем запрос к бэкенду
-	// fetch в Next.js умеет кешировать — { cache: 'no-store' } отключает кеш
-	// Для мутаций (POST/PUT/DELETE) кеш и так не применяется
+	// Делаем запрос к бэкенду (http://localhost:8000/api/v1/endpoint), передавая все опции (метод, тело, заголовки...)
 	const response = await fetch(`${API_BASE_URL}${endpoint}`, {
 		...restOptions,
 		headers,
-		// Если body есть — сериализуем в JSON-строку
-		// Если нет (GET-запрос) — не добавляем body совсем
-		body: body !== undefined ? JSON.stringify(body) : undefined,
+		/// Если body есть — сериализуем в JSON-строку
+		// Если нет (GET-запрос) — не добавляем body совсем, чтобы fetch не ругался
+		body: body !== undefined ? JSON.stringify(body) : undefined
 	})
 
-	// Парсим JSON. .catch(() => null) — если тело пустое (204 No Content),
-	// не падаем с ошибкой парсинга.
+	// Пытаемся распарсить JSON-ответ. Если не получилось (например, сервер вернул 500 без тела) — просто null
+	//Т.е ответ получаем конкретно тут в этом файле, а не в каждом экшене, который вызывает apiFetch. Responsedata - это уже распарсенные данные из ответа, а не сырая Response от fetch. И если сервер вернул не JSON, то мы не будем пытаться парсить его и просто получим null, чтобы не ломать код дальше.
 	const responseData = await response.json().catch(() => null)
 
-	// response.ok = true если статус 200-299
-	// response.ok = false если 400, 401, 422, 500 и т.д.
+	// Если HTTP-статус не 2xx — бросаем ApiError с данными из ответа (message, statusCode, fieldErrors)
 	if (!response.ok) {
-		// Пробуем получить детали ошибки из тела ответа
 		const apiError = responseData as IApiError | null
 
-		// Бросаем наш кастомный ApiError
-		// В authStore поймаем его и красиво покажем пользователю
 		throw new ApiError(
 			response.status,
-			// Если бэкенд прислал message — берём его, иначе дефолт
+
 			apiError?.message ?? `Ошибка сервера (${response.status})`,
-			// Ошибки полей формы: { email: ['уже занят'] }
+
 			apiError?.errors
 		)
 	}
 
+	// Если всё ок — возвращаем распарсенные данные (responseData.data) и message, success из ответа
 	return responseData as IApiResponse<T>
 }

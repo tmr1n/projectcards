@@ -1,4 +1,34 @@
 {
+	"datenschutz": {
+		"title": "Privacy Policy",
+		"note": "Simplified version for a learning project — not a legally binding statement.",
+		"intro": "LangCards is a non-commercial learning project. Personal data is processed only to the extent necessary.",
+		"dataTitle": "What data",
+		"data": "On registration: email, username and password (stored encrypted). On Google login: Google ID, email, name and profile picture.",
+		"purposeTitle": "Purpose",
+		"purpose": "The data is used solely for the user account, authentication and the flashcard features.",
+		"thirdTitle": "Third-party services",
+		"third": "Some features use third-party providers (e.g. Google login, email delivery, file upload). Data may be transmitted to these providers.",
+		"rightsTitle": "Your rights",
+		"rights": "You can delete your account at any time — your data is then removed. You have the right to access, correction and deletion.",
+		"contactTitle": "Contact",
+		"contact": "Questions about data protection: artemart1337@gmail.com",
+		"back": "Back to home"
+	},
+	"terms": {
+		"title": "Terms of Use",
+		"updated": "About this project",
+		"intro": "LangCards is a non-commercial learning project. Its sole purpose is to demonstrate my web development skills.",
+		"purposeTitle": "Purpose",
+		"purpose": "This application is a portfolio and learning project. It showcases the functionality of a flashcard app and is not intended for commercial use.",
+		"inspirationTitle": "Inspiration",
+		"inspiration": "The project is to some extent inspired by Quizlet. However, no content is copied or used for commercial purposes.",
+		"openSourceTitle": "Open source",
+		"openSource": "All source code is freely available and serves learning and demonstration purposes only.",
+		"warrantyTitle": "Disclaimer",
+		"warranty": "The application is provided as is, without warranty. There is no claim to availability, completeness, or freedom from errors.",
+		"back": "Back to home"
+	},
 	"header": {
 		"nav": {
 			"cards": "Cards",
@@ -163,6 +193,8 @@
 			"home": "Home",
 			"registration": "Sign up",
 			"login": "Log in",
+			"terms": "Terms of Use",
+			"privacy": "Privacy",
 			"copyright": "© {year} Project Cards. All rights reserved."
 		}
 	},
