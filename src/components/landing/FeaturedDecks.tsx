@@ -120,13 +120,13 @@ export function FeaturedDecks() {
 					{/* Arrows */}
 					<div className='absolute bottom-5 right-5 flex gap-2 z-10'>
 						<button
-							onClick={() => setActive(i => (i - 1 + featuredDecks.length) % featuredDecks.length)}
+							onClick={() => setActive(i => (i - 1 + decks.length) % decks.length)}
 							className='w-9 h-9 rounded-full border border-gray-300 bg-white/70 flex items-center justify-center text-gray-600 hover:bg-white transition-colors'
 						>
 							‹
 						</button>
 						<button
-							onClick={() => setActive(i => (i + 1) % featuredDecks.length)}
+							onClick={() => setActive(i => (i + 1) % decks.length)}
 							className='w-9 h-9 rounded-full border border-gray-300 bg-white/70 flex items-center justify-center text-gray-600 hover:bg-white transition-colors'
 						>
 							›
