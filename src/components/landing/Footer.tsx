@@ -13,7 +13,8 @@ export function Footer() {
 		{ label: t('registration'), href: '/registration' },
 		{ label: t('login'), href: '/login' },
 		{ label: t('terms'), href: '/terms' },
-		{ label: t('privacy'), href: '/datenschutz' }
+		{ label: t('privacy'), href: '/datenschutz' },
+		{ label: 'Impressum', href: '/impressum' }
 	]
 
 	return (

@@ -224,8 +224,8 @@
 		"contactSupport": "Contact support"
 	},
 	"cookies": {
-		"message": "We use cookies to keep the site working and improve your experience.",
-		"accept": "Accept",
+		"message": "This site uses only technically necessary cookies for login and session. No tracking is used.",
+		"accept": "Got it",
 		"decline": "Decline"
 	},
 	"dashboard": {

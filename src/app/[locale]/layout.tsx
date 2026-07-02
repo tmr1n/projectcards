@@ -44,6 +44,7 @@ export async function generateMetadata({
 			default: t('title')
 		},
 		description: t('description'),
+		robots: { index: false, follow: false },
 		icons: {
 			icon: '/images/Title-logo.svg'
 		}

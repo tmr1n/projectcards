@@ -225,8 +225,8 @@
 		"contactSupport": "Support kontaktieren"
 	},
 	"cookies": {
-		"message": "Wir verwenden Cookies, um die Website zu betreiben und deine Erfahrung zu verbessern.",
-		"accept": "Akzeptieren",
+		"message": "Diese Website verwendet ausschließlich technisch notwendige Cookies für Login und Sitzung. Es findet kein Tracking statt.",
+		"accept": "Verstanden",
 		"decline": "Ablehnen"
 	},
 	"dashboard": {
