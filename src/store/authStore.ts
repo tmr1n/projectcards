@@ -61,6 +61,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import {
 	deleteAccountAction,
+	demoLoginAction,
 	getProfileAction,
 	loginAction,
 	logoutAction,
@@ -122,6 +123,7 @@ interface AuthActions {
 	login: (email: string, password: string) => Promise<void>
 	registration: (payload: IRegisterPayload) => Promise<void>
 	loginWithOAuth: (token: string) => Promise<void>
+	loginAsDemo: () => Promise<void>
 	fetchProfile: () => Promise<void>
 	updateUsername: (username: string) => Promise<void>
 	updateAvatar: (avatarUrl: string) => Promise<void>
@@ -250,6 +252,21 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 			loginWithOAuth: async token => {
 				await oauthLoginAction(token)
 				set({ accessToken: token, isAuthenticated: true })
+				void get().fetchProfile()
+			},
+
+			loginAsDemo: async () => {
+				set({ isLoading: true, error: null })
+				const result = await demoLoginAction()
+				if (!result.success) {
+					set({ error: result.message, isLoading: false })
+					return
+				}
+				set({
+					accessToken: result.data.access_token,
+					isAuthenticated: true,
+					isLoading: false
+				})
 				void get().fetchProfile()
 			},
 

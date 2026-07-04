@@ -32,6 +32,7 @@ import { useAuthStore } from '@/store/authStore'
 
 export function LoginForm() {
 	const login = useAuthStore(state => state.login)
+	const loginAsDemo = useAuthStore(state => state.loginAsDemo)
 	const isLoading = useAuthStore(state => state.isLoading)
 	const pendingEmail = useAuthStore(state => state.pendingEmail)
 	const error = useAuthStore(state => state.error)
@@ -104,6 +105,19 @@ export function LoginForm() {
 						(window.location.href = `${process.env.NEXT_PUBLIC_API_URL ?? 'https://cards-api-production-92cf.up.railway.app/api/v1'}/google`)
 					}
 				/>
+
+				<button
+					type='button'
+					disabled={isLoading}
+					onClick={async () => {
+						await loginAsDemo()
+						const { error, isAuthenticated } = useAuthStore.getState()
+						if (!error && isAuthenticated) router.push('/dashboard')
+					}}
+					className='w-full cursor-pointer rounded-xl border border-gray-300 py-3 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50 disabled:opacity-50'
+				>
+					Als Demo ausprobieren — ohne Anmeldung
+				</button>
 
 				<LineComponent text={t('divider')} />
 

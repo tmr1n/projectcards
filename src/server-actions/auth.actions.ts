@@ -103,6 +103,32 @@ export async function oauthLoginAction(token: string): Promise<void> {
 	})
 }
 
+export async function demoLoginAction(): Promise<
+	TAuthActionResult<{ access_token: string }>
+> {
+	try {
+		const res = await apiFetch<{ access_token: string }>('/demo', {
+			method: 'POST',
+			credentials: 'include'
+		})
+
+		const cookieStore = await cookies()
+		cookieStore.set('token', res.data.access_token, {
+			httpOnly: true,
+			sameSite: 'lax',
+			maxAge: 60 * 15
+		})
+
+		return { success: true, data: res.data }
+	} catch (err) {
+		if (err instanceof ApiError) {
+			const translated = await translateApiError(err)
+			return { success: false, ...translated }
+		}
+		return { success: false, message: 'Ошибка соединения' }
+	}
+}
+
 export async function getProfileAction(token: string): Promise<IUser | null> {
 	try {
 		const res = await apiFetch<IUser>('/profile', { token })
