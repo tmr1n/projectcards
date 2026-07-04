@@ -46,7 +46,7 @@ export default function Sidebar() {
 						href={href}
 						className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
 							activeIndex === i
-								? 'bg-blue-100 text-blue-700 font-semibold'
+								? 'bg-violet-100 text-violet-700 font-semibold'
 								: 'text-gray-400 hover:bg-gray-100'
 						}`}
 					>
@@ -66,7 +66,7 @@ export default function Sidebar() {
 								href={`/flash-card?id=${deck.id}`}
 								className='w-full flex font-semibold items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-100 transition-colors cursor-pointer'
 							>
-								<span className='bg-blue-500 text-white text-xs font-bold w-6 h-6 rounded flex items-center justify-center shrink-0'>
+								<span className='bg-violet-500 text-white text-xs font-bold w-6 h-6 rounded flex items-center justify-center shrink-0'>
 									{deck.title.charAt(0).toUpperCase()}
 								</span>
 								<span className='truncate'>{deck.title}</span>

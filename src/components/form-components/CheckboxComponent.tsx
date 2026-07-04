@@ -54,11 +54,11 @@ export function Checkbox({ text, ref, ...props }: TCheckboxProps) {
 						// Цвет рамки:
 						//   обычный → серый
 						//   hover на label (group-hover) → синеватый
-						'border-gray-300 group-hover:border-blue-400',
+						'border-gray-300 group-hover:border-violet-400',
 						// Когда peer (нативный input) отмечен → синий фон и рамка
-						'peer-checked:bg-blue-600 peer-checked:border-blue-600',
+						'peer-checked:bg-violet-600 peer-checked:border-violet-600',
 						// Фокус с клавиатуры (Tab) → синее кольцо вокруг (доступность)
-						'peer-focus-visible:ring-2 peer-focus-visible:ring-blue-500/30 peer-focus-visible:ring-offset-1',
+						'peer-focus-visible:ring-2 peer-focus-visible:ring-violet-500/30 peer-focus-visible:ring-offset-1',
 						// SVG галочка внутри:
 						//   [&>svg] — селектор прямого потомка svg
 						//   По умолчанию scale-0 (сжата до нуля = невидима)

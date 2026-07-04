@@ -54,7 +54,7 @@ function SortableCard({
 		<div
 			ref={setNodeRef}
 			style={{ transform: CSS.Transform.toString(transform), transition }}
-			className={`bg-white rounded-xl border-2 p-5 transition-colors ${isDragging ? 'border-blue-400 shadow-lg opacity-75' : 'border-gray-200'}`}
+			className={`bg-white rounded-xl border-2 p-5 transition-colors ${isDragging ? 'border-violet-400 shadow-lg opacity-75' : 'border-gray-200'}`}
 		>
 			<div className='flex items-center justify-between mb-4'>
 				<div className='flex items-center gap-2'>
@@ -86,7 +86,7 @@ function SortableCard({
 					<input
 						value={card.term}
 						onChange={e => onUpdate('term', e.target.value)}
-						className='w-full border-b border-gray-300 focus:border-blue-500 outline-none pb-1 text-gray-800 text-sm transition'
+						className='w-full border-b border-gray-300 focus:border-violet-500 outline-none pb-1 text-gray-800 text-sm transition'
 					/>
 					<span className='text-xs font-bold text-gray-400 uppercase tracking-wide'>
 						{termLabel}
@@ -96,7 +96,7 @@ function SortableCard({
 					<input
 						value={card.definition}
 						onChange={e => onUpdate('definition', e.target.value)}
-						className='w-full border-b border-gray-300 focus:border-blue-500 outline-none pb-1 text-gray-800 text-sm transition'
+						className='w-full border-b border-gray-300 focus:border-violet-500 outline-none pb-1 text-gray-800 text-sm transition'
 					/>
 					<span className='text-xs font-bold text-gray-400 uppercase tracking-wide'>
 						{definitionLabel}
@@ -200,7 +200,7 @@ export default function AddCardPage() {
 			<div className='flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200'>
 				<Link
 					href={`/flash-card?id=${deckId}`}
-					className='flex items-center gap-1 text-blue-600 font-semibold hover:text-blue-800 transition text-sm'
+					className='flex items-center gap-1 text-violet-600 font-semibold hover:text-violet-800 transition text-sm'
 				>
 					<ChevronLeft size={18} />
 					{t('backToModule')}
@@ -208,7 +208,7 @@ export default function AddCardPage() {
 				<button
 					onClick={handleDone}
 					disabled={isPending}
-					className='bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2.5 rounded-full transition cursor-pointer text-sm disabled:opacity-50'
+					className='bg-violet-600 hover:bg-violet-700 text-white font-bold px-6 py-2.5 rounded-full transition cursor-pointer text-sm disabled:opacity-50'
 				>
 					{isPending ? t('saving') : t('done')}
 				</button>
@@ -281,7 +281,7 @@ export default function AddCardPage() {
 									{ localId: `new-${Date.now()}`, serverId: null, term: '', definition: '' }
 								])
 							}
-							className='flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 rounded-xl text-blue-600 font-semibold hover:bg-blue-50 transition cursor-pointer text-sm shadow-sm'
+							className='flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 rounded-xl text-violet-600 font-semibold hover:bg-violet-50 transition cursor-pointer text-sm shadow-sm'
 						>
 							<Plus size={18} />
 							{t('addCard')}
@@ -290,7 +290,7 @@ export default function AddCardPage() {
 							<button
 								onClick={handleDone}
 								disabled={isPending}
-								className='bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2.5 rounded-full transition cursor-pointer text-sm disabled:opacity-50'
+								className='bg-violet-600 hover:bg-violet-700 text-white font-bold px-6 py-2.5 rounded-full transition cursor-pointer text-sm disabled:opacity-50'
 							>
 								{isPending ? t('saving') : t('done')}
 							</button>

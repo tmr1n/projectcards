@@ -25,7 +25,7 @@ export function ProfileAvatar() {
 						className='object-cover'
 					/>
 				) : (
-					<div className='w-full h-full bg-blue-700 flex items-center justify-center'>
+					<div className='w-full h-full bg-violet-700 flex items-center justify-center'>
 						<UserRound size={48} color='white' strokeWidth={1.5} />
 					</div>
 				)}

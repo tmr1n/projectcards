@@ -10,10 +10,10 @@ export function AuthPageLayout({
 	children
 }: IAuthPageLayoutProps) {
 	return (
-		<div className='relative min-h-screen w-full bg-gradient-to-br from-blue-100 via-indigo-100 to-violet-200'>
+		<div className='relative min-h-screen w-full bg-gradient-to-br from-violet-100 via-purple-100 to-fuchsia-200'>
 			{/* Размытые декоративные пятна — эффект заблюренного фона */}
 			<div aria-hidden className='pointer-events-none fixed inset-0'>
-				<div className='absolute -top-24 -left-24 h-96 w-96 rounded-full bg-blue-300/50 blur-3xl' />
+				<div className='absolute -top-24 -left-24 h-96 w-96 rounded-full bg-violet-300/50 blur-3xl' />
 				<div className='absolute bottom-0 right-0 h-[28rem] w-[28rem] rounded-full bg-violet-300/50 blur-3xl' />
 			</div>
 

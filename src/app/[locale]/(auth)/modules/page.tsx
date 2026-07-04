@@ -20,8 +20,8 @@ function ModuleCard({ id, title, cardCount }: { id: string; title: string; cardC
 			className='bg-white rounded-2xl border border-gray-200 p-5 flex flex-col gap-4 hover:shadow-md transition cursor-pointer'
 		>
 			<div className='flex items-start justify-between gap-2'>
-				<div className='bg-blue-100 rounded-xl p-2.5 shrink-0'>
-					<Layers size={20} className='text-blue-600' />
+				<div className='bg-violet-100 rounded-xl p-2.5 shrink-0'>
+					<Layers size={20} className='text-violet-600' />
 				</div>
 				<span className='text-xs text-gray-400 font-medium mt-1'>
 					{cardCount} {t('cards')}
@@ -68,7 +68,7 @@ export default function ModulesPage() {
 						<h2 className='text-2xl font-bold'>{t('title')}</h2>
 						<Link
 							href='/create-module'
-							className='flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2.5 rounded-full transition'
+							className='flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold px-4 py-2.5 rounded-full transition'
 						>
 							<Plus size={16} />
 							{t('newModule')}
@@ -84,7 +84,7 @@ export default function ModulesPage() {
 							value={query}
 							onChange={e => setQuery(e.target.value)}
 							placeholder={t('searchPlaceholder')}
-							className='w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm outline-none focus:border-blue-400 transition bg-white'
+							className='w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm outline-none focus:border-violet-400 transition bg-white'
 						/>
 					</div>
 

@@ -94,7 +94,7 @@ export function Header() {
 						<>
 							<button
 								onClick={logout}
-								className='hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors cursor-pointer'
+								className='hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-violet-600 text-white text-sm font-medium hover:bg-violet-700 transition-colors cursor-pointer'
 							>
 								{t('logout')}
 							</button>
@@ -110,7 +110,7 @@ export function Header() {
 						<>
 							<Link
 								href='/login'
-								className='hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors'
+								className='hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-violet-600 text-white text-sm font-semibold hover:bg-violet-700 transition-colors'
 							>
 								{t('login')}
 							</Link>

@@ -28,7 +28,7 @@ export function CookieBanner() {
 				<p className='text-sm text-gray-600'>{t('message')}</p>
 				<button
 					onClick={handleAccept}
-					className='w-full py-2 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 transition-colors cursor-pointer'
+					className='w-full py-2 bg-violet-600 text-white text-sm font-semibold rounded-xl hover:bg-violet-700 transition-colors cursor-pointer'
 				>
 					{t('accept')}
 				</button>

@@ -193,7 +193,7 @@ export default async function DatenschutzPage({
 					href='https://policies.google.com/privacy'
 					target='_blank'
 					rel='noreferrer'
-					className='text-blue-600 hover:underline'
+					className='text-violet-600 hover:underline'
 				>
 					policies.google.com/privacy
 				</a>
@@ -215,7 +215,7 @@ export default async function DatenschutzPage({
 
 			<Link
 				href={`/${locale}`}
-				className='mt-10 inline-block text-blue-600 hover:underline'
+				className='mt-10 inline-block text-violet-600 hover:underline'
 			>
 				← Zurück zur Startseite
 			</Link>

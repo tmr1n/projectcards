@@ -31,7 +31,7 @@ export function UserAvatar({ size = 36 }: { size?: number }) {
 	return (
 		<div
 			style={style}
-			className='rounded-full bg-blue-700 flex items-center justify-center'
+			className='rounded-full bg-violet-700 flex items-center justify-center'
 		>
 			<UserRound size={size * 0.55} color='white' strokeWidth={1.5} />
 		</div>

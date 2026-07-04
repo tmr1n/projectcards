@@ -52,7 +52,7 @@ export default function BottomNav() {
 							setOpenIndex(null)
 							router.push(popup.href)
 						}}
-						className='flex items-center gap-3 whitespace-nowrap rounded-2xl bg-blue-600 px-5 py-3.5 text-white font-medium text-sm shadow-lg transition-colors duration-200 hover:bg-blue-700 active:bg-blue-800'
+						className='flex items-center gap-3 whitespace-nowrap rounded-2xl bg-violet-600 px-5 py-3.5 text-white font-medium text-sm shadow-lg transition-colors duration-200 hover:bg-violet-700 active:bg-violet-800'
 					>
 						<span className='bg-white/20 rounded-full p-1.5'>
 							<popup.Icon size={16} color='white' />
@@ -62,13 +62,13 @@ export default function BottomNav() {
 				</div>
 
 				{/* Nav bar */}
-				<div className='bg-blue-600 rounded-4xl m-5 w-80 h-18.75 flex items-center justify-between'>
+				<div className='bg-violet-600 rounded-4xl m-5 w-80 h-18.75 flex items-center justify-between'>
 					{[House, Plus, Folder].map((Icon, i) => (
 						<div
 							key={i}
 							onClick={() => handleNavClick(i)}
 							className={`rounded-full w-15 h-15 m-2 flex items-center justify-center cursor-pointer transition-colors duration-200 ${
-								(openIndex === i || (openIndex === null && activeIndex === i)) ? 'bg-blue-900' : 'bg-blue-600'
+								(openIndex === i || (openIndex === null && activeIndex === i)) ? 'bg-violet-900' : 'bg-violet-600'
 							}`}
 						>
 							<Icon size={40} color='white' />

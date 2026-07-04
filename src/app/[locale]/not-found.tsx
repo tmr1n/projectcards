@@ -30,7 +30,7 @@ export default function NotFound() {
 				<div className='mt-10 flex items-center gap-4'>
 					<Link
 						href='/'
-						className='px-6 py-3 bg-blue-600 text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-colors'
+						className='px-6 py-3 bg-violet-600 text-white text-sm font-semibold rounded-full hover:bg-violet-700 transition-colors'
 					>
 						{t('home')}
 					</Link>

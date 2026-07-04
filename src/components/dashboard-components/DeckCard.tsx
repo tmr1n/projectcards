@@ -52,7 +52,7 @@ export default function DeckCard({
 					</button>
 				</div>
 
-				<span className='mt-2 px-4 py-2 w-fit bg-blue-500 text-white rounded-2xl cursor-pointer hover:bg-blue-600 transition'>
+				<span className='mt-2 px-4 py-2 w-fit bg-violet-500 text-white rounded-2xl cursor-pointer hover:bg-violet-600 transition'>
 					Продолжить
 				</span>
 			</Link>

@@ -97,7 +97,7 @@ export default function DecksList() {
 						<button
 							key={i}
 							onClick={() => goTo(i)}
-							className={`w-2.5 h-2.5 rounded-full transition-colors cursor-pointer ${i === current ? 'bg-blue-500' : 'bg-gray-300'}`}
+							className={`w-2.5 h-2.5 rounded-full transition-colors cursor-pointer ${i === current ? 'bg-violet-500' : 'bg-gray-300'}`}
 						/>
 					))}
 				</div>

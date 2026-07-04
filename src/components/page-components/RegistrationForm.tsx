@@ -278,7 +278,7 @@ export function RegistrationForm() {
 									termsLink: (chunks) => (
 										<Link
 											href='/terms'
-											className='underline text-blue-600 hover:text-blue-800'
+											className='underline text-violet-600 hover:text-violet-800'
 										>
 											{chunks}
 										</Link>
@@ -286,7 +286,7 @@ export function RegistrationForm() {
 									privacyLink: (chunks) => (
 										<Link
 											href='/privacy'
-											className='underline text-blue-600 hover:text-blue-800'
+											className='underline text-violet-600 hover:text-violet-800'
 										>
 											{chunks}
 										</Link>
@@ -330,7 +330,7 @@ export function RegistrationForm() {
 					</p>
 					<Link
 						href='/login'
-						className='inline-block w-full rounded-xl bg-blue-600 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700'
+						className='inline-block w-full rounded-xl bg-violet-600 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-violet-700'
 					>
 						Zum Login
 					</Link>

@@ -101,7 +101,7 @@ export default function AlreadyExistPage({ token }: { token?: string }) {
 							className='w-16 h-16 rounded-full object-cover'
 						/>
 					) : (
-						<div className='w-16 h-16 rounded-full bg-blue-200 flex items-center justify-center text-blue-700 text-2xl font-bold uppercase'>
+						<div className='w-16 h-16 rounded-full bg-violet-200 flex items-center justify-center text-violet-700 text-2xl font-bold uppercase'>
 							{username[0] ?? '?'}
 						</div>
 					)}
@@ -117,7 +117,7 @@ export default function AlreadyExistPage({ token }: { token?: string }) {
 								text={
 									<Link
 										href='/forgot-password'
-										className='font-bold text-blue-600 hover:text-blue-800 transition-colors'
+										className='font-bold text-violet-600 hover:text-violet-800 transition-colors'
 									>
 										{t('forgotPassword')}
 									</Link>

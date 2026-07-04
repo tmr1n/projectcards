@@ -53,10 +53,10 @@ export function AvatarPicker({ onClose }: { onClose: () => void }) {
 					<button
 						onClick={() => fileInputRef.current?.click()}
 						disabled={isUploading}
-						className='aspect-square rounded-2xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center gap-1 hover:border-blue-400 hover:bg-blue-50 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed'
+						className='aspect-square rounded-2xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center gap-1 hover:border-violet-400 hover:bg-violet-50 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed'
 					>
 						{isUploading ? (
-							<Loader2 size={20} className='text-blue-500 animate-spin' />
+							<Loader2 size={20} className='text-violet-500 animate-spin' />
 						) : (
 							<Upload size={20} className='text-gray-400' />
 						)}
@@ -78,7 +78,7 @@ export function AvatarPicker({ onClose }: { onClose: () => void }) {
 							key={url}
 							onClick={() => handleSelect(url)}
 							disabled={isUploading}
-							className='aspect-square rounded-2xl overflow-hidden ring-2 ring-transparent hover:ring-blue-500 transition-all cursor-pointer disabled:opacity-50'
+							className='aspect-square rounded-2xl overflow-hidden ring-2 ring-transparent hover:ring-violet-500 transition-all cursor-pointer disabled:opacity-50'
 						>
 							<Image
 								src={url}

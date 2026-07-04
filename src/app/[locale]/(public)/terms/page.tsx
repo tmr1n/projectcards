@@ -37,7 +37,7 @@ export default async function TermsPage({
 
 			<Link
 				href={`/${locale}`}
-				className='mt-10 inline-block text-blue-600 hover:underline'
+				className='mt-10 inline-block text-violet-600 hover:underline'
 			>
 				← {t('back')}
 			</Link>

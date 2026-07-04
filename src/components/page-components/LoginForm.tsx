@@ -145,7 +145,7 @@ export function LoginForm() {
 							text={
 								<Link
 									href='/forgot-password'
-									className='font-bold text-blue-600 hover:text-blue-800 transition-colors'
+									className='font-bold text-violet-600 hover:text-violet-800 transition-colors'
 								>
 									{t('forgotPassword')}
 								</Link>

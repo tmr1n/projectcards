@@ -59,7 +59,7 @@ export function TopLoader() {
 			{/* transition-[width] — плавное изменение ширины */}
 			{/* rounded-r-full — скруглённый правый конец для более красивого вида */}
 			<div
-				className='h-full bg-blue-600 rounded-r-full transition-[width] duration-300 ease-out'
+				className='h-full bg-violet-600 rounded-r-full transition-[width] duration-300 ease-out'
 				style={{ width: `${progress}%` }}
 			/>
 		</div>

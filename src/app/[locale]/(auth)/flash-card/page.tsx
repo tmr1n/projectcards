@@ -58,12 +58,12 @@ function EditModal({
 					/>
 				</div>
 				<div className='flex justify-end gap-6 mt-10'>
-					<button onClick={onClose} className='text-blue-600 font-semibold hover:text-blue-800 transition cursor-pointer'>
+					<button onClick={onClose} className='text-violet-600 font-semibold hover:text-violet-800 transition cursor-pointer'>
 						{t('cancel')}
 					</button>
 					<button
 						onClick={() => { onSave(termVal, defVal); onClose() }}
-						className='text-blue-600 font-semibold hover:text-blue-800 transition cursor-pointer'
+						className='text-violet-600 font-semibold hover:text-violet-800 transition cursor-pointer'
 					>
 						{t('save')}
 					</button>
@@ -183,8 +183,8 @@ function TestQuestion({
 			<p className='text-xs text-gray-400 uppercase tracking-wide mb-3'>{t('selectAnswer')}</p>
 			<div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
 				{question.options.map(opt => {
-					let style = 'border border-gray-200 text-gray-800 hover:border-blue-400 hover:bg-blue-50'
-					if (!result && selected === opt) style = 'border-2 border-blue-500 bg-blue-50 text-blue-800'
+					let style = 'border border-gray-200 text-gray-800 hover:border-violet-400 hover:bg-violet-50'
+					if (!result && selected === opt) style = 'border-2 border-violet-500 bg-violet-50 text-violet-800'
 					if (result && selected === opt) {
 						style = result === 'correct'
 							? 'border-2 border-green-500 bg-green-50 text-green-800'
@@ -217,7 +217,7 @@ function TestMode({ cards, onBack }: { cards: ICard[]; onBack: () => void }) {
 		return (
 			<div className='flex flex-col items-center gap-4 py-20'>
 				<p className='text-gray-400'>{t('noCardsForTest')}</p>
-				<button onClick={onBack} className='text-blue-600 font-semibold hover:underline'>
+				<button onClick={onBack} className='text-violet-600 font-semibold hover:underline'>
 					{t('backToCards')}
 				</button>
 			</div>
@@ -270,7 +270,7 @@ function TestMode({ cards, onBack }: { cards: ICard[]; onBack: () => void }) {
 				</div>
 
 				<button onClick={() => { setAnswers({}); setSubmitted(false) }}
-					className='w-full py-3 rounded-2xl bg-blue-500 text-white font-semibold hover:bg-blue-600 transition cursor-pointer'>
+					className='w-full py-3 rounded-2xl bg-violet-500 text-white font-semibold hover:bg-violet-600 transition cursor-pointer'>
 					{t('retake')}
 				</button>
 				<button onClick={onBack}
@@ -290,7 +290,7 @@ function TestMode({ cards, onBack }: { cards: ICard[]; onBack: () => void }) {
 					result={null} />
 			))}
 			<button disabled={!allAnswered} onClick={() => setSubmitted(true)}
-				className='w-full py-3 rounded-2xl bg-blue-500 text-white font-semibold hover:bg-blue-600 transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed'>
+				className='w-full py-3 rounded-2xl bg-violet-500 text-white font-semibold hover:bg-violet-600 transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed'>
 				{t('submitTest')}
 			</button>
 		</div>
@@ -345,7 +345,7 @@ export default function FlashCardPage() {
 	if (loading) {
 		return (
 			<div className='h-dvh flex items-center justify-center'>
-				<div className='w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin' />
+				<div className='w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin' />
 			</div>
 		)
 	}
@@ -354,7 +354,7 @@ export default function FlashCardPage() {
 		return (
 			<div className='h-dvh flex flex-col items-center justify-center gap-4'>
 				<p className='text-gray-500'>{t('moduleNotFound')}</p>
-				<Link href='/modules' className='text-blue-600 font-semibold hover:underline'>
+				<Link href='/modules' className='text-violet-600 font-semibold hover:underline'>
 					{t('backToModules')}
 				</Link>
 			</div>
@@ -364,7 +364,7 @@ export default function FlashCardPage() {
 	return (
 		<div className='h-dvh flex flex-col overflow-hidden'>
 			<div className='flex items-center px-4 md:px-10 py-4 border-b border-gray-100 bg-white shrink-0'>
-				<Link href='/dashboard' className='flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:text-blue-800 transition'>
+				<Link href='/dashboard' className='flex items-center gap-1.5 text-sm font-semibold text-violet-600 hover:text-violet-800 transition'>
 					<ChevronLeft size={18} />
 					{t('backToHome')}
 				</Link>
@@ -378,7 +378,7 @@ export default function FlashCardPage() {
 					<div className='inline-flex bg-gray-100 rounded-2xl p-1 gap-1 mb-6'>
 						{(['cards', 'test'] as const).map(m => (
 							<button key={m} onClick={() => setMode(m)}
-								className={`px-6 py-2 rounded-xl text-sm font-semibold transition-all duration-200 cursor-pointer ${mode === m ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-800'}`}>
+								className={`px-6 py-2 rounded-xl text-sm font-semibold transition-all duration-200 cursor-pointer ${mode === m ? 'bg-white text-violet-600 shadow-sm' : 'text-gray-500 hover:text-gray-800'}`}>
 								{m === 'cards' ? t('cards') : t('test')}
 							</button>
 						))}
@@ -389,7 +389,7 @@ export default function FlashCardPage() {
 					) : displayCards.length === 0 ? (
 						<div className='flex flex-col items-center gap-4 py-20'>
 							<p className='text-gray-400'>{t('noCards')}</p>
-							<Link href={`/add-card?id=${deckId}`} className='text-blue-600 font-semibold hover:underline'>
+							<Link href={`/add-card?id=${deckId}`} className='text-violet-600 font-semibold hover:underline'>
 								{t('addCards')}
 							</Link>
 						</div>
@@ -439,7 +439,7 @@ export default function FlashCardPage() {
 									</button>
 								</div>
 								<IconBtn tooltip={t('shuffle')} onClick={handleShuffle}>
-									<Repeat className={shuffled ? 'text-blue-500' : ''} />
+									<Repeat className={shuffled ? 'text-violet-500' : ''} />
 								</IconBtn>
 							</div>
 

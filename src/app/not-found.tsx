@@ -8,7 +8,7 @@ export default function RootNotFound() {
 			<p className='mt-2 text-gray-500'>Sorry, we couldn't find the page you're looking for.</p>
 			<Link
 				href='/'
-				className='mt-8 px-6 py-3 bg-blue-600 text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-colors'
+				className='mt-8 px-6 py-3 bg-violet-600 text-white text-sm font-semibold rounded-full hover:bg-violet-700 transition-colors'
 			>
 				Go home
 			</Link>
