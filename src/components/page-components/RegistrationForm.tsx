@@ -268,9 +268,8 @@ export function RegistrationForm() {
 					/>
 				</div>
 
-				{/* Чекбоксы */}
+				{/* Чекбоксы. Newsletter-чекбокс убран: рассылки нет и не планируется */}
 				<div className='pb-2 pt-4'>
-					<Checkbox text={t('newsletter')} {...register('newsletter')} />
 					<Checkbox
 						text={
 							<>

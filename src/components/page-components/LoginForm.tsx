@@ -135,23 +135,12 @@ export function LoginForm() {
 				</div>
 
 				<div className='space-y-2 pb-2'>
-					<div className='flex items-center justify-between'>
-						<LabelComponent
-							text={t('passwordLabel')}
-							error={passwordLabelError}
-						/>
-
-						<LabelComponent
-							text={
-								<Link
-									href='/forgot-password'
-									className='font-bold text-violet-600 hover:text-violet-800 transition-colors'
-								>
-									{t('forgotPassword')}
-								</Link>
-							}
-						/>
-					</div>
+					{/* «Passwort vergessen?» скрыт: на проде нет мейлера (Railway блокирует SMTP),
+					    ссылка вела бы к ошибке. Локально флоу работает через Mailpit. */}
+					<LabelComponent
+						text={t('passwordLabel')}
+						error={passwordLabelError}
+					/>
 
 					<PasswordInput
 						error={passwordLabelError}
