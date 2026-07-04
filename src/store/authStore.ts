@@ -70,6 +70,7 @@ import {
 	updateAvatarAction,
 	updateUsernameAction
 } from '@/server-actions/auth.actions'
+import { clearRecentDecks } from '@/hooks/useRecentDecks'
 import type { IRegisterPayload, IUser } from '@/shared/types/auth.types'
 
 // ─────────────────────────────────────────────────────────────
@@ -307,6 +308,9 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 				// logoutAction глотает ошибки внутри себя (см. auth.actions.ts)
 				if (accessToken) void logoutAction(accessToken)
 
+				// «Последние модули» — приватные данные сессии, не оставляем их следующему юзеру
+				clearRecentDecks()
+
 				set({
 					user: null,
 					accessToken: null,
@@ -319,6 +323,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 			deleteAccount: async () => {
 				const { accessToken } = get()
 				if (accessToken) await deleteAccountAction(accessToken)
+				clearRecentDecks()
 				set({
 					user: null,
 					accessToken: null,

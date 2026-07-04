@@ -317,8 +317,9 @@ export function RegistrationForm() {
 				<ButtonLink variant='secondary' text={t('loginLink')} href='/login' />
 			</form>
 
-			{/* Оверлей: регистрация по email отключена (Railway блокирует SMTP) */}
-			<div className='absolute inset-0 z-20 flex items-center justify-center px-6'>
+			{/* Оверлей: регистрация по email отключена (Railway блокирует SMTP).
+			    items-start + pt: форма длинная и скроллится, по центру плашку не видно сразу */}
+			<div className='absolute inset-0 z-20 flex items-start justify-center px-6 pt-16'>
 				<div className='w-full max-w-sm rounded-2xl border border-gray-200 bg-white/95 p-6 text-center shadow-xl backdrop-blur-sm'>
 					<h3 className='mb-2 text-lg font-semibold text-gray-900'>
 						Registrierung per E-Mail derzeit nicht verfügbar

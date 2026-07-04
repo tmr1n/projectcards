@@ -1,27 +1,35 @@
 'use client'
 
-import { FirstSideComponent } from '@/components/page-components/FirstSideComponent'
 import type { IAuthPageLayoutProps } from '@/shared/types/layout.types'
 
+// Логин/регистрация как «всплывашка»: размытый градиентный фон на весь экран,
+// поверх — карточка с формой (бывшая правая половина). Левая панель убрана.
 export function AuthPageLayout({
-	sideText,
 	topButtons,
 	navigationTabs,
 	children
 }: IAuthPageLayoutProps) {
 	return (
-		<div className='flex flex-row h-screen'>
-			<FirstSideComponent text={sideText} />
-			<div className='w-full md:w-[50%] overflow-y-auto flex flex-col'>
-				{topButtons && <div className='p-4'>{topButtons}</div>}
+		<div className='relative min-h-screen w-full bg-gradient-to-br from-blue-100 via-indigo-100 to-violet-200'>
+			{/* Размытые декоративные пятна — эффект заблюренного фона */}
+			<div aria-hidden className='pointer-events-none fixed inset-0'>
+				<div className='absolute -top-24 -left-24 h-96 w-96 rounded-full bg-blue-300/50 blur-3xl' />
+				<div className='absolute bottom-0 right-0 h-[28rem] w-[28rem] rounded-full bg-violet-300/50 blur-3xl' />
+			</div>
 
-				{navigationTabs && (
-					<div className='flex flex-row gap-8 justify-center max-w-lg w-full mx-auto'>
-						{navigationTabs}
-					</div>
-				)}
+			<div className='relative z-10 flex min-h-screen items-center justify-center p-4 md:p-8'>
+				<div className='w-full max-w-xl overflow-hidden rounded-3xl bg-white shadow-2xl'>
+					{topButtons && <div className='p-4 pb-0'>{topButtons}</div>}
 
-				{children}
+					{navigationTabs && (
+						<div className='mx-auto flex w-full max-w-lg flex-row justify-center gap-8'>
+							{navigationTabs}
+						</div>
+					)}
+
+					{/* Длинные формы скроллятся внутри карточки, а не всей страницей */}
+					<div className='max-h-[75vh] overflow-y-auto'>{children}</div>
+				</div>
 			</div>
 		</div>
 	)

@@ -22,3 +22,9 @@ export function pushRecentDeck(deck: RecentDeck): void {
 	const next = [deck, ...current].slice(0, MAX_RECENT)
 	localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
 }
+
+// Чистим «последние модули» при выходе — иначе они утекают следующему юзеру на этом браузере
+export function clearRecentDecks(): void {
+	if (typeof window === 'undefined') return
+	localStorage.removeItem(STORAGE_KEY)
+}
