@@ -66,9 +66,10 @@ export default function ModulesPage() {
 				<div className='flex-1 overflow-y-auto p-4 md:p-10'>
 					<div className='flex items-center justify-between mb-6'>
 						<h2 className='text-2xl font-bold'>{t('title')}</h2>
+						{/* На мобилке кнопка скрыта — там «+» уже есть в BottomNav */}
 						<Link
 							href='/create-module'
-							className='flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold px-4 py-2.5 rounded-full transition'
+							className='hidden md:flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold px-4 py-2.5 rounded-full transition'
 						>
 							<Plus size={16} />
 							{t('newModule')}
