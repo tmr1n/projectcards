@@ -84,16 +84,14 @@ export default async function DatenschutzPage({
 			</h3>
 			<p>
 				Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website
-				ist:
-			</p>
-			<p className='my-2'>
-				[Vorname Nachname]
-				<br />
-				[Straße und Hausnummer]
-				<br />
-				[PLZ] Hamburg
-				<br />
-				E-Mail: [deine-email@example.com]
+				sowie deren Kontaktdaten finden Sie im{' '}
+				<Link
+					href={`/${locale}/impressum`}
+					className='text-violet-600 hover:underline'
+				>
+					Impressum
+				</Link>{' '}
+				dieser Website.
 			</p>
 
 			<h3 className='mt-4 mb-1 font-semibold text-gray-900'>Speicherdauer</h3>
@@ -198,6 +196,20 @@ export default async function DatenschutzPage({
 					policies.google.com/privacy
 				</a>
 				.
+			</p>
+
+			<h3 className='mt-4 mb-1 font-semibold text-gray-900'>
+				Profilbild-Upload
+			</h3>
+			<p>
+				Wenn Sie in Ihrem Profil ein eigenes Bild als Avatar hochladen, wird die
+				Bilddatei über den Dienst UploadThing (Ping Labs, Inc., USA) gespeichert
+				und ausgeliefert. Dabei werden die Bilddatei sowie technische
+				Verbindungsdaten (z. B. IP-Adresse) an UploadThing übermittelt; dies
+				umfasst eine Datenübertragung in die USA. Rechtsgrundlage ist die
+				Bereitstellung der von Ihnen gewünschten Funktion (Art. 6 Abs. 1 lit. b
+				DSGVO). Der Upload ist optional — alternativ stehen vorgefertigte Avatare
+				zur Verfügung.
 			</p>
 
 			<h3 className='mt-4 mb-1 font-semibold text-gray-900'>Versand von E-Mails</h3>
