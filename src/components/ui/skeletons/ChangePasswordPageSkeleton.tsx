@@ -2,7 +2,7 @@ import { Skeleton } from '@/components/ui/Skeleton'
 
 export function ChangePasswordPageSkeleton() {
 	return (
-		<div className='min-h-screen flex flex-col' role='status' aria-label='Загрузка...'>
+		<div className='min-h-screen flex flex-col' role='status' aria-label='Loading...'>
 			{/* Back button */}
 			<div className='flex items-center gap-4 justify-start p-4'>
 				<Skeleton className='h-9 w-9 rounded-full' />

@@ -20,7 +20,7 @@ export default function Error({ error, reset }: IErrorProps) {
 	const t = useTranslations('errors')
 
 	useEffect(() => {
-		console.error('Необработанная ошибка:', error)
+		console.error('Unhandled error:', error)
 	}, [error])
 
 	return (

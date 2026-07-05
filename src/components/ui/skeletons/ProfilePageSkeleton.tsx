@@ -2,7 +2,7 @@ import { Skeleton } from '@/components/ui/Skeleton'
 
 export function ProfilePageSkeleton() {
 	return (
-		<div role='status' aria-label='Загрузка...'>
+		<div role='status' aria-label='Loading...'>
 			{/* Back button */}
 			<div className='flex items-center gap-4 mb-6 justify-start p-4'>
 				<Skeleton className='h-9 w-9 rounded-full' />

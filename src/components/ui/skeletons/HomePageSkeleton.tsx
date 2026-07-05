@@ -12,7 +12,7 @@ export function HomePageSkeleton() {
 	return (
 		<div
 			role='status'
-			aria-label='Загрузка страницы...'
+			aria-label='Loading page...'
 			className='flex flex-col items-center justify-center gap-4 p-4 pt-12.5 min-h-screen'
 		>
 			{/* h1 — две строки разной ширины */}

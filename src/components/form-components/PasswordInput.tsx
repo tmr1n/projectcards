@@ -34,7 +34,7 @@ export function PasswordInput({ error, ref, ...props }: TPasswordInputProps) {
 				type='button' // ВАЖНО: type='button' чтобы не отправлять форму при клике!
 				onClick={() => setShowPassword(prev => !prev)} // prev — предыдущее значение
 				className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer focus:outline-none'
-				aria-label={showPassword ? 'Скрыть пароль' : 'Показать пароль'}
+				aria-label={showPassword ? 'Hide password' : 'Show password'}
 			>
 				{/* Условный рендер: разная иконка в зависимости от состояния */}
 				{showPassword ? <EyeOff size={20} /> : <Eye size={20} />}

@@ -26,6 +26,9 @@ export function ForgotPasswordForm() {
 	const [error, setError] = useState<string | null>(null)
 	const t = useTranslations('auth.forgotPassword')
 	const tErrors = useTranslations('auth.errors')
+	const tValidation = useTranslations('auth.validation')
+	// Zod-схемы хранят КЛЮЧИ переводов — переводим их при показе
+	const tv = (key?: string | null) => (key ? tValidation(key) : null)
 
 	const {
 		register,
@@ -52,7 +55,7 @@ export function ForgotPasswordForm() {
 
 	const emailValue = watch('email') ?? ''
 	const emailLabelError = useDelayedError(
-		errors.email?.message,
+		tv(errors.email?.message),
 		emailValue,
 		500,
 		isSubmitted

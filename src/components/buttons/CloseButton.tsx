@@ -10,7 +10,7 @@ export function CloseButton({ href }: ICloseButtonProps) {
 	return (
 		<button
 			onClick={() => navigateOut(href)}
-			aria-label='Закрыть'
+			aria-label='Close'
 			className='close-button'
 		>
 			<X

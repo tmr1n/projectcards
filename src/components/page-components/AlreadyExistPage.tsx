@@ -17,8 +17,9 @@ import { ErrorBanner } from '@/components/ui/ErrorBanner'
 import { FormLoader } from '@/components/ui/FormLoader'
 import { useDelayedError } from '@/hooks/useDelayedError'
 
+// Сообщение — КЛЮЧ перевода (auth.validation), переводится при показе
 const schema = z.object({
-	password: z.string().min(1, 'Введите пароль')
+	password: z.string().min(1, 'passwordRequired')
 })
 
 type FormData = z.infer<typeof schema>
@@ -42,6 +43,8 @@ function maskEmail(email: string) {
 
 export default function AlreadyExistPage({ token }: { token?: string }) {
 	const t = useTranslations('auth.alreadyExist')
+	const tValidation = useTranslations('auth.validation')
+	const tv = (key?: string | null) => (key ? tValidation(key) : null)
 	const router = useRouter()
 	const loginWithOAuth = useAuthStore(state => state.loginWithOAuth)
 
@@ -66,7 +69,7 @@ export default function AlreadyExistPage({ token }: { token?: string }) {
 	})
 
 	const passwordValue = watch('password') ?? ''
-	const passwordError = useDelayedError(errors.password?.message, passwordValue, 500, isSubmitted)
+	const passwordError = useDelayedError(tv(errors.password?.message), passwordValue, 500, isSubmitted)
 
 	const onSubmit = async (data: FormData) => {
 		if (!token) return

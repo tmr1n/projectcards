@@ -129,7 +129,12 @@
 			"usernameChars": "Username can only contain letters, numbers, underscores and hyphens.",
 			"passwordMin": "Password is too short. Minimum length is 8 characters.",
 			"passwordUppercase": "Password must contain at least one uppercase letter.",
-			"passwordSpecial": "Password must contain at least one special character."
+			"passwordSpecial": "Password must contain at least one special character.",
+			"emailInvalid": "Invalid email address.",
+			"loginIdentifierRequired": "Please enter your email or username.",
+			"passwordRequired": "Please enter your password.",
+			"passwordsMismatch": "Passwords do not match.",
+			"termsRequired": "Please accept the LangCards terms of service and privacy policy to continue."
 		},
 		"errors": {
 			"sendEmail": "Failed to send email. Please try again.",

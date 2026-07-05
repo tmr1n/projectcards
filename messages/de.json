@@ -130,7 +130,12 @@
 			"usernameChars": "Der Benutzername darf nur Buchstaben, Zahlen, Unterstriche und Bindestriche enthalten.",
 			"passwordMin": "Das Passwort ist zu kurz. Mindestlänge ist 8 Zeichen.",
 			"passwordUppercase": "Das Passwort muss mindestens einen Großbuchstaben enthalten.",
-			"passwordSpecial": "Das Passwort muss mindestens ein Sonderzeichen enthalten."
+			"passwordSpecial": "Das Passwort muss mindestens ein Sonderzeichen enthalten.",
+			"emailInvalid": "Ungültige E-Mail-Adresse.",
+			"loginIdentifierRequired": "Bitte E-Mail oder Benutzernamen eingeben.",
+			"passwordRequired": "Bitte Passwort eingeben.",
+			"passwordsMismatch": "Die Passwörter stimmen nicht überein.",
+			"termsRequired": "Bitte akzeptiere die Nutzungsbedingungen und die Datenschutzerklärung von LangCards, um fortzufahren."
 		},
 		"errors": {
 			"sendEmail": "E-Mail konnte nicht gesendet werden. Bitte versuche es erneut.",

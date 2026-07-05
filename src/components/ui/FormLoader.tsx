@@ -31,7 +31,7 @@ export function FormLoader({ isLoading }: IFormLoaderProps) {
 		<div
 			className='absolute inset-0 bg-white/75 backdrop-blur-[2px] flex items-center justify-center z-10 rounded-lg'
 			aria-busy='true'
-			aria-label='Загрузка...'
+			aria-label='Loading...'
 		>
 			{/* Спиннер: круг с разноцветными краями, вращается через animate-spin */}
 			{/* border-violet-200 = светлая часть круга, border-t-violet-600 = тёмная (верхняя) */}

@@ -38,6 +38,9 @@ export function LoginForm() {
 	const error = useAuthStore(state => state.error)
 	const clearError = useAuthStore(state => state.clearError)
 	const t = useTranslations('auth.login')
+	const tValidation = useTranslations('auth.validation')
+	// Zod-схемы хранят КЛЮЧИ переводов — переводим их при показе
+	const tv = (key?: string | null) => (key ? tValidation(key) : null)
 
 	const {
 		register,
@@ -57,13 +60,13 @@ export function LoginForm() {
 	const passwordValue = watch('password') ?? ''
 
 	const emailLabelError = useDelayedError(
-		errors.email?.message,
+		tv(errors.email?.message),
 		emailValue,
 		500,
 		isSubmitted
 	)
 	const passwordLabelError = useDelayedError(
-		errors.password?.message,
+		tv(errors.password?.message),
 		passwordValue,
 		500,
 		isSubmitted

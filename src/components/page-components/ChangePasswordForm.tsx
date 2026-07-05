@@ -39,6 +39,8 @@ export function ChangePasswordForm({
 		hasUppercase: tValidation('passwordUppercase'),
 		hasSpecial: tValidation('passwordSpecial')
 	}
+	// Zod-схемы хранят КЛЮЧИ переводов — переводим их при показе
+	const tv = (key?: string | null) => (key ? tValidation(key) : null)
 
 	const {
 		register,
@@ -110,13 +112,13 @@ export function ChangePasswordForm({
 	})()
 
 	const passwordLabelError = useDelayedError(
-		rawPasswordLabelError,
+		tv(rawPasswordLabelError),
 		passwordValue,
 		500,
 		isSubmitted
 	)
 	const confirmPasswordLabelError = useDelayedError(
-		errors.confirmPassword?.message,
+		tv(errors.confirmPassword?.message),
 		confirmPasswordValue,
 		500,
 		isSubmitted

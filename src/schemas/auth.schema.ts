@@ -21,15 +21,16 @@ import {
 	USERNAME_VALIDATION
 } from '@/constants/validation'
 
+// Сообщения в схемах — КЛЮЧИ переводов (auth.validation), формы переводят при показе
 export const loginSchema = z.object({
 	// Login accepts email OR username, server handles format check
-	email: z.string().min(1, 'Введите email или имя пользователя'),
-	password: z.string().min(1, 'Введите пароль')
+	email: z.string().min(1, 'loginIdentifierRequired'),
+	password: z.string().min(1, 'passwordRequired')
 })
 
 export const registerSchema = z
 	.object({
-		email: z.string().email('Недопустимый адрес электронной почты.'),
+		email: z.string().email('emailInvalid'),
 		username: z
 			.string()
 			.min(USERNAME_VALIDATION.minLength, USERNAME_VALIDATION.minLengthMessage)
@@ -55,17 +56,16 @@ export const registerSchema = z
 		confirmPassword: z.string(),
 		newsletter: z.boolean().optional(),
 		terms: z.boolean().refine(val => val === true, {
-			message:
-				'Примите условия предоставления услуг и политику конфиденциальности LangCards, чтобы продолжить.'
+			message: 'termsRequired'
 		})
 	})
 	.refine(d => d.password === d.confirmPassword, {
-		message: 'Пароли не совпадают',
+		message: 'passwordsMismatch',
 		path: ['confirmPassword']
 	})
 
 export const forgotPasswordSchema = z.object({
-	email: z.string().email('Недопустимый адрес электронной почты.')
+	email: z.string().email('emailInvalid')
 })
 
 export const changePasswordSchema = z
@@ -84,7 +84,7 @@ export const changePasswordSchema = z
 		confirmPassword: z.string()
 	})
 	.refine(d => d.password === d.confirmPassword, {
-		message: 'Пароли не совпадают',
+		message: 'passwordsMismatch',
 		path: ['confirmPassword']
 	})
 

@@ -22,25 +22,24 @@
 //
 // ────────────────────────────────────────────────────────────────────────────
 
+// ВАЖНО: *Message-поля — это КЛЮЧИ переводов из messages/*.json (auth.validation).
+// Формы переводят их через useTranslations('auth.validation') при показе.
 export const USERNAME_VALIDATION = {
 	minLength: 3,
-	minLengthMessage:
-		'Имя пользователя слишком короткое. Оно должно содержать не менее 3 символов',
+	minLengthMessage: 'usernameMin',
 	startsWithLatin: /^[A-Za-z]/,
-	startsWithLatinMessage:
-		'Имена пользователей должны начинаться с букв A-Z и не могут содержать символы с диакритическими знаками.',
+	startsWithLatinMessage: 'usernameLatinStart',
 	onlyValidChars: /^[A-Za-z][A-Za-z0-9_-]*$/,
-	onlyValidCharsMessage:
-		'Имя пользователя может содержать только буквы, цифры, подчеркивания и дефисы',
+	onlyValidCharsMessage: 'usernameChars',
 } as const
 
 export const PASSWORD_VALIDATION = {
 	minLength: 8,
-	minLengthMessage: 'Слишком короткий пароль. Минимальная длина – 8 знаков.',
+	minLengthMessage: 'passwordMin',
 	hasUppercase: /[A-Z]/,
-	hasUppercaseMessage: 'Пароль должен содержать одну большую букву.',
+	hasUppercaseMessage: 'passwordUppercase',
 	hasSpecial: /[!@#$%^&*(),.?":{}|<>]/,
-	hasSpecialMessage: 'Пароль должен содержать один специальный символ.',
+	hasSpecialMessage: 'passwordSpecial',
 } as const
 
 // Used by form components to display per-condition hints below inputs

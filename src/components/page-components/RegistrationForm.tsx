@@ -39,6 +39,8 @@ export function RegistrationForm() {
 	const router = useRouter()
 	const t = useTranslations('auth.registration')
 	const tValidation = useTranslations('auth.validation')
+	// Zod-схемы хранят КЛЮЧИ переводов — переводим их при показе
+	const tv = (key?: string | null) => (key ? tValidation(key) : null)
 
 	// Карта ключей hint → переводы
 	const validationMessages: Record<string, string> = {
@@ -151,25 +153,25 @@ export function RegistrationForm() {
 	})()
 
 	const emailLabelError = useDelayedError(
-		errors.email?.message,
+		tv(errors.email?.message),
 		emailValue,
 		500,
 		isSubmitted
 	)
 	const usernameLabelError = useDelayedError(
-		rawUsernameLabelError,
+		tv(rawUsernameLabelError),
 		usernameValue,
 		500,
 		isSubmitted
 	)
 	const passwordLabelError = useDelayedError(
-		rawPasswordLabelError,
+		tv(rawPasswordLabelError),
 		passwordValue,
 		500,
 		isSubmitted
 	)
 	const confirmPasswordLabelError = useDelayedError(
-		errors.confirmPassword?.message,
+		tv(errors.confirmPassword?.message),
 		confirmPasswordValue,
 		500,
 		isSubmitted
@@ -301,7 +303,7 @@ export function RegistrationForm() {
 					/>
 					{errors.terms && (
 						<p className='text-sm text-[#ff4757] font-bold font-nunito mt-5 mb-2'>
-							{errors.terms.message}
+							{tv(errors.terms.message)}
 						</p>
 					)}
 				</div>

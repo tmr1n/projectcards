@@ -7,7 +7,7 @@ import type { IBackButtonProps } from '@/shared/types/button.types'
 export function BackButton({ href, onClick }: IBackButtonProps) {
 	if (href) {
 		return (
-			<Link href={href} aria-label='назад'>
+			<Link href={href} aria-label='Back'>
 				<ArrowLeft
 					color='#586380'
 					size={32}
@@ -21,7 +21,7 @@ export function BackButton({ href, onClick }: IBackButtonProps) {
 	return (
 		<button
 			onClick={onClick}
-			aria-label='назад'
+			aria-label='Back'
 			className='hover:scale-110 hover:opacity-80 duration-300'
 		>
 			<ArrowLeft color='#586380' size={32} strokeWidth={1.5} />

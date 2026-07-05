@@ -28,6 +28,9 @@ export function ChangeUsernameForm() {
 	const [error, setError] = useState<string | null>(null)
 	const t = useTranslations('auth.changeUsername')
 	const tErrors = useTranslations('auth.errors')
+	const tValidation = useTranslations('auth.validation')
+	// Zod-схемы хранят КЛЮЧИ переводов — переводим их при показе
+	const tv = (key?: string | null) => (key ? tValidation(key) : null)
 
 	const {
 		register,
@@ -57,7 +60,7 @@ export function ChangeUsernameForm() {
 	const usernameValue = watch('username') ?? ''
 
 	const usernameLabelError = useDelayedError(
-		errors.username?.message,
+		tv(errors.username?.message),
 		usernameValue,
 		500,
 		isSubmitted

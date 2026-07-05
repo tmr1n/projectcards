@@ -15,7 +15,7 @@ export function ProfileAvatar() {
 			<button
 				onClick={() => setPickerOpen(true)}
 				className='relative group w-25 h-25 rounded-full overflow-hidden cursor-pointer shrink-0'
-				aria-label='Изменить аватар'
+				aria-label='Change avatar'
 			>
 				{user?.avatarUrl ? (
 					<Image
