@@ -17,17 +17,17 @@ export default async function ImpressumPage({
 						Angaben gemäß § 5 DDG
 					</h2>
 					<p>
-						[Vorname Nachname]
+						Artem Nemtsov
 						<br />
-						[Straße und Hausnummer]
+						Geierstraße 4a
 						<br />
-						[PLZ] Hamburg
+						22305 Hamburg
 					</p>
 				</section>
 
 				<section>
 					<h2 className='mb-1 text-lg font-semibold text-gray-900'>Kontakt</h2>
-					<p>E-Mail: [deine-email@example.com]</p>
+					<p>E-Mail: artemart1337@gmail.com</p>
 				</section>
 
 				<section>
