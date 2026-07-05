@@ -256,6 +256,16 @@
 	},
 	"modules": {
 		"title": "Meine Module",
+		"errors": {
+			"loadAll": "Module konnten nicht geladen werden.",
+			"loadOne": "Modul konnte nicht geladen werden.",
+			"create": "Modul konnte nicht erstellt werden.",
+			"update": "Modul konnte nicht aktualisiert werden.",
+			"delete": "Modul konnte nicht gelöscht werden.",
+			"cardCreate": "Karte konnte nicht erstellt werden.",
+			"cardUpdate": "Karte konnte nicht aktualisiert werden.",
+			"cardDelete": "Karte konnte nicht gelöscht werden."
+		},
 		"newModule": "Neues Modul",
 		"searchPlaceholder": "Modul suchen...",
 		"cards": "Karten",

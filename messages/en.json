@@ -255,6 +255,16 @@
 	},
 	"modules": {
 		"title": "My modules",
+		"errors": {
+			"loadAll": "Failed to load modules.",
+			"loadOne": "Failed to load the module.",
+			"create": "Failed to create the module.",
+			"update": "Failed to update the module.",
+			"delete": "Failed to delete the module.",
+			"cardCreate": "Failed to create the card.",
+			"cardUpdate": "Failed to update the card.",
+			"cardDelete": "Failed to delete the card."
+		},
 		"newModule": "New module",
 		"searchPlaceholder": "Search module...",
 		"cards": "cards",
