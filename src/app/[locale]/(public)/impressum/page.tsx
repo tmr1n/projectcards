@@ -34,7 +34,7 @@ export default async function ImpressumPage({
 					<h2 className='mb-1 text-lg font-semibold text-gray-900'>
 						Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV
 					</h2>
-					<p>[Vorname Nachname], Anschrift wie oben</p>
+					<p>Artem Nemtsov, Anschrift wie oben</p>
 				</section>
 
 				<p className='text-sm text-gray-500'>
