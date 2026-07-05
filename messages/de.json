@@ -238,6 +238,8 @@
 		},
 		"lastModules": "Letzte Module",
 		"continueLearning": "Weiter lernen",
+		"continueBtn": "Fortsetzen",
+		"remove": "Entfernen",
 		"recent": "Zuletzt geöffnet",
 		"noModules": "Du hast noch keine Module. Erstelle dein erstes!"
 	},

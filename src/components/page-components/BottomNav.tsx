@@ -2,18 +2,20 @@
 
 import { Folder, House, Plus } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
-const popups: Record<number, { Icon: typeof Plus; label: string; href: string }> = {
-	1: { Icon: Plus, label: 'Добавить модуль', href: '/create-module' },
-	2: { Icon: Folder, label: 'Мои модули', href: '/modules' }
-}
-
 export default function BottomNav() {
+	const t = useTranslations('dashboard.nav')
 	const [openIndex, setOpenIndex] = useState<number | null>(null)
 	const [displayIndex, setDisplayIndex] = useState<number>(1)
 	const router = useRouter()
 	const pathname = usePathname()
+
+	const popups: Record<number, { Icon: typeof Plus; label: string; href: string }> = {
+		1: { Icon: Plus, label: t('addModule'), href: '/create-module' },
+		2: { Icon: Folder, label: t('modules'), href: '/modules' }
+	}
 
 	const isModules = pathname.includes('/modules')
 	const activeIndex = isModules ? 2 : 0

@@ -2,6 +2,7 @@
 
 import { EllipsisVertical, EyeOff } from 'lucide-react'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
@@ -18,16 +19,21 @@ export default function DeckCard({
 	canRemove,
 	onHide
 }: DeckCardProps) {
+	const t = useTranslations('dashboard')
 	const [open, setOpen] = useState(false)
-	const [popupPos, setPopupPos] = useState({ bottom: 0, right: 0 })
+	const [popupPos, setPopupPos] = useState({ top: 0, right: 0 })
 	const btnRef = useRef<HTMLButtonElement>(null)
 
 	const handleOpen = (e: React.MouseEvent) => {
+		// Кнопка лежит внутри <Link> — без preventDefault клик уводил бы на карточку
+		e.preventDefault()
 		e.stopPropagation()
 		if (btnRef.current) {
 			const rect = btnRef.current.getBoundingClientRect()
+			// Меню открываем ВНИЗ от кнопки: карточка обычно у верха экрана,
+			// попап «вверх» уезжал за границу окна и был недостижим
 			setPopupPos({
-				bottom: window.innerHeight - rect.top + 6,
+				top: rect.bottom + 6,
 				right: window.innerWidth - rect.right
 			})
 		}
@@ -53,7 +59,7 @@ export default function DeckCard({
 				</div>
 
 				<span className='mt-2 px-4 py-2 w-fit bg-violet-500 text-white rounded-2xl cursor-pointer hover:bg-violet-600 transition'>
-					Продолжить
+					{t('continueBtn')}
 				</span>
 			</Link>
 
@@ -66,7 +72,7 @@ export default function DeckCard({
 						/>
 						<div
 							className='fixed z-50 bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden min-w-40'
-							style={{ bottom: popupPos.bottom, right: popupPos.right }}
+							style={{ top: popupPos.top, right: popupPos.right }}
 						>
 							<button
 								disabled={!canRemove}
@@ -77,7 +83,7 @@ export default function DeckCard({
 								className='w-full flex items-center gap-3 px-4 py-3 text-sm text-red-500 hover:bg-gray-100 transition disabled:opacity-40 disabled:cursor-not-allowed'
 							>
 								<EyeOff size={16} />
-								Удалить
+								{t('remove')}
 							</button>
 						</div>
 					</>,

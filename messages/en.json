@@ -237,6 +237,8 @@
 		},
 		"lastModules": "Last modules",
 		"continueLearning": "Continue studying",
+		"continueBtn": "Continue",
+		"remove": "Remove",
 		"recent": "Recent",
 		"noModules": "You don't have any modules yet. Create your first one!"
 	},
