@@ -201,6 +201,11 @@
 	},
 	"profile": {
 		"title": "Профиль",
+		"avatar": {
+			"title": "Выберите аватар",
+			"upload": "Загрузить",
+			"uploading": "Загрузка..."
+		},
 		"actions": {
 			"changeName": "Изменить имя",
 			"changePassword": "Изменить пароль",

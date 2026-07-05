@@ -201,6 +201,11 @@
 	},
 	"profile": {
 		"title": "Profil",
+		"avatar": {
+			"title": "Avatar wählen",
+			"upload": "Hochladen",
+			"uploading": "Wird hochgeladen..."
+		},
 		"actions": {
 			"changeName": "Name ändern",
 			"changePassword": "Passwort ändern",

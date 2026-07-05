@@ -200,6 +200,11 @@
 	},
 	"profile": {
 		"title": "Profile",
+		"avatar": {
+			"title": "Choose an avatar",
+			"upload": "Upload",
+			"uploading": "Uploading..."
+		},
 		"actions": {
 			"changeName": "Change name",
 			"changePassword": "Change password",

@@ -2,6 +2,7 @@
 
 import { Loader2, Upload } from 'lucide-react'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 import { useRef } from 'react'
 import { useUploadThing } from '@/lib/uploadthing'
 import { useAuthStore } from '@/store/authStore'
@@ -15,6 +16,7 @@ const PRESET_AVATARS = [
 ]
 
 export function AvatarPicker({ onClose }: { onClose: () => void }) {
+	const t = useTranslations('profile.avatar')
 	const updateAvatar = useAuthStore(state => state.updateAvatar)
 	const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -46,7 +48,7 @@ export function AvatarPicker({ onClose }: { onClose: () => void }) {
 				className='bg-white rounded-2xl p-6 w-full max-w-sm flex flex-col gap-4'
 				onClick={e => e.stopPropagation()}
 			>
-				<h2 className='text-base font-bold text-gray-900'>Выберите аватар</h2>
+				<h2 className='text-base font-bold text-gray-900'>{t('title')}</h2>
 
 				<div className='grid grid-cols-3 gap-3'>
 					{/* Загрузка своей фотки */}
@@ -61,7 +63,7 @@ export function AvatarPicker({ onClose }: { onClose: () => void }) {
 							<Upload size={20} className='text-gray-400' />
 						)}
 						<span className='text-[10px] text-gray-400'>
-							{isUploading ? 'Загрузка...' : 'Загрузить'}
+							{isUploading ? t('uploading') : t('upload')}
 						</span>
 					</button>
 
