@@ -212,15 +212,6 @@ export default async function DatenschutzPage({
 				zur Verfügung.
 			</p>
 
-			<h3 className='mt-4 mb-1 font-semibold text-gray-900'>Versand von E-Mails</h3>
-			<p>
-				Zur Bestätigung Ihrer Registrierung sowie für Funktionen wie das
-				Zurücksetzen des Passworts versenden wir E-Mails über einen externen
-				E-Mail-Dienst. Dabei wird Ihre E-Mail-Adresse an den Dienstleister
-				übermittelt. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO
-				(Vertragserfüllung).
-			</p>
-
 			<p className='mt-8 text-sm text-gray-400'>
 				Quelle der Mustervorlage: eRecht24
 			</p>

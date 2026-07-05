@@ -25,6 +25,7 @@ LangCards ist eine Lernplattform mit Karteikarten: Stapel (Module) anlegen, Voka
 
 - **Authentifizierung**: Google OAuth 2.0, klassisches Login (E-Mail/Benutzername + Passwort) und **Demo-Gastzugang** — ein temporäres Konto, das beim Logout automatisch vollständig gelöscht wird
 - **Lernkarten**: Module (Stapel) und Karten erstellen, durchblättern, umdrehen — mit Vorlesefunktion (Web Speech API, läuft komplett im Browser)
+- **Profil**: Avatar aus Vorlagen wählen oder eigenes Bild hochladen (via UploadThing)
 - **Dreisprachig**: Deutsch, Englisch, Russisch (next-intl)
 - **Datenschutz-bewusst**: nur technisch notwendige Cookies, kein Tracking, selbst gehostete Schriften, Impressum & Datenschutzerklärung
 
