@@ -97,6 +97,7 @@
 		},
 		"changePassword": {
 			"title": "Введите новый пароль",
+			"oldPasswordLabel": "Текущий пароль",
 			"passwordLabel": "Пароль",
 			"confirmPasswordLabel": "Повторите пароль",
 			"submit": "Сменить пароль",

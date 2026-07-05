@@ -97,6 +97,7 @@
 		},
 		"changePassword": {
 			"title": "Neues Passwort eingeben",
+			"oldPasswordLabel": "Aktuelles Passwort",
 			"passwordLabel": "Passwort",
 			"confirmPasswordLabel": "Passwort bestätigen",
 			"submit": "Passwort ändern",

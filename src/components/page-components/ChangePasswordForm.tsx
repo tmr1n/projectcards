@@ -31,6 +31,7 @@ export function ChangePasswordForm({
 	const [isLoading, setIsLoading] = useState(false)
 	const [isSuccess, setIsSuccess] = useState(false)
 	const [error, setError] = useState<string | null>(null)
+	const [oldPassword, setOldPassword] = useState('')
 	const t = useTranslations('auth.changePassword')
 	const tValidation = useTranslations('auth.validation')
 	const tErrors = useTranslations('auth.errors')
@@ -66,7 +67,7 @@ export function ChangePasswordForm({
 				}
 			} else {
 				await updatePasswordAction(
-					{ password: data.password, password_confirmation: data.confirmPassword, old_password: '' },
+					{ password: data.password, password_confirmation: data.confirmPassword, old_password: oldPassword },
 					accessToken ?? ''
 				)
 			}
@@ -161,6 +162,19 @@ export function ChangePasswordForm({
 					</h1>
 
 					<div className='space-y-5'>
+						{!resetToken && (
+							<div className='space-y-2'>
+								<LabelComponent text={t('oldPasswordLabel')} />
+								<PasswordInput
+									error={null}
+									value={oldPassword}
+									onChange={e => {
+										setOldPassword(e.target.value)
+										if (error) setError(null)
+									}}
+								/>
+							</div>
+						)}
 						<div className='space-y-2'>
 							<LabelComponent
 								text={t('passwordLabel')}
