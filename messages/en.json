@@ -137,6 +137,7 @@
 			"termsRequired": "Please accept the LangCards terms of service and privacy policy to continue."
 		},
 		"errors": {
+			"connection": "Connection error. Please try again.",
 			"sendEmail": "Failed to send email. Please try again.",
 			"changePassword": "Failed to change password. Please try again.",
 			"changeUsername": "Failed to update username. Please try again."

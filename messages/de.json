@@ -138,6 +138,7 @@
 			"termsRequired": "Bitte akzeptiere die Nutzungsbedingungen und die Datenschutzerklärung von LangCards, um fortzufahren."
 		},
 		"errors": {
+			"connection": "Verbindungsfehler. Bitte versuche es erneut.",
 			"sendEmail": "E-Mail konnte nicht gesendet werden. Bitte versuche es erneut.",
 			"changePassword": "Passwort konnte nicht geändert werden. Bitte versuche es erneut.",
 			"changeUsername": "Benutzername konnte nicht aktualisiert werden. Bitte versuche es erneut."

@@ -1,6 +1,7 @@
 'use server'
 
 import { cookies } from 'next/headers'
+import { getTranslations } from 'next-intl/server'
 import { ApiError, apiFetch } from '@/lib/api'
 import { translateApiError } from '@/lib/translateBackendError'
 import type {
@@ -15,6 +16,15 @@ import type {
 type TAuthActionResult<T> =
 	| { success: true; data: T }
 	| { success: false; message: string; fieldErrors?: unknown }
+
+// «Ошибка соединения» на языке текущей локали (fetch упал / бэкенд недоступен)
+async function connectionError(): Promise<{
+	success: false
+	message: string
+}> {
+	const t = await getTranslations('auth.errors')
+	return { success: false, message: t('connection') }
+}
 
 export async function loginAction(
 	payload: ILoginPayload
@@ -40,7 +50,7 @@ export async function loginAction(
 			const translated = await translateApiError(err)
 			return { success: false, ...translated }
 		}
-		return { success: false, message: 'Ошибка соединения' }
+		return await connectionError()
 	}
 }
 
@@ -58,7 +68,7 @@ export async function registerAction(
 			const translated = await translateApiError(err)
 			return { success: false, ...translated }
 		}
-		return { success: false, message: 'Ошибка соединения' }
+		return await connectionError()
 	}
 }
 
@@ -125,7 +135,7 @@ export async function demoLoginAction(): Promise<
 			const translated = await translateApiError(err)
 			return { success: false, ...translated }
 		}
-		return { success: false, message: 'Ошибка соединения' }
+		return await connectionError()
 	}
 }
 
@@ -160,7 +170,7 @@ export async function verifyEmailAction(
 			const translated = await translateApiError(err)
 			return { success: false, ...translated }
 		}
-		return { success: false, message: 'Ошибка соединения' }
+		return await connectionError()
 	}
 }
 
@@ -175,7 +185,7 @@ export async function resendVerificationAction(
 			const translated = await translateApiError(err)
 			return { success: false, ...translated }
 		}
-		return { success: false, message: 'Ошибка соединения' }
+		return await connectionError()
 	}
 }
 
@@ -190,7 +200,7 @@ export async function sendResetLinkAction(
 			const translated = await translateApiError(err)
 			return { success: false, ...translated }
 		}
-		return { success: false, message: 'Ошибка соединения' }
+		return await connectionError()
 	}
 }
 
@@ -210,7 +220,7 @@ export async function resetPasswordAction(
 			const translated = await translateApiError(err)
 			return { success: false, ...translated }
 		}
-		return { success: false, message: 'Ошибка соединения' }
+		return await connectionError()
 	}
 }
 
@@ -235,7 +245,7 @@ export async function linkGoogleAccountAction(
 			const translated = await translateApiError(err)
 			return { success: false, ...translated }
 		}
-		return { success: false, message: 'Ошибка соединения' }
+		return await connectionError()
 	}
 }
 
@@ -251,7 +261,7 @@ export async function updateAvatarAction(
 			const translated = await translateApiError(err)
 			return { success: false, ...translated }
 		}
-		return { success: false, message: 'Ошибка соединения' }
+		return await connectionError()
 	}
 }
 
@@ -267,6 +277,6 @@ export async function updateUsernameAction(
 			const translated = await translateApiError(err)
 			return { success: false, ...translated }
 		}
-		return { success: false, message: 'Ошибка соединения' }
+		return await connectionError()
 	}
 }
