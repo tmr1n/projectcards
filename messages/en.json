@@ -297,7 +297,8 @@
 		"moduleNotFound": "Module not found",
 		"backToModules": "To modules",
 		"save": "Save",
-		"cancel": "Cancel"
+		"cancel": "Cancel",
+		"addEditRemoveTerms": "Add, edit or remove terms"
 	},
 	"createModule": {
 		"titleLabel": "Module name",

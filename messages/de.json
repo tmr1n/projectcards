@@ -298,7 +298,8 @@
 		"moduleNotFound": "Modul nicht gefunden",
 		"backToModules": "Zu den Modulen",
 		"save": "Speichern",
-		"cancel": "Abbrechen"
+		"cancel": "Abbrechen",
+		"addEditRemoveTerms": "Begriffe hinzufügen, bearbeiten oder entfernen"
 	},
 	"createModule": {
 		"titleLabel": "Modulname",

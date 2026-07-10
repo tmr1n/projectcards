@@ -12,6 +12,7 @@ export function ProfileActions() {
 	const tModal = useTranslations('profile.deleteModal')
 	const logout = useAuthStore(state => state.logout)
 	const deleteAccount = useAuthStore(state => state.deleteAccount)
+	const user = useAuthStore(state => state.user)
 	const router = useRouter()
 
 	const [showConfirm, setShowConfirm] = useState(false)
@@ -40,18 +41,20 @@ export function ProfileActions() {
 						<ChevronRight size={16} className='text-gray-400' />
 					</Link>
 
-					<Link
-						href='/password-change?from=profile'
-						className='w-full flex items-center gap-3 px-4 py-4 bg-white hover:bg-gray-50 transition-colors'
-					>
-						<span className='w-9 h-9 rounded-full bg-violet-50 flex items-center justify-center shrink-0'>
-							<KeyRound size={16} className='text-violet-600' />
-						</span>
-						<span className='flex-1 text-left text-sm font-medium text-gray-800'>
-							{t('changePassword')}
-						</span>
-						<ChevronRight size={16} className='text-gray-400' />
-					</Link>
+					{user?.hasPassword && (
+						<Link
+							href='/password-change?from=profile'
+							className='w-full flex items-center gap-3 px-4 py-4 bg-white hover:bg-gray-50 transition-colors'
+						>
+							<span className='w-9 h-9 rounded-full bg-violet-50 flex items-center justify-center shrink-0'>
+								<KeyRound size={16} className='text-violet-600' />
+							</span>
+							<span className='flex-1 text-left text-sm font-medium text-gray-800'>
+								{t('changePassword')}
+							</span>
+							<ChevronRight size={16} className='text-gray-400' />
+						</Link>
+					)}
 				</div>
 
 				<div className='rounded-2xl overflow-hidden border border-gray-100 divide-y divide-gray-100'>
@@ -87,7 +90,9 @@ export function ProfileActions() {
 			{showConfirm && (
 				<div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4'>
 					<div className='bg-white rounded-2xl p-6 w-full max-w-sm flex flex-col gap-4'>
-						<h2 className='text-lg font-bold text-gray-900'>{tModal('title')}</h2>
+						<h2 className='text-lg font-bold text-gray-900'>
+							{tModal('title')}
+						</h2>
 						<p className='text-sm text-gray-500'>{tModal('description')}</p>
 						<button
 							onClick={handleDelete}

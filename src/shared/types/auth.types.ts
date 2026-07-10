@@ -9,6 +9,7 @@ export interface IUser {
 	username: string
 	avatarUrl: string | null
 	createdAt: string
+	hasPassword: boolean
 }
 
 // Сессия — хранит данные текущего залогиненного пользователя

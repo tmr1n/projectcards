@@ -77,6 +77,7 @@ function SortableCard({
 			<div className='flex flex-col md:flex-row gap-4'>
 				<div className='flex-1 flex flex-col gap-1'>
 					<input
+						maxLength={1000}
 						value={card.term}
 						onChange={e => onUpdate('term', e.target.value)}
 						className='w-full border-b border-gray-300 focus:border-violet-500 outline-none pb-1 text-gray-800 text-sm transition'
@@ -87,6 +88,7 @@ function SortableCard({
 				</div>
 				<div className='flex-1 flex flex-col gap-1'>
 					<input
+						maxLength={1000}
 						value={card.definition}
 						onChange={e => onUpdate('definition', e.target.value)}
 						className='w-full border-b border-gray-300 focus:border-violet-500 outline-none pb-1 text-gray-800 text-sm transition'
@@ -122,6 +124,10 @@ export default function CreateModulePage() {
 
 	const handleCreate = () => {
 		if (!title.trim()) { setError(t('errorTitle')); return }
+		// полузаполненная карточка (только термин ИЛИ только определение) — ошибка
+		if (cards.some(c => (c.term.trim() !== '') !== (c.definition.trim() !== ''))) {
+			setError(t('errorIncompleteCard')); return
+		}
 		const validCards = cards.filter(c => c.term.trim() && c.definition.trim())
 		if (validCards.length === 0) { setError(t('errorCards')); return }
 
@@ -171,6 +177,7 @@ export default function CreateModulePage() {
 				<div className='bg-white rounded-xl border border-gray-200 px-5 py-4'>
 					<p className='text-xs text-gray-400 mb-1'>{t('titleLabel')}</p>
 					<input
+						maxLength={100}
 						value={title}
 						onChange={e => setTitle(e.target.value)}
 						placeholder={t('titlePlaceholder')}
@@ -180,6 +187,7 @@ export default function CreateModulePage() {
 
 				<div className='bg-white rounded-xl border border-gray-200 px-5 py-4'>
 					<input
+						maxLength={500}
 						value={description}
 						onChange={e => setDescription(e.target.value)}
 						placeholder={t('descriptionPlaceholder')}

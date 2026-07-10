@@ -86,7 +86,7 @@ export function RegistrationForm() {
 
 		if (error) return
 
-		router.push('/email-confirmation')
+		router.push('/login')
 	}
 
 	const emailValue = watch('email') ?? ''
@@ -183,7 +183,7 @@ export function RegistrationForm() {
 
 			<form
 				onSubmit={handleSubmit(onSubmit)}
-				className='w-full max-w-lg flex flex-col gap-4 blur-[3px] pointer-events-none select-none opacity-70'
+				className='w-full max-w-lg flex flex-col gap-4 '
 				aria-hidden='true'
 			>
 				{/* Email */}
@@ -276,7 +276,7 @@ export function RegistrationForm() {
 						text={
 							<>
 								{t.rich('terms', {
-									termsLink: (chunks) => (
+									termsLink: chunks => (
 										<Link
 											href='/terms'
 											className='underline text-violet-600 hover:text-violet-800'
@@ -284,7 +284,7 @@ export function RegistrationForm() {
 											{chunks}
 										</Link>
 									),
-									privacyLink: (chunks) => (
+									privacyLink: chunks => (
 										<Link
 											href='/privacy'
 											className='underline text-violet-600 hover:text-violet-800'
@@ -317,26 +317,6 @@ export function RegistrationForm() {
 				/>
 				<ButtonLink variant='secondary' text={t('loginLink')} href='/login' />
 			</form>
-
-			{/* Оверлей: регистрация по email отключена (Railway блокирует SMTP).
-			    items-start + pt: форма длинная и скроллится, по центру плашку не видно сразу */}
-			<div className='absolute inset-0 z-20 flex items-start justify-center px-6 pt-16'>
-				<div className='w-full max-w-sm rounded-2xl border border-gray-200 bg-white/95 p-6 text-center shadow-xl backdrop-blur-sm'>
-					<h3 className='mb-2 text-lg font-semibold text-gray-900'>
-						Registrierung per E-Mail derzeit nicht verfügbar
-					</h3>
-					<p className='mb-5 text-sm leading-relaxed text-gray-600'>
-						Du kannst dich mit deinem Google-Konto anmelden oder das Demo-Konto
-						verwenden, um LangCards direkt auszuprobieren.
-					</p>
-					<Link
-						href='/login'
-						className='inline-block w-full rounded-xl bg-violet-600 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-violet-700'
-					>
-						Zum Login
-					</Link>
-				</div>
-			</div>
 		</div>
 	)
 }

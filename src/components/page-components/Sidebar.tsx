@@ -1,13 +1,13 @@
 'use client'
 
 import { Folder, House, LogOut, Plus } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { getRecentDecks, type RecentDeck } from '@/hooks/useRecentDecks'
 import Logo from '@/components/Logo'
 import { UserAvatar } from '@/components/profile/UserAvatar'
-import { getRecentDecks, type RecentDeck } from '@/hooks/useRecentDecks'
 import { useAuthStore } from '@/store/authStore'
 
 export default function Sidebar() {
@@ -80,10 +80,10 @@ export default function Sidebar() {
 				<div className='flex items-center gap-2'>
 					<Link
 						href='/profile'
-						className='flex items-center gap-3 flex-1 px-2 py-1.5 rounded-lg hover:bg-gray-100 transition-colors'
+						className='flex items-center gap-3 flex-1 px-2 py-1.5 rounded-lg hover:bg-gray-100 transition-colors min-w-0'
 					>
 						<UserAvatar size={36} />
-						<span className='text-m text-gray-700 font-semibold'>
+						<span className='text-m text-gray-700 font-semibold truncate min-w-0'>
 							{user?.username ?? '...'}
 						</span>
 					</Link>

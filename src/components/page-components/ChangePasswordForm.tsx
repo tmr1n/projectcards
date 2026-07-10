@@ -2,6 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDelayedError } from '@/hooks/useDelayedError'
@@ -17,7 +18,10 @@ import {
 	changePasswordSchema,
 	type ChangePasswordFormData
 } from '@/schemas/auth.schema'
-import { resetPasswordAction, updatePasswordAction } from '@/server-actions/auth.actions'
+import {
+	resetPasswordAction,
+	updatePasswordAction
+} from '@/server-actions/auth.actions'
 import { useAuthStore } from '@/store/authStore'
 
 export function ChangePasswordForm({
@@ -36,6 +40,19 @@ export function ChangePasswordForm({
 	const tValidation = useTranslations('auth.validation')
 	const tErrors = useTranslations('auth.errors')
 
+	const router = useRouter()
+	const user = useAuthStore(state => state.user)
+	const fetchProfile = useAuthStore(state => state.fetchProfile)
+
+	// Google-юзеров (без пароля) не пускаем на смену пароля из профиля
+	useEffect(() => {
+		if (!fromProfile) return // reset-по-токену не трогаем
+		if (!user) {
+			void fetchProfile()
+			return
+		} // юзер ещё не загружен → подгрузить
+		if (!user.hasPassword) router.replace('/profile')
+	}, [fromProfile, user])
 	const validationMessages: Record<string, string> = {
 		hasUppercase: tValidation('passwordUppercase'),
 		hasSpecial: tValidation('passwordSpecial')
@@ -59,7 +76,11 @@ export function ChangePasswordForm({
 		setError(null)
 		try {
 			if (resetToken) {
-				const result = await resetPasswordAction(resetToken, data.password, data.confirmPassword)
+				const result = await resetPasswordAction(
+					resetToken,
+					data.password,
+					data.confirmPassword
+				)
 				if (!result.success) {
 					setError(result.message)
 					setIsLoading(false)
@@ -67,7 +88,11 @@ export function ChangePasswordForm({
 				}
 			} else {
 				await updatePasswordAction(
-					{ password: data.password, password_confirmation: data.confirmPassword, old_password: oldPassword },
+					{
+						password: data.password,
+						password_confirmation: data.confirmPassword,
+						old_password: oldPassword
+					},
 					accessToken ?? ''
 				)
 			}

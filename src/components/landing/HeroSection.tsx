@@ -9,9 +9,10 @@ import {
 	useSpring,
 	useTransform
 } from 'framer-motion'
-import { useRef } from 'react'
 import { useTranslations } from 'next-intl'
+import { useRef } from 'react'
 import { ButtonLink } from '@/components/buttons/ButtonLink'
+import { useAuthStore } from '@/store/authStore'
 
 const cardData = [
 	{
@@ -169,6 +170,7 @@ export function HeroSection() {
 	const containerRef = useRef<HTMLDivElement>(null)
 	const t = useTranslations('landing.hero')
 	const tSecond = useTranslations('landing.second')
+	const isAuthenticated = useAuthStore(state => state.isAuthenticated)
 
 	const { scrollYProgress } = useScroll({
 		target: containerRef,
@@ -201,7 +203,12 @@ export function HeroSection() {
 						className='text-4xl text-center md:text-[3.5rem] font-bold text-black leading-tight translate-y-5 pointer-events-auto select-text'
 						initial={{ opacity: 0, y: 16, filter: 'blur(6px)' }}
 						animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-						transition={{ duration: 0.7, type: 'spring', stiffness: 90, damping: 20 }}
+						transition={{
+							duration: 0.7,
+							type: 'spring',
+							stiffness: 90,
+							damping: 20
+						}}
 					>
 						<span className='font-(family-name:--font-geist-sans)'>
 							{t('title')}{' '}
@@ -219,7 +226,13 @@ export function HeroSection() {
 						className='text-[1rem] md:text-[1.25rem] text-center text-gray-600 font-(family-name:--font-geist-sans) max-w-2xl mt-5 leading-relaxed pointer-events-auto select-text'
 						initial={{ opacity: 0, y: 10 }}
 						animate={{ opacity: 1, y: 0 }}
-						transition={{ delay: 0.35, duration: 0.6, type: 'spring', stiffness: 90, damping: 20 }}
+						transition={{
+							delay: 0.35,
+							duration: 0.6,
+							type: 'spring',
+							stiffness: 90,
+							damping: 20
+						}}
 					>
 						{t('description')}
 					</motion.p>
@@ -228,12 +241,14 @@ export function HeroSection() {
 						className='pointer-events-auto'
 						initial={{ opacity: 0, y: 10 }}
 						animate={{ opacity: 1, y: 0 }}
-						transition={{ delay: 0.55, type: 'spring', stiffness: 120, damping: 18 }}
+						transition={{
+							delay: 0.55,
+							type: 'spring',
+							stiffness: 120,
+							damping: 18
+						}}
 					>
-						<ButtonLink
-							text={t('cta')}
-							href='/registration'
-						/>
+						<ButtonLink text={t('cta')} href='/registration' />
 					</motion.div>
 				</motion.div>
 
@@ -269,7 +284,9 @@ export function HeroSection() {
 							{tSecond('description')}
 						</motion.p>
 						<motion.div style={{ opacity: newTextOpacity, y: newTextY }}>
-							<ButtonLink text={tSecond('cta')} href='/registration' />
+							{!isAuthenticated && (
+								<ButtonLink text={tSecond('cta')} href='/registration' />
+							)}
 						</motion.div>
 					</div>
 				</div>

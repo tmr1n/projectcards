@@ -298,7 +298,8 @@
 		"moduleNotFound": "Модуль не найден",
 		"backToModules": "К модулям",
 		"save": "Сохранить",
-		"cancel": "Отмена"
+		"cancel": "Отмена",
+		"addEditRemoveTerms": "Добавить, редактировать или удалить термины"
 	},
 	"createModule": {
 		"titleLabel": "Название модуля",

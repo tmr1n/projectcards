@@ -1,6 +1,9 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import type { IAuthPageLayoutProps } from '@/shared/types/layout.types'
+import { useAuthStore } from '@/store/authStore'
 
 // Логин/регистрация как «всплывашка»: размытый градиентный фон на весь экран,
 // поверх — карточка с формой (бывшая правая половина). Левая панель убрана.
@@ -9,6 +12,12 @@ export function AuthPageLayout({
 	navigationTabs,
 	children
 }: IAuthPageLayoutProps) {
+	const router = useRouter()
+	const isAuthenticated = useAuthStore(state => state.isAuthenticated)
+
+	useEffect(() => {
+		if (isAuthenticated) router.replace('/dashboard')
+	}, [isAuthenticated])
 	return (
 		<div className='relative min-h-screen w-full bg-gradient-to-br from-violet-100 via-purple-100 to-fuchsia-200'>
 			{/* Размытые декоративные пятна — эффект заблюренного фона */}

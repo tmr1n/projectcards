@@ -8,71 +8,15 @@ import {
 	Pencil,
 	Repeat,
 	Star,
-	Volume2,
-	X
+	Volume2
 } from 'lucide-react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
-import { createPortal } from 'react-dom'
 import { getDeckAction } from '@/server-actions/decks.actions'
 import { pushRecentDeck } from '@/hooks/useRecentDecks'
 import type { ICard, IDeckWithCards } from '@/shared/types/deck.types'
-
-function EditModal({
-	term,
-	translation,
-	onSave,
-	onClose
-}: {
-	term: string
-	translation: string
-	onSave: (term: string, translation: string) => void
-	onClose: () => void
-}) {
-	const t = useTranslations('flashCard')
-	const [termVal, setTermVal] = useState(term)
-	const [defVal, setDefVal] = useState(translation)
-
-	return createPortal(
-		<>
-			<div className='fixed inset-0 bg-black/40 z-50' onClick={onClose} />
-			<div className='fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-3xl shadow-2xl w-full max-w-2xl mx-4 p-8'>
-				<div className='flex items-center justify-between mb-6'>
-					<h2 className='text-2xl font-bold'>{t('edit')}</h2>
-					<button onClick={onClose} className='p-2 rounded-full hover:bg-gray-100 transition cursor-pointer'>
-						<X size={20} className='text-gray-500' />
-					</button>
-				</div>
-				<div className='flex flex-col gap-8'>
-					<input
-						value={termVal}
-						onChange={e => setTermVal(e.target.value)}
-						className='w-full border-b-2 border-gray-800 pb-2 text-base outline-none text-gray-800'
-					/>
-					<input
-						value={defVal}
-						onChange={e => setDefVal(e.target.value)}
-						className='w-full border-b border-gray-300 focus:border-gray-800 pb-2 text-base outline-none text-gray-800 transition'
-					/>
-				</div>
-				<div className='flex justify-end gap-6 mt-10'>
-					<button onClick={onClose} className='text-violet-600 font-semibold hover:text-violet-800 transition cursor-pointer'>
-						{t('cancel')}
-					</button>
-					<button
-						onClick={() => { onSave(termVal, defVal); onClose() }}
-						className='text-violet-600 font-semibold hover:text-violet-800 transition cursor-pointer'
-					>
-						{t('save')}
-					</button>
-				</div>
-			</div>
-		</>,
-		document.body
-	)
-}
 
 function speak(text: string) {
 	const utterance = new SpeechSynthesisUtterance(text)
@@ -111,40 +55,24 @@ function IconBtn({
 function TermCard({ card }: { card: ICard }) {
 	const t = useTranslations('flashCard')
 	const [starred, setStarred] = useState(false)
-	const [editing, setEditing] = useState(false)
-	const [term, setTerm] = useState(card.front)
-	const [translation, setTranslation] = useState(card.back)
 
 	return (
-		<>
-			<div className='bg-white rounded-2xl shadow-[0_0_12px_rgba(0,0,0,0.07)] p-4'>
-				<div className='flex justify-end gap-1 mb-2'>
-					<IconBtn tooltip={t('favorite')} onClick={() => setStarred(v => !v)}>
-						<Star size={18} className={starred ? 'fill-yellow-400 text-yellow-400' : 'text-gray-400'} />
-					</IconBtn>
-					<IconBtn tooltip={t('pronounce')} onClick={() => speak(term)}>
-						<Volume2 size={18} className='text-gray-400' />
-					</IconBtn>
-					<IconBtn tooltip={t('edit')} onClick={() => setEditing(true)}>
-						<Pencil size={18} className='text-gray-400' />
-					</IconBtn>
-				</div>
-				<div className='flex flex-col md:flex-row gap-3 md:gap-6'>
-					<p className='flex-1 text-sm text-gray-800 font-medium leading-relaxed'>{term}</p>
-					<div className='hidden md:block w-px bg-gray-200 shrink-0' />
-					<div className='block md:hidden h-px bg-gray-200' />
-					<p className='flex-1 text-sm text-gray-600 leading-relaxed'>{translation}</p>
-				</div>
+		<div className='bg-white rounded-2xl shadow-[0_0_12px_rgba(0,0,0,0.07)] p-4'>
+			<div className='flex justify-end gap-1 mb-2'>
+				<IconBtn tooltip={t('favorite')} onClick={() => setStarred(v => !v)}>
+					<Star size={18} className={starred ? 'fill-yellow-400 text-yellow-400' : 'text-gray-400'} />
+				</IconBtn>
+				<IconBtn tooltip={t('pronounce')} onClick={() => speak(card.front)}>
+					<Volume2 size={18} className='text-gray-400' />
+				</IconBtn>
 			</div>
-			{editing && (
-				<EditModal
-					term={term}
-					translation={translation}
-					onSave={(t, d) => { setTerm(t); setTranslation(d) }}
-					onClose={() => setEditing(false)}
-				/>
-			)}
-		</>
+			<div className='flex flex-col md:flex-row gap-3 md:gap-6'>
+				<p className='flex-1 text-sm text-gray-800 font-medium leading-relaxed'>{card.front}</p>
+				<div className='hidden md:block w-px bg-gray-200 shrink-0' />
+				<div className='block md:hidden h-px bg-gray-200' />
+				<p className='flex-1 text-sm text-gray-600 leading-relaxed'>{card.back}</p>
+			</div>
+		</div>
 	)
 }
 
@@ -307,7 +235,6 @@ export default function FlashCardPage() {
 	const [flipped, setFlipped] = useState(false)
 	const [starred, setStarred] = useState(false)
 	const [mode, setMode] = useState<'cards' | 'test'>('cards')
-	const [editing, setEditing] = useState(false)
 	const [cardIndex, setCardIndex] = useState(0)
 	const [shuffled, setShuffled] = useState(false)
 	const [displayCards, setDisplayCards] = useState<ICard[]>([])
@@ -403,7 +330,6 @@ export default function FlashCardPage() {
 											<div className='flex flex-row items-start justify-between p-4'>
 												<IconBtn tooltip={t('hint')}><Lightbulb /></IconBtn>
 												<div className='flex flex-row items-start gap-2 md:gap-4'>
-													<IconBtn tooltip={t('edit')} onClick={() => setEditing(true)}><Pencil /></IconBtn>
 													<IconBtn tooltip={t('pronounce')} onClick={() => speak(currentCard.front)}><Volume2 /></IconBtn>
 													<IconBtn tooltip={t('favorite')} onClick={() => setStarred(v => !v)}>
 														<Star size={24} className={starred ? 'fill-yellow-400 text-yellow-400' : ''} />
@@ -453,7 +379,7 @@ export default function FlashCardPage() {
 								<Link className='mt-4 w-full flex items-center justify-center gap-2 py-3 px-6 rounded-2xl border border-gray-300 text-gray-600 hover:bg-gray-50 transition cursor-pointer text-sm font-medium'
 									href={`/add-card?id=${deckId}`}>
 									<Pencil size={16} />
-									{t('addOrRemoveTerms')}
+									{t('addEditRemoveTerms')}
 								</Link>
 							</div>
 						</>
@@ -464,10 +390,6 @@ export default function FlashCardPage() {
 				</div>
 			</div>
 
-			{editing && currentCard && (
-				<EditModal term={currentCard.front} translation={currentCard.back}
-					onSave={() => {}} onClose={() => setEditing(false)} />
-			)}
 
 			{showScrollTop && (
 				<button onClick={scrollToTop}
