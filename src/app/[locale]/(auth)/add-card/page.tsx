@@ -252,7 +252,7 @@ export default function AddCardPage() {
 		<div className='min-h-dvh bg-gray-50'>
 			<div className='flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200'>
 				<Link
-					href={`/flash-card?id=${deckId}`}
+					href='/modules'
 					className='flex items-center gap-1 text-violet-600 font-semibold hover:text-violet-800 transition text-sm'
 				>
 					<ChevronLeft size={18} />

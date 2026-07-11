@@ -341,7 +341,7 @@
 	},
 	"addCard": {
 		"titleLabel": "Name",
-		"backToModule": "Zurück zum Modul",
+		"backToModule": "Zurück zu den Modulen",
 		"done": "Fertig",
 		"saving": "Wird gespeichert...",
 		"term": "Begriff",

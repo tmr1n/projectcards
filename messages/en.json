@@ -340,7 +340,7 @@
 	},
 	"addCard": {
 		"titleLabel": "Name",
-		"backToModule": "Back to module",
+		"backToModule": "Back to modules",
 		"done": "Done",
 		"saving": "Saving...",
 		"term": "Term",

@@ -341,7 +341,7 @@
 	},
 	"addCard": {
 		"titleLabel": "Название",
-		"backToModule": "Назад к модулю",
+		"backToModule": "Назад к модулям",
 		"done": "Готово",
 		"saving": "Сохранение...",
 		"term": "Термин",
