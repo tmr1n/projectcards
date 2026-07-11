@@ -219,6 +219,7 @@ export function RegistrationForm() {
 						error={serverFieldErrors?.username ?? usernameLabelError}
 					/>
 					<InputComponent
+						maxLength={20}
 						placeholder={t('usernamePlaceholder')}
 						error={usernameLabelError}
 						{...register('username', {

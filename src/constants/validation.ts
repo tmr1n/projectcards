@@ -27,6 +27,8 @@
 export const USERNAME_VALIDATION = {
 	minLength: 3,
 	minLengthMessage: 'usernameMin',
+	maxLength: 20,
+	maxLengthMessage: 'usernameMax',
 	startsWithLatin: /^[A-Za-z]/,
 	startsWithLatinMessage: 'usernameLatinStart',
 	onlyValidChars: /^[A-Za-z][A-Za-z0-9_-]*$/,

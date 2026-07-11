@@ -134,6 +134,7 @@
 
 		"validation": {
 			"usernameMin": "Der Benutzername ist zu kurz. Er muss mindestens 3 Zeichen enthalten.",
+			"usernameMax": "Der Benutzername ist zu lang. Er darf höchstens 20 Zeichen enthalten.",
 			"usernameLatinStart": "Benutzernamen müssen mit A-Z beginnen und dürfen keine diakritischen Zeichen enthalten.",
 			"usernameChars": "Der Benutzername darf nur Buchstaben, Zahlen, Unterstriche und Bindestriche enthalten.",
 			"passwordMin": "Das Passwort ist zu kurz. Mindestlänge ist 8 Zeichen.",
@@ -370,7 +371,7 @@
 			"usernameChange": "Benutzername ändern",
 			"alreadyExist": "Konto existiert bereits",
 			"flash-cards": "Karteikarten",
-			"add-card": "Karte hinzufügen"
+			"add-card": "Modul bearbeiten"
 		}
 	}
 }

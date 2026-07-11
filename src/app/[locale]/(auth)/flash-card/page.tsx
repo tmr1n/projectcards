@@ -418,7 +418,14 @@ export default function FlashCardPage() {
 					className='w-full flex-1 overflow-y-auto p-4 md:p-10'
 				>
 					<div className='w-full flex flex-col items-center'>
-						<h2 className='text-2xl font-bold mb-6 self-start'>{deck.title}</h2>
+						<div className='mb-6 self-start max-w-2xl min-w-0'>
+						<h2 className='text-2xl font-bold break-words'>{deck.title}</h2>
+						{deck.description && (
+							<p className='mt-1 text-sm text-gray-500 line-clamp-2 break-words'>
+								{deck.description}
+							</p>
+						)}
+					</div>
 
 						<div className='inline-flex bg-gray-100 rounded-2xl p-1 gap-1 mb-6'>
 							{(['cards', 'test'] as const).map(m => (

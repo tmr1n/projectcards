@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { ScrollToTop } from '@/components/ScrollToTop'
 import { Footer } from '@/components/landing/Footer'
 
 export default async function ImpressumPage({
@@ -10,6 +11,7 @@ export default async function ImpressumPage({
 
 	return (
 		<>
+			<ScrollToTop />
 			<div className='mx-auto px-6 py-12 flex justify-center'>
 				<div className='overflow-x-auto'>
 					<h1 className='mb-6 text-3xl font-semibold text-gray-900'>

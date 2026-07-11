@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { HistoryBackButton } from '@/components/buttons/HistoryBackButton'
 import { ScrollToTop } from '@/components/ScrollToTop'
+import { Footer } from '@/components/landing/Footer'
 
 export default async function DatenschutzPage({
 	params
@@ -10,7 +11,8 @@ export default async function DatenschutzPage({
 	const { locale } = await params
 
 	return (
-		<div className='mx-auto max-w-2xl px-6 py-12 leading-relaxed text-gray-700'>
+		<>
+			<div className='mx-auto max-w-2xl px-6 py-12 leading-relaxed text-gray-700'>
 			<ScrollToTop />
 			<div className='mb-6'>
 				<HistoryBackButton />
@@ -228,6 +230,8 @@ export default async function DatenschutzPage({
 			>
 				← Zurück zur Startseite
 			</Link>
-		</div>
+			</div>
+			<Footer />
+		</>
 	)
 }

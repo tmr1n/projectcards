@@ -34,6 +34,7 @@ export const registerSchema = z
 		username: z
 			.string()
 			.min(USERNAME_VALIDATION.minLength, USERNAME_VALIDATION.minLengthMessage)
+			.max(USERNAME_VALIDATION.maxLength, USERNAME_VALIDATION.maxLengthMessage)
 			.regex(
 				USERNAME_VALIDATION.startsWithLatin,
 				USERNAME_VALIDATION.startsWithLatinMessage

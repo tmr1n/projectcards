@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import type { IAuthPageLayoutProps } from '@/shared/types/layout.types'
 import { useAuthStore } from '@/store/authStore'
 
@@ -15,12 +15,20 @@ export function AuthPageLayout({
 	const router = useRouter()
 	const isAuthenticated = useAuthStore(state => state.isAuthenticated)
 
+	// Ждём восстановления сессии из localStorage (persist гидратируется асинхронно)
+	const [hydrated, setHydrated] = useState(false)
 	useEffect(() => {
-		if (isAuthenticated) router.replace('/dashboard')
-	}, [isAuthenticated])
+		setHydrated(useAuthStore.persist.hasHydrated())
+		return useAuthStore.persist.onFinishHydration(() => setHydrated(true))
+	}, [])
 
-	// Залогиненному форму не показываем вовсе — иначе она мелькает до редиректа
-	if (isAuthenticated) return null
+	useEffect(() => {
+		if (hydrated && isAuthenticated) router.replace('/dashboard')
+	}, [hydrated, isAuthenticated])
+
+	// Пока не гидратировались — форму не рендерим (иначе для залогиненного
+	// мелькает форма логина до редиректа). Залогинен — тоже не рендерим.
+	if (!hydrated || isAuthenticated) return null
 
 	return (
 		<div className='relative min-h-screen w-full bg-gradient-to-br from-violet-100 via-purple-100 to-fuchsia-200'>

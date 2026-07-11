@@ -133,6 +133,7 @@
 		},
 		"validation": {
 			"usernameMin": "Username is too short. It must be at least 3 characters.",
+			"usernameMax": "Username is too long. It must be at most 20 characters.",
 			"usernameLatinStart": "Usernames must start with A-Z letters and cannot contain diacritic characters.",
 			"usernameChars": "Username can only contain letters, numbers, underscores and hyphens.",
 			"passwordMin": "Password is too short. Minimum length is 8 characters.",
@@ -369,7 +370,7 @@
 			"usernameChange": "Change Username",
 			"alreadyExist": "Account Already Exists",
 				"flash-cards": "Flashcards",
-				"add-card": "Add card"
+				"add-card": "Editing module"
 		}
 	}
 }

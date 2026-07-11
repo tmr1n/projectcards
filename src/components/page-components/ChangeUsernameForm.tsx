@@ -102,6 +102,7 @@ export function ChangeUsernameForm() {
 							error={usernameLabelError}
 						/>
 						<InputComponent
+							maxLength={20}
 							error={usernameLabelError}
 							{...register('username', {
 								onChange: () => {
