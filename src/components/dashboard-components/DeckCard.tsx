@@ -1,6 +1,6 @@
 'use client'
 
-import { EllipsisVertical, Trash2 } from 'lucide-react'
+import { EllipsisVertical, EyeOff } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import { useTranslations } from 'next-intl'
 import { useRef, useState } from 'react'
@@ -84,8 +84,8 @@ export default function DeckCard({
 								}}
 								className='w-full flex items-center gap-3 px-4 py-3 text-sm text-red-500 hover:bg-gray-100 transition disabled:opacity-40 disabled:cursor-not-allowed'
 							>
-								<Trash2 size={16} />
-								{t('remove')}
+								<EyeOff size={16} />
+								{t('hide')}
 							</button>
 						</div>
 					</>,

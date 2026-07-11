@@ -132,6 +132,7 @@ interface AuthActions {
 	logout: () => void
 	deleteAccount: () => Promise<void>
 	clearError: () => void
+	checkSession: () => void
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -151,6 +152,17 @@ interface AuthActions {
 //   set(partialState)    — обновить поля в store (как setState)
 //   get()                — прочитать текущий state внутри action
 //   (get здесь не нужен, но полезно знать что он есть)
+
+// Истёк ли JWT (по claim exp). Битый токен / без exp — считаем истёкшим.
+function isTokenExpired(token: string): boolean {
+	try {
+		const payload = JSON.parse(atob(token.split('.')[1])) as { exp?: number }
+		if (!payload.exp) return true
+		return payload.exp * 1000 <= Date.now()
+	} catch {
+		return true
+	}
+}
 
 export const useAuthStore = create<AuthState & AuthActions>()(
 	persist(
@@ -340,7 +352,21 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 			// Вызывается когда пользователь начал вводить после ошибки.
 			// Убирает красное сообщение об ошибке сервера.
 
-			clearError: () => set({ error: null, serverFieldErrors: null })
+			clearError: () => set({ error: null, serverFieldErrors: null }),
+
+			// Проверка сессии: если access-токен истёк — сбрасываем визуальную
+			// авторизацию (иначе после протухания клиент остаётся «залогинен»).
+			checkSession: () => {
+				const { accessToken, isAuthenticated } = get()
+				if (
+					accessToken &&
+					isAuthenticated &&
+					isTokenExpired(accessToken)
+				) {
+					clearRecentDecks()
+					set({ user: null, accessToken: null, isAuthenticated: false })
+				}
+			}
 		}),
 
 		// ─────────────────────────────────────────────────────
@@ -364,7 +390,11 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 				accessToken: state.accessToken,
 				isAuthenticated: state.isAuthenticated,
 				pendingEmail: state.pendingEmail
-			})
+			}),
+			// После восстановления из localStorage проверяем срок access-токена
+			onRehydrateStorage: () => state => {
+				state?.checkSession()
+			}
 		}
 	)
 )

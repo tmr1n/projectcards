@@ -1,46 +1,126 @@
 'use client'
 
-import { ChevronLeft, ChevronRight, Layers, Plus, Search } from 'lucide-react'
+import {
+	ChevronLeft,
+	ChevronRight,
+	Layers,
+	Pencil,
+	Plus,
+	Search,
+	Trash2
+} from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { Link } from '@/i18n/navigation'
+import { Link, useRouter } from '@/i18n/navigation'
 import { useEffect, useState } from 'react'
 import { useUnauthorizedGuard } from '@/hooks/useUnauthorizedGuard'
+import { removeRecentDeck } from '@/hooks/useRecentDecks'
 import Logo from '@/components/Logo'
 import BottomNav from '@/components/page-components/BottomNav'
 import Sidebar from '@/components/page-components/Sidebar'
 import { UserAvatar } from '@/components/profile/UserAvatar'
-import { getDecksAction } from '@/server-actions/decks.actions'
+import {
+	deleteDeckAction,
+	getDecksAction
+} from '@/server-actions/decks.actions'
 import type { IDeckWithCount } from '@/shared/types/deck.types'
 
 function ModuleCard({
 	id,
 	title,
-	cardCount
+	cardCount,
+	onDeleted
 }: {
 	id: string
 	title: string
 	cardCount: number
+	onDeleted: (id: string) => void
 }) {
 	const t = useTranslations('modules')
+	const router = useRouter()
+	const [confirm, setConfirm] = useState(false)
+	const [deleting, setDeleting] = useState(false)
+
+	const handleDelete = async () => {
+		setDeleting(true)
+		await deleteDeckAction(id)
+		removeRecentDeck(id) // убрать и из «Последних модулей» (Sidebar)
+		onDeleted(id)
+	}
+
 	return (
-		<Link
-			href={`/flash-card?id=${id}`}
-			className='bg-white rounded-2xl border border-gray-200 p-5 flex flex-col gap-4 hover:shadow-md transition cursor-pointer'
-		>
-			<div className='flex items-start justify-between gap-2'>
-				<div className='bg-violet-100 rounded-xl p-2.5 shrink-0'>
-					<Layers size={20} className='text-violet-600' />
+		<>
+			<div
+				onClick={() => router.push(`/flash-card?id=${id}`)}
+				className='bg-white rounded-2xl border border-gray-200 p-5 flex flex-col gap-4 hover:shadow-md transition cursor-pointer'
+			>
+				<div className='flex items-start justify-between gap-2'>
+					<div className='bg-violet-100 rounded-xl p-2.5 shrink-0'>
+						<Layers size={20} className='text-violet-600' />
+					</div>
+					<div className='flex items-center gap-1'>
+						<button
+							onClick={e => {
+								e.stopPropagation()
+								router.push(`/add-card?id=${id}`)
+							}}
+							aria-label={t('edit')}
+							className='p-1.5 rounded-full text-gray-400 hover:bg-gray-100 hover:text-violet-600 transition cursor-pointer'
+						>
+							<Pencil size={16} />
+						</button>
+						<button
+							onClick={e => {
+								e.stopPropagation()
+								setConfirm(true)
+							}}
+							aria-label={t('delete')}
+							className='p-1.5 rounded-full text-gray-400 hover:bg-red-50 hover:text-red-500 transition cursor-pointer'
+						>
+							<Trash2 size={16} />
+						</button>
+					</div>
 				</div>
-				<span className='text-xs text-gray-400 font-medium mt-1'>
-					{cardCount} {t('cards')}
-				</span>
+				<div className='min-w-0'>
+					<p className='font-semibold text-gray-800 text-sm leading-snug truncate'>
+						{title}
+					</p>
+					<span className='text-xs text-gray-400 font-medium'>
+						{cardCount} {t('cards')}
+					</span>
+				</div>
 			</div>
-			<div className='min-w-0'>
-				<p className='font-semibold text-gray-800 text-sm leading-snug truncate'>
-					{title}
-				</p>
-			</div>
-		</Link>
+
+			{confirm && (
+				<div
+					className='fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4'
+					onClick={() => !deleting && setConfirm(false)}
+				>
+					<div
+						className='bg-white rounded-2xl p-6 w-full max-w-sm flex flex-col gap-4'
+						onClick={e => e.stopPropagation()}
+					>
+						<h2 className='text-lg font-bold text-gray-900'>
+							{t('deleteTitle')}
+						</h2>
+						<p className='text-sm text-gray-500'>{t('deleteDescription')}</p>
+						<button
+							onClick={handleDelete}
+							disabled={deleting}
+							className='w-full py-3 rounded-xl bg-red-500 text-white text-sm font-medium hover:bg-red-600 transition-colors disabled:opacity-50 cursor-pointer'
+						>
+							{t('deleteConfirm')}
+						</button>
+						<button
+							onClick={() => setConfirm(false)}
+							disabled={deleting}
+							className='w-full py-3 rounded-xl bg-gray-100 text-gray-700 text-sm font-medium hover:bg-gray-200 transition-colors disabled:opacity-50 cursor-pointer'
+						>
+							{t('deleteCancel')}
+						</button>
+					</div>
+				</div>
+			)}
+		</>
 	)
 }
 
@@ -129,6 +209,9 @@ export default function ModulesPage() {
 									id={d.id}
 									title={d.title}
 									cardCount={d._count.cards}
+									onDeleted={id =>
+										setDecks(prev => prev.filter(deck => deck.id !== id))
+									}
 								/>
 							))}
 						</div>

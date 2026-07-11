@@ -260,6 +260,7 @@
 		"continueLearning": "Continue studying",
 		"continueBtn": "Continue",
 		"remove": "Remove",
+		"hide": "Hide",
 		"recent": "Recent",
 		"noModules": "You don't have any modules yet. Create your first one!"
 	},
@@ -282,7 +283,13 @@
 		"notFoundHint": "Try a different query or create a new module",
 		"pageOf": "Page {page} of {total}",
 		"prevPage": "Previous page",
-		"nextPage": "Next page"
+		"nextPage": "Next page",
+		"edit": "Edit",
+		"delete": "Delete",
+		"deleteTitle": "Delete module?",
+		"deleteDescription": "The module and all its cards will be permanently deleted.",
+		"deleteConfirm": "Delete",
+		"deleteCancel": "Cancel"
 	},
 	"flashCard": {
 		"backToHome": "Back to home",
@@ -311,7 +318,10 @@
 		"save": "Save",
 		"cancel": "Cancel",
 		"addEditRemoveTerms": "Add, edit or remove terms",
-		"pronounceTranslation": "Read translation aloud"
+		"pronounceTranslation": "Read translation aloud",
+		"pause": "Pause",
+		"resume": "Resume",
+		"stop": "Stop"
 	},
 	"createModule": {
 		"titleLabel": "Module name",
@@ -338,7 +348,9 @@
 		"addCard": "Add card",
 		"dragToReorder": "Drag to reorder",
 		"moduleNotFound": "Module not found",
-		"descriptionPlaceholder": "Add description..."
+		"descriptionPlaceholder": "Add description...",
+		"errorIncompleteCard": "Please fill in both sides of every card or remove the incomplete one.",
+		"errorCards": "Add at least one card"
 	},
 	"cards": {
 		"title": "Cards"
@@ -355,7 +367,9 @@
 			"dashboard": "Main page",
 			"profile": "Profile",
 			"usernameChange": "Change Username",
-			"alreadyExist": "Account Already Exists"
+			"alreadyExist": "Account Already Exists",
+				"flash-cards": "Flashcards",
+				"add-card": "Add card"
 		}
 	}
 }

@@ -261,6 +261,7 @@
 		"continueLearning": "Продолжить учёбу",
 		"continueBtn": "Продолжить",
 		"remove": "Удалить",
+		"hide": "Скрыть",
 		"recent": "Недавние",
 		"noModules": "У вас пока нет модулей. Создайте первый!"
 	},
@@ -283,7 +284,13 @@
 		"notFoundHint": "Попробуйте другой запрос или создайте новый модуль",
 		"pageOf": "Страница {page} из {total}",
 		"prevPage": "Предыдущая страница",
-		"nextPage": "Следующая страница"
+		"nextPage": "Следующая страница",
+		"edit": "Изменить",
+		"delete": "Удалить",
+		"deleteTitle": "Удалить модуль?",
+		"deleteDescription": "Модуль и все карточки будут удалены безвозвратно.",
+		"deleteConfirm": "Удалить",
+		"deleteCancel": "Отмена"
 	},
 	"flashCard": {
 		"backToHome": "На главную",
@@ -312,7 +319,10 @@
 		"save": "Сохранить",
 		"cancel": "Отмена",
 		"addEditRemoveTerms": "Добавить, редактировать или удалить термины",
-		"pronounceTranslation": "Озвучить перевод"
+		"pronounceTranslation": "Озвучить перевод",
+		"pause": "Пауза",
+		"resume": "Продолжить",
+		"stop": "Стоп"
 	},
 	"createModule": {
 		"titleLabel": "Название модуля",
@@ -339,7 +349,9 @@
 		"addCard": "Добавить карточку",
 		"dragToReorder": "Перетащите, чтобы поменять порядок",
 		"moduleNotFound": "Модуль не найден",
-		"descriptionPlaceholder": "Добавьте описание..."
+		"descriptionPlaceholder": "Добавьте описание...",
+		"errorIncompleteCard": "Заполни обе стороны каждой карточки или удали незаполненную.",
+		"errorCards": "Добавьте хотя бы одну карточку"
 	},
 
 	"cards": {

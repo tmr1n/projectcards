@@ -1,6 +1,7 @@
 'use client'
 
-import { UserRound } from 'lucide-react'
+import { LogOut, UserRound } from 'lucide-react'
+import { UserAvatar } from '@/components/profile/UserAvatar'
 import { motion, useMotionValueEvent, useScroll } from 'motion/react'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
@@ -28,7 +29,7 @@ function scrollToSection(id: string | null) {
 }
 
 export function Header() {
-	const { isAuthenticated, logout } = useAuthStore()
+	const { isAuthenticated, logout, user } = useAuthStore()
 	const pathname = usePathname()
 	const isHome = pathname === '/'
 	const t = useTranslations('header')
@@ -52,7 +53,7 @@ export function Header() {
 			animate={{ y: hidden ? -100 : 0, opacity: hidden ? 0 : 1 }}
 			transition={{ duration: 0.3, ease: 'easeInOut' }}
 		>
-			<div className='flex items-center justify-between max-w-7xl mx-auto gap-6'>
+			<div className='flex items-center justify-between max-w-7xl mx-auto gap-2 md:gap-6'>
 				{/* Бургер (mobile) */}
 				<div className='md:hidden shrink-0'>
 					<SidebarMenu />
@@ -64,7 +65,7 @@ export function Header() {
 				    иначе сместится fixed/absolute-позиционирование бургера. */}
 				<Link
 					href='/'
-					className='shrink-0 absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0'
+					className='flex flex-1 justify-center md:block md:flex-none'
 				>
 					<AnimatedLogo className='hidden md:block cursor-pointer' />
 					<motion.div
@@ -106,18 +107,22 @@ export function Header() {
 					<LocaleSwitcher />
 					{isAuthenticated ? (
 						<>
-							<button
-								onClick={logout}
-								className='hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-violet-600 text-white text-sm font-medium hover:bg-violet-700 transition-colors cursor-pointer'
+							{/* Инфо пользователя → дашборд (как в сайдбаре дашборда) */}
+							<Link
+								href='/dashboard'
+								className='flex items-center gap-2 rounded-full border border-gray-200 py-1 pl-1 pr-3 hover:bg-gray-50 transition-colors'
 							>
-								{t('logout')}
-							</button>
+								<UserAvatar size={30} />
+								<span className='hidden sm:block max-w-24 truncate text-sm font-medium text-gray-700'>
+									{user?.username ?? '...'}
+								</span>
+							</Link>
 							<button
 								onClick={logout}
-								className='md:hidden w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors'
 								aria-label={t('logout')}
+								className='w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-red-50 hover:text-red-500 transition-colors cursor-pointer'
 							>
-								<UserRound size={18} />
+								<LogOut size={18} />
 							</button>
 						</>
 					) : (

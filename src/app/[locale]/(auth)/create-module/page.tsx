@@ -1,6 +1,14 @@
 'use client'
 
-import { closestCenter, DndContext, type DragEndEvent } from '@dnd-kit/core'
+import {
+	closestCenter,
+	DndContext,
+	type DragEndEvent,
+	PointerSensor,
+	TouchSensor,
+	useSensor,
+	useSensors
+} from '@dnd-kit/core'
 import {
 	arrayMove,
 	SortableContext,
@@ -8,13 +16,17 @@ import {
 	verticalListSortingStrategy
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { restrictToVerticalAxis } from '@/lib/dndModifiers'
+import {
+	restrictToParentElement,
+	restrictToVerticalAxis
+} from '@dnd-kit/modifiers'
 import { ChevronLeft, GripVertical, Plus, Trash2 } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { useState, useTransition } from 'react'
 import { createCardAction, createDeckAction } from '@/server-actions/decks.actions'
+import { ErrorBanner } from '@/components/ui/ErrorBanner'
 
 interface LocalCard {
 	localId: number
@@ -57,7 +69,7 @@ function SortableCard({
 						<button
 							{...attributes}
 							{...listeners}
-							className='cursor-grab active:cursor-grabbing p-1 rounded hover:bg-gray-100 transition'
+							className='cursor-grab active:cursor-grabbing touch-none p-1 rounded hover:bg-gray-100 transition'
 						>
 							<GripVertical size={18} className='text-gray-400' />
 						</button>
@@ -112,6 +124,14 @@ export default function CreateModulePage() {
 	const [cards, setCards] = useState<LocalCard[]>([{ localId: 1, term: '', definition: '' }])
 	const [error, setError] = useState('')
 
+	// Сенсоры: мышь/стилус (drag от 8px) + тач (hold 200мс → drag, иначе скролл)
+	const sensors = useSensors(
+		useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+		useSensor(TouchSensor, {
+			activationConstraint: { delay: 200, tolerance: 6 }
+		})
+	)
+
 	const handleDragEnd = (e: DragEndEvent) => {
 		const { active, over } = e
 		if (over && active.id !== over.id) {
@@ -141,8 +161,12 @@ export default function CreateModulePage() {
 			if (!deckRes.success) { setError(deckRes.message); return }
 
 			await Promise.all(
-				validCards.map(c =>
-					createCardAction(deckRes.data.id, { front: c.term, back: c.definition })
+				validCards.map((c, i) =>
+					createCardAction(deckRes.data.id, {
+						front: c.term,
+						back: c.definition,
+						order: i
+					})
 				)
 			)
 			router.push('/modules')
@@ -170,7 +194,7 @@ export default function CreateModulePage() {
 
 			{error && (
 				<div className='max-w-4xl mx-auto px-6 pt-4'>
-					<p className='text-red-500 text-sm'>{error}</p>
+					<ErrorBanner error={error} />
 				</div>
 			)}
 
@@ -188,7 +212,7 @@ export default function CreateModulePage() {
 
 				<div className='bg-white rounded-xl border border-gray-200 px-5 py-4'>
 					<input
-						maxLength={25}
+						maxLength={255}
 						value={description}
 						onChange={e => setDescription(e.target.value)}
 						placeholder={t('descriptionPlaceholder')}
@@ -197,9 +221,10 @@ export default function CreateModulePage() {
 				</div>
 
 				<DndContext
+						sensors={sensors}
 						collisionDetection={closestCenter}
 						onDragEnd={handleDragEnd}
-						modifiers={[restrictToVerticalAxis]}
+						modifiers={[restrictToVerticalAxis, restrictToParentElement]}
 					>
 					<SortableContext
 						items={cards.map(c => c.localId)}

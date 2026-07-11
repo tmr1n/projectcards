@@ -30,7 +30,9 @@ export function middleware(request: NextRequest) {
 
 	const isProtectedRoute =
 		strippedPath.startsWith('/dashboard') || strippedPath.startsWith('/profile')
-	const isAuthPage = strippedPath.startsWith('/login')
+	const isAuthPage =
+		strippedPath.startsWith('/login') ||
+		strippedPath.startsWith('/registration')
 
 	if (isProtectedRoute && !token) {
 		return NextResponse.redirect(new URL('/login', request.url))

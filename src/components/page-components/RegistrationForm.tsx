@@ -83,9 +83,11 @@ export function RegistrationForm() {
 			terms_accepted: data.terms ?? false
 		})
 
-		const { error } = useAuthStore.getState()
+		// Ошибка «email занят» приходит как field-error (serverFieldErrors),
+		// а не error — поэтому проверяем оба, иначе редирект с ложным «успехом»
+		const { error, serverFieldErrors } = useAuthStore.getState()
 
-		if (error) return
+		if (error || serverFieldErrors) return
 
 		router.push('/login?registered=1')
 	}

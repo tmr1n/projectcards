@@ -4,8 +4,11 @@ import {
 	ArrowUp,
 	ChevronLeft,
 	ChevronRight,
+	Pause,
 	Pencil,
+	Play,
 	Repeat,
+	Square,
 	Volume2
 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
@@ -17,11 +20,38 @@ import { getDeckAction } from '@/server-actions/decks.actions'
 import type { ICard, IDeckWithCards } from '@/shared/types/deck.types'
 
 function speak(text: string) {
+	const synth = window.speechSynthesis
 	const utterance = new SpeechSynthesisUtterance(text)
 	utterance.lang = 'de-DE'
 	utterance.rate = 0.9
-	window.speechSynthesis.cancel()
-	window.speechSynthesis.speak(utterance)
+	// Явно берём немецкий голос, если он есть в системе. Иначе браузер
+	// подставляет голос по умолчанию (часто русский) — и цифры читаются по-русски.
+	const voice = synth.getVoices().find(v => v.lang.toLowerCase().startsWith('de'))
+	if (voice) utterance.voice = voice
+	synth.cancel()
+	synth.speak(utterance)
+}
+
+// Следим за состоянием озвучки (Web Speech API не даёт реактивных полей —
+// опрашиваем speaking/paused интервалом) + управление паузой/стопом.
+function useSpeech() {
+	const [speaking, setSpeaking] = useState(false)
+	const [paused, setPaused] = useState(false)
+	useEffect(() => {
+		const synth = window.speechSynthesis
+		const id = setInterval(() => {
+			setSpeaking(synth.speaking)
+			setPaused(synth.paused)
+		}, 200)
+		return () => clearInterval(id)
+	}, [])
+	return {
+		speaking,
+		paused,
+		stop: () => window.speechSynthesis.cancel(),
+		pause: () => window.speechSynthesis.pause(),
+		resume: () => window.speechSynthesis.resume()
+	}
 }
 
 function IconBtn({
@@ -63,14 +93,14 @@ function TermCard({ card }: { card: ICard }) {
 					<IconBtn tooltip={t('pronounce')} onClick={() => speak(card.front)}>
 						<Volume2 size={18} className='text-gray-400' />
 					</IconBtn>
-					<p className='text-sm text-gray-800 font-medium leading-relaxed min-w-0'>
+					<p className='text-sm text-gray-800 font-medium leading-relaxed min-w-0 break-words'>
 						{card.front}
 					</p>
 				</div>
 				<div className='hidden md:block self-stretch w-px bg-gray-200 shrink-0' />
 				<div className='block md:hidden h-px bg-gray-200' />
 				<div className='flex-1 flex items-center gap-2 justify-between min-w-0'>
-					<p className='text-sm text-gray-600 leading-relaxed min-w-0'>
+					<p className='text-sm text-gray-600 leading-relaxed min-w-0 break-words'>
 						{card.back}
 					</p>
 					<IconBtn
@@ -311,6 +341,7 @@ export default function FlashCardPage() {
 	const [displayCards, setDisplayCards] = useState<ICard[]>([])
 	const [showScrollTop, setShowScrollTop] = useState(false)
 	const scrollRef = useRef<HTMLDivElement>(null)
+	const speech = useSpeech()
 
 	useEffect(() => {
 		if (!deckId) {
@@ -519,6 +550,26 @@ export default function FlashCardPage() {
 				>
 					<ArrowUp size={18} className='text-gray-600' />
 				</button>
+			)}
+
+			{/* Управление озвучкой: пауза/продолжить + стоп (появляется во время речи) */}
+			{speech.speaking && (
+				<div className='fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1 rounded-full border border-gray-200 bg-white px-2 py-1.5 shadow-md'>
+					<button
+						onClick={() => (speech.paused ? speech.resume() : speech.pause())}
+						aria-label={speech.paused ? t('resume') : t('pause')}
+						className='flex h-9 w-9 items-center justify-center rounded-full text-gray-600 hover:bg-gray-100 transition cursor-pointer'
+					>
+						{speech.paused ? <Play size={16} /> : <Pause size={16} />}
+					</button>
+					<button
+						onClick={speech.stop}
+						aria-label={t('stop')}
+						className='flex h-9 w-9 items-center justify-center rounded-full text-red-500 hover:bg-gray-100 transition cursor-pointer'
+					>
+						<Square size={16} />
+					</button>
+				</div>
 			)}
 		</div>
 	)

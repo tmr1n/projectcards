@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
 import { HistoryBackButton } from '@/components/buttons/HistoryBackButton'
+import { ScrollToTop } from '@/components/ScrollToTop'
 import { Footer } from '@/components/landing/Footer'
 
 export default async function TermsPage({
@@ -21,6 +22,7 @@ export default async function TermsPage({
 
 	return (
 		<>
+			<ScrollToTop />
 			<div className='mx-auto max-w-2xl px-6 py-12'>
 			<div className='mb-6'>
 				<HistoryBackButton />

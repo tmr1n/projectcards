@@ -220,7 +220,7 @@ export function HeroSection() {
 					</motion.h1>
 
 					{/* Spacer — holds space for cards */}
-					<div className='h-52 w-full shrink-0' />
+					<div className='h-72 md:h-52 w-full shrink-0' />
 
 					<motion.p
 						className='text-[1rem] md:text-[1.25rem] text-center text-gray-600 font-(family-name:--font-geist-sans) max-w-2xl mt-5 leading-relaxed pointer-events-auto select-text'

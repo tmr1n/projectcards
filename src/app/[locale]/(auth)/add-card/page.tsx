@@ -1,6 +1,14 @@
 'use client'
 
-import { closestCenter, DndContext, type DragEndEvent } from '@dnd-kit/core'
+import {
+	closestCenter,
+	DndContext,
+	type DragEndEvent,
+	PointerSensor,
+	TouchSensor,
+	useSensor,
+	useSensors
+} from '@dnd-kit/core'
 import {
 	arrayMove,
 	SortableContext,
@@ -8,11 +16,15 @@ import {
 	verticalListSortingStrategy
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { restrictToVerticalAxis } from '@/lib/dndModifiers'
+import {
+	restrictToParentElement,
+	restrictToVerticalAxis
+} from '@dnd-kit/modifiers'
 import { ChevronLeft, GripVertical, Plus, Trash2 } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
+import { ErrorBanner } from '@/components/ui/ErrorBanner'
 import { useEffect, useState, useTransition } from 'react'
 import {
 	createCardAction,
@@ -64,7 +76,7 @@ function SortableCard({
 						<button
 							{...attributes}
 							{...listeners}
-							className='cursor-grab active:cursor-grabbing p-1 rounded hover:bg-gray-100 transition'
+							className='cursor-grab active:cursor-grabbing touch-none p-1 rounded hover:bg-gray-100 transition'
 						>
 							<GripVertical size={18} className='text-gray-400' />
 						</button>
@@ -124,6 +136,14 @@ export default function AddCardPage() {
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState('')
 
+	// Сенсоры: мышь/стилус (drag от 8px) + тач (hold 200мс → drag, иначе скролл)
+	const sensors = useSensors(
+		useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+		useSensor(TouchSensor, {
+			activationConstraint: { delay: 200, tolerance: 6 }
+		})
+	)
+
 	useEffect(() => {
 		if (!deckId) return
 		getDeckAction(deckId).then(res => {
@@ -174,17 +194,39 @@ export default function AddCardPage() {
 
 			const originalIds = new Set(originalCards.map(c => c.serverId).filter(Boolean))
 
+			// Порядок изменился, если последовательность serverId в complete
+			// отличается от исходной — тогда обновим order у существующих карточек
+			const origOrder = originalCards.map(c => c.serverId).filter(Boolean)
+			const newOrder = complete.map(c => c.serverId).filter(Boolean)
+			const reordered = JSON.stringify(origOrder) !== JSON.stringify(newOrder)
+
 			// сохраняем только полные карточки; очищенные существующие удалятся ниже
-			for (const card of complete) {
+			complete.forEach((card, i) => {
 				if (card.serverId) {
 					const original = originalCards.find(o => o.serverId === card.serverId)
-					if (original && (original.term !== card.term || original.definition !== card.definition)) {
-						ops.push(updateCardAction(card.serverId, { front: card.term, back: card.definition }))
+					const contentChanged =
+						original &&
+						(original.term !== card.term ||
+							original.definition !== card.definition)
+					if (contentChanged || reordered) {
+						ops.push(
+							updateCardAction(card.serverId, {
+								front: card.term,
+								back: card.definition,
+								order: i
+							})
+						)
 					}
 				} else {
-					ops.push(createCardAction(deckId, { front: card.term, back: card.definition }))
+					ops.push(
+						createCardAction(deckId, {
+							front: card.term,
+							back: card.definition,
+							order: i
+						})
+					)
 				}
-			}
+			})
 
 			const currentIds = new Set(complete.map(c => c.serverId).filter(Boolean))
 			for (const id of originalIds) {
@@ -227,7 +269,7 @@ export default function AddCardPage() {
 
 			{error && (
 				<div className='max-w-4xl mx-auto px-6 pt-4'>
-					<p className='text-red-500 text-sm'>{error}</p>
+					<ErrorBanner error={error} />
 				</div>
 			)}
 
@@ -252,7 +294,7 @@ export default function AddCardPage() {
 
 					<div className='bg-white rounded-xl border border-gray-200 px-5 py-4'>
 						<input
-							maxLength={25}
+							maxLength={255}
 							value={description}
 							onChange={e => setDescription(e.target.value)}
 							placeholder={t('descriptionPlaceholder')}
@@ -261,9 +303,10 @@ export default function AddCardPage() {
 					</div>
 
 					<DndContext
+						sensors={sensors}
 						collisionDetection={closestCenter}
 						onDragEnd={handleDragEnd}
-						modifiers={[restrictToVerticalAxis]}
+						modifiers={[restrictToVerticalAxis, restrictToParentElement]}
 					>
 						<SortableContext
 							items={cards.map(c => c.localId)}

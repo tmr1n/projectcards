@@ -261,6 +261,7 @@
 		"continueLearning": "Weiter lernen",
 		"continueBtn": "Fortsetzen",
 		"remove": "Entfernen",
+		"hide": "Ausblenden",
 		"recent": "Zuletzt geöffnet",
 		"noModules": "Du hast noch keine Module. Erstelle dein erstes!"
 	},
@@ -283,7 +284,13 @@
 		"notFoundHint": "Versuche eine andere Suche oder erstelle ein neues Modul",
 		"pageOf": "Seite {page} von {total}",
 		"prevPage": "Vorherige Seite",
-		"nextPage": "Nächste Seite"
+		"nextPage": "Nächste Seite",
+		"edit": "Bearbeiten",
+		"delete": "Löschen",
+		"deleteTitle": "Modul löschen?",
+		"deleteDescription": "Das Modul und alle Karten werden dauerhaft gelöscht.",
+		"deleteConfirm": "Löschen",
+		"deleteCancel": "Abbrechen"
 	},
 	"flashCard": {
 		"backToHome": "Zur Startseite",
@@ -312,7 +319,10 @@
 		"save": "Speichern",
 		"cancel": "Abbrechen",
 		"addEditRemoveTerms": "Begriffe hinzufügen, bearbeiten oder entfernen",
-		"pronounceTranslation": "Übersetzung vorlesen"
+		"pronounceTranslation": "Übersetzung vorlesen",
+		"pause": "Pause",
+		"resume": "Fortsetzen",
+		"stop": "Stopp"
 	},
 	"createModule": {
 		"titleLabel": "Modulname",
@@ -339,7 +349,9 @@
 		"addCard": "Karte hinzufügen",
 		"dragToReorder": "Zum Neuanordnen ziehen",
 		"moduleNotFound": "Modul nicht gefunden",
-		"descriptionPlaceholder": "Beschreibung hinzufügen..."
+		"descriptionPlaceholder": "Beschreibung hinzufügen...",
+		"errorIncompleteCard": "Bitte fülle bei jeder Karte beide Seiten aus oder entferne die unvollständige Karte.",
+		"errorCards": "Bitte mindestens eine Karte hinzufügen"
 	},
 	"cards": {
 		"title": "Karten"

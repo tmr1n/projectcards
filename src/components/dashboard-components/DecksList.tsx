@@ -6,10 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useUnauthorizedGuard } from '@/hooks/useUnauthorizedGuard'
 import DeckCard from './DeckCard'
 import DeckMini from './DeckMini'
-import {
-	deleteDeckAction,
-	getDecksAction
-} from '@/server-actions/decks.actions'
+import { getDecksAction } from '@/server-actions/decks.actions'
 import type { IDeckWithCount } from '@/shared/types/deck.types'
 
 export default function DecksList() {
@@ -28,9 +25,9 @@ export default function DecksList() {
 			.finally(() => setLoading(false))
 	}, [guard])
 
-	// Реальное удаление: сперва с сервера, затем из локального состояния
-	const removeById = async (id: string) => {
-		await deleteDeckAction(id)
+	// Скрытие из карусели — ТОЛЬКО UI, из БД не удаляем (реальное удаление
+	// живёт в «Мои модули»). После перезахода колода вернётся.
+	const hideById = (id: string) => {
 		setDecks(prev => prev.filter(d => d.id !== id))
 		setCurrent(0)
 	}
@@ -82,7 +79,7 @@ export default function DecksList() {
 								id={deck.id}
 								title={deck.title}
 								canRemove={true}
-								onHide={() => removeById(deck.id)}
+								onHide={() => hideById(deck.id)}
 							/>
 						))}
 					</div>

@@ -2,6 +2,7 @@ export interface ICard {
 	id: string
 	front: string
 	back: string
+	order: number
 	deckId: string
 	createdAt: string
 }

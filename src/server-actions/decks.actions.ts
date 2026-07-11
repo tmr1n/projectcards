@@ -97,7 +97,7 @@ export async function deleteDeckAction(id: string) {
 	}
 }
 
-export async function createCardAction(deckId: string, payload: { front: string; back: string }) {
+export async function createCardAction(deckId: string, payload: { front: string; back: string; order?: number }) {
 	try {
 		const token = await getToken()
 		const res = await apiFetch<ICard>(`/decks/${deckId}/cards`, {
@@ -111,7 +111,7 @@ export async function createCardAction(deckId: string, payload: { front: string;
 	}
 }
 
-export async function updateCardAction(id: string, payload: { front?: string; back?: string }) {
+export async function updateCardAction(id: string, payload: { front?: string; back?: string; order?: number }) {
 	try {
 		const token = await getToken()
 		const res = await apiFetch<ICard>(`/cards/${id}`, {

@@ -5,7 +5,11 @@ import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { getRecentDecks, type RecentDeck } from '@/hooks/useRecentDecks'
+import {
+	getRecentDecks,
+	RECENT_DECKS_CHANGED,
+	type RecentDeck
+} from '@/hooks/useRecentDecks'
 import Logo from '@/components/Logo'
 import { UserAvatar } from '@/components/profile/UserAvatar'
 import { useAuthStore } from '@/store/authStore'
@@ -22,7 +26,11 @@ export default function Sidebar() {
 
 	useEffect(() => {
 		if (!user) fetchProfile()
-		setRecentDecks(getRecentDecks())
+		const sync = () => setRecentDecks(getRecentDecks())
+		sync()
+		// Живое обновление при удалении/открытии модуля (событие из useRecentDecks)
+		window.addEventListener(RECENT_DECKS_CHANGED, sync)
+		return () => window.removeEventListener(RECENT_DECKS_CHANGED, sync)
 	}, [])
 
 	const navItems = [
@@ -36,7 +44,9 @@ export default function Sidebar() {
 	return (
 		<div className='hidden md:flex flex-col w-64 bg-white h-screen shrink-0'>
 			<div className='p-6'>
-				<Logo size={50} />
+				<Link href='/' aria-label='LangCards'>
+					<Logo size={50} />
+				</Link>
 			</div>
 
 			<nav className='flex-1 px-3 space-y-1 overflow-y-auto'>

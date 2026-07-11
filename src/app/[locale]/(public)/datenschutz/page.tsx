@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { HistoryBackButton } from '@/components/buttons/HistoryBackButton'
+import { ScrollToTop } from '@/components/ScrollToTop'
 
 export default async function DatenschutzPage({
 	params
@@ -10,6 +11,7 @@ export default async function DatenschutzPage({
 
 	return (
 		<div className='mx-auto max-w-2xl px-6 py-12 leading-relaxed text-gray-700'>
+			<ScrollToTop />
 			<div className='mb-6'>
 				<HistoryBackButton />
 			</div>

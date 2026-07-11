@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getTranslations } from 'next-intl/server'
 import { Geist, Geist_Mono, Nunito, Playfair_Display } from 'next/font/google'
 import { notFound } from 'next/navigation'
+import { SessionWatcher } from '@/components/SessionWatcher'
 import { CookieBanner } from '@/components/ui/CookieBanner'
 import { TopLoader } from '@/components/ui/TopLoader'
 import { routing } from '@/i18n/routing'
@@ -72,6 +73,7 @@ export default async function RootLayout({
 				className={`${geistSans.variable} ${geistMono.variable} ${nunitoSans.variable} ${playfair.variable} antialiased`}
 			>
 				<NextIntlClientProvider messages={messages}>
+					<SessionWatcher />
 					<TopLoader />
 					<QueryProvider>{children}</QueryProvider>
 					<CookieBanner />
