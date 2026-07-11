@@ -18,6 +18,10 @@ export function AuthPageLayout({
 	useEffect(() => {
 		if (isAuthenticated) router.replace('/dashboard')
 	}, [isAuthenticated])
+
+	// Залогиненному форму не показываем вовсе — иначе она мелькает до редиректа
+	if (isAuthenticated) return null
+
 	return (
 		<div className='relative min-h-screen w-full bg-gradient-to-br from-violet-100 via-purple-100 to-fuchsia-200'>
 			{/* Размытые декоративные пятна — эффект заблюренного фона */}

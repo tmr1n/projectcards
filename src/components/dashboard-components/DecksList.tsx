@@ -78,7 +78,7 @@ export default function DecksList() {
 								key={deck.id}
 								id={deck.id}
 								title={deck.title}
-								canRemove={true}
+								canRemove={carousel.length > 2}
 								onHide={() => hideById(deck.id)}
 							/>
 						))}
