@@ -1,151 +1,95 @@
 'use client'
 
-import * as motion from 'motion/react-client'
-import Link from 'next/link'
-import { useRef, useState } from 'react'
+import { AnimatePresence, motion } from 'motion/react'
+import { Menu, X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { useSidebarDimensions } from '@/hooks/use-sidebar-dimensions'
-import {
-	background,
-	container,
-	itemVariants,
-	list,
-	listItem,
-	nav,
-	navVariants,
-	sidebarVariants,
-	toggleContainer
-} from '@/constants/sidebars-styles'
-import type {
-	IMenuToggleProps,
-	IPathProps,
-	ISidebarDimensions
-} from '@/shared/types/sidebars-styles.types'
+import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
+import { Link } from '@/i18n/navigation'
 
-const Navigation = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+// Мобильное меню: аккуратная кнопка-гамбургер в стиле шапки + выезжающая
+// слева панель (drawer) с блюр-подложкой. Ссылки — локале-осведомлённые.
+export default function SidebarMenu() {
+	const [open, setOpen] = useState(false)
+	// Портал рендерим только на клиенте — на сервере document не существует
+	const [mounted, setMounted] = useState(false)
+	useEffect(() => setMounted(true), [])
 	const t = useTranslations('sidebar')
-	const navItems = [
+
+	const items = [
 		{ label: t('home'), href: '/' },
 		{ label: t('registration'), href: '/registration' },
-		{ label: t('login'), href: '/login' }
+		{ label: t('login'), href: '/login' },
+		{ label: t('terms'), href: '/terms' },
+		{ label: t('privacy'), href: '/datenschutz' },
+		{ label: 'Impressum', href: '/impressum' }
 	]
 
-	return (
-		<motion.ul
-			style={{ ...list, pointerEvents: isOpen ? 'auto' : 'none' }}
-			variants={navVariants}
-		>
-			{navItems.map((item, i) => (
-				<MenuItem key={item.href} i={i} label={item.label} href={item.href} onClose={onClose} />
-			))}
-		</motion.ul>
-	)
-}
-
-const MenuItem = ({
-	i,
-	label,
-	href,
-	onClose
-}: {
-	i: number
-	label: string
-	href: string
-	onClose: () => void
-}) => (
-	<motion.li
-		style={listItem}
-		variants={itemVariants}
-		whileHover={{ scale: 1.03 }}
-		whileTap={{ scale: 0.97 }}
-	>
-		<Link
-			href={href}
-			onClick={onClose}
-			style={{
-				display: 'flex',
-				alignItems: 'center',
-				gap: 14,
-				textDecoration: 'none',
-				width: '100%',
-				padding: '4px 0'
-			}}
-		>
-			<span
-				style={{
-					width: 8,
-					height: 8,
-					borderRadius: '50%',
-					backgroundColor: ['#7342bc', '#4F46E5', '#2563EB'][i] ?? '#9CA3AF',
-					flexShrink: 0
-				}}
-			/>
-			<span
-				style={{
-					fontSize: 16,
-					fontWeight: 600,
-					color: '#111',
-					fontFamily: 'var(--font-geist-sans)'
-				}}
-			>
-				{label}
-			</span>
-		</Link>
-	</motion.li>
-)
-
-const Path = (props: IPathProps) => (
-	<motion.path
-		fill='transparent'
-		strokeWidth='3'
-		stroke='hsl(0, 0%, 18%)'
-		strokeLinecap='round'
-		{...props}
-	/>
-)
-
-const MenuToggle = ({ toggle }: IMenuToggleProps) => (
-	<button style={{ ...toggleContainer, pointerEvents: 'auto' }} onClick={toggle}>
-		<svg width='23' height='23' viewBox='0 0 23 23'>
-			<Path
-				variants={{
-					closed: { d: 'M 2 2.5 L 20 2.5' },
-					open: { d: 'M 3 16.5 L 17 2.5' }
-				}}
-			/>
-			<Path
-				d='M 2 9.423 L 20 9.423'
-				variants={{ closed: { opacity: 1 }, open: { opacity: 0 } }}
-				transition={{ duration: 0.1 }}
-			/>
-			<Path
-				variants={{
-					closed: { d: 'M 2 16.346 L 20 16.346' },
-					open: { d: 'M 3 2.5 L 17 16.346' }
-				}}
-			/>
-		</svg>
-	</button>
-)
-
-export default function SidebarMenu() {
-	const [isOpen, setIsOpen] = useState(false)
-	const containerRef = useRef<HTMLDivElement>(null)
-	const { height }: ISidebarDimensions = useSidebarDimensions(containerRef)
+	const close = () => setOpen(false)
 
 	return (
-		<div style={container}>
-			<motion.nav
-				initial={false}
-				animate={isOpen ? 'open' : 'closed'}
-				custom={height}
-				ref={containerRef}
-				style={{ ...nav, pointerEvents: 'none' }}
+		<>
+			<button
+				onClick={() => setOpen(true)}
+				aria-label='Menu'
+				className='w-10 h-10 rounded-full border border-gray-200 bg-white flex items-center justify-center text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer'
 			>
-				<motion.div style={background} variants={sidebarVariants} />
-				<Navigation isOpen={isOpen} onClose={() => setIsOpen(false)} />
-				<MenuToggle toggle={() => setIsOpen(!isOpen)} />
-			</motion.nav>
-		</div>
+				<Menu size={20} />
+			</button>
+
+			{mounted &&
+				createPortal(
+					<AnimatePresence>
+					{open && (
+						<>
+							<motion.div
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								exit={{ opacity: 0 }}
+								transition={{ duration: 0.2 }}
+								onClick={close}
+								className='fixed inset-0 z-[60] bg-black/30 backdrop-blur-sm'
+							/>
+
+							<motion.div
+								initial={{ x: '-100%' }}
+								animate={{ x: 0 }}
+								exit={{ x: '-100%' }}
+								transition={{ type: 'spring', stiffness: 320, damping: 34 }}
+								className='fixed top-0 left-0 bottom-0 z-[70] w-72 max-w-[80%] bg-white shadow-2xl p-6 flex flex-col'
+							>
+								<div className='flex items-center justify-between mb-8'>
+									<span className='text-lg font-bold text-gray-900'>
+										LangCards
+									</span>
+									<button
+										onClick={close}
+										aria-label='Close'
+										className='w-9 h-9 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-100 transition-colors cursor-pointer'
+									>
+										<X size={20} />
+									</button>
+								</div>
+
+								<nav className='flex flex-col gap-1'>
+									{items.map(item => (
+										<Link
+											key={item.href}
+											href={item.href}
+											onClick={close}
+											className='flex items-center gap-3 px-3 py-3 rounded-xl text-gray-700 font-medium hover:bg-violet-50 hover:text-violet-700 transition-colors'
+										>
+											<span className='w-2 h-2 rounded-full bg-violet-400 shrink-0' />
+											{item.label}
+										</Link>
+									))}
+								</nav>
+							</motion.div>
+						</>
+					)}
+				</AnimatePresence>,
+				document.body
+			)}
+		</>
 	)
 }

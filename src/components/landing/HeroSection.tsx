@@ -25,7 +25,7 @@ const cardData = [
 		endR: -18,
 		endY: 30,
 		delay: 0.72,
-		label: 'こんにちは',
+		label: 'API',
 		textColor: 'text-stone-200'
 	},
 	{
@@ -38,7 +38,7 @@ const cardData = [
 		endR: -8,
 		endY: 12,
 		delay: 0.64,
-		label: 'Bonjour',
+		label: 'gracias',
 		textColor: 'text-stone-700'
 	},
 	{
@@ -51,7 +51,7 @@ const cardData = [
 		endR: -2,
 		endY: 3,
 		delay: 0.56,
-		label: 'Hola',
+		label: 'arbeiten',
 		textColor: 'text-zinc-200'
 	},
 	{
@@ -64,7 +64,7 @@ const cardData = [
 		endR: 4,
 		endY: 8,
 		delay: 0.2,
-		label: 'Hello',
+		label: 'das Haus',
 		textColor: 'text-stone-700'
 	},
 	{
@@ -77,7 +77,7 @@ const cardData = [
 		endR: 10,
 		endY: 18,
 		delay: 0.56,
-		label: 'Ciao',
+		label: 'hola',
 		textColor: 'text-neutral-200'
 	},
 	{
@@ -90,7 +90,7 @@ const cardData = [
 		endR: 16,
 		endY: 30,
 		delay: 0.64,
-		label: 'Hallo',
+		label: 'danke',
 		textColor: 'text-stone-800'
 	},
 	{
@@ -103,7 +103,7 @@ const cardData = [
 		endR: 22,
 		endY: 44,
 		delay: 0.72,
-		label: '你好',
+		label: 'Deploy',
 		textColor: 'text-zinc-700'
 	}
 ]
@@ -248,7 +248,11 @@ export function HeroSection() {
 							damping: 18
 						}}
 					>
-						<ButtonLink text={t('cta')} href='/registration' />
+						{isAuthenticated ? (
+							<ButtonLink text={t('appCta')} href='/dashboard' />
+						) : (
+							<ButtonLink text={t('cta')} href='/registration' />
+						)}
 					</motion.div>
 				</motion.div>
 
@@ -260,8 +264,9 @@ export function HeroSection() {
 				</div>
 
 				{/* Second screen text */}
-				<div className='absolute left-8 md:left-20 top-0 bottom-0 flex items-center z-20 max-w-xs'>
-					<div>
+				<div className='absolute inset-0 z-20 flex items-center pointer-events-none'>
+					<div className='w-full max-w-6xl mx-auto px-8 md:px-12'>
+						<div className='max-w-xs pointer-events-auto'>
 						<motion.p
 							className='text-xs font-semibold tracking-widest text-gray-400 uppercase mb-4 font-(family-name:--font-geist-sans)'
 							style={{ opacity: labelOpacity }}
@@ -284,7 +289,9 @@ export function HeroSection() {
 							{tSecond('description')}
 						</motion.p>
 						<motion.div style={{ opacity: newTextOpacity, y: newTextY }}>
-							{!isAuthenticated && (
+							{isAuthenticated ? (
+								<ButtonLink text={t('appCta')} href='/dashboard' />
+							) : (
 								<ButtonLink text={tSecond('cta')} href='/registration' />
 							)}
 						</motion.div>
@@ -292,5 +299,6 @@ export function HeroSection() {
 				</div>
 			</div>
 		</div>
+	</div>
 	)
 }

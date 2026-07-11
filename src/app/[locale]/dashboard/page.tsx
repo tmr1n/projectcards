@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import DecksList from '@/components/dashboard-components/DecksList'
 import Logo from '@/components/Logo'
 import BottomNav from '@/components/page-components/BottomNav'

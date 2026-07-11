@@ -1,10 +1,11 @@
 'use client'
 
-import { ChevronRight, KeyRound, LogOut, Pencil, Trash2 } from 'lucide-react'
+import { ChevronRight, Globe, KeyRound, LogOut, Pencil, Trash2 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { LocaleSwitcher } from '@/components/LocaleSwitcher'
 import { useAuthStore } from '@/store/authStore'
 
 export function ProfileActions() {
@@ -14,6 +15,10 @@ export function ProfileActions() {
 	const deleteAccount = useAuthStore(state => state.deleteAccount)
 	const user = useAuthStore(state => state.user)
 	const router = useRouter()
+
+	// Демо-аккаунт (email вида demo-…@guest.langcards) удалять нельзя —
+	// бэк это и так блокирует, а на фронте просто прячем кнопку.
+	const isDemo = user?.email?.endsWith('@guest.langcards') ?? false
 
 	const [showConfirm, setShowConfirm] = useState(false)
 	const [isDeleting, setIsDeleting] = useState(false)
@@ -57,6 +62,18 @@ export function ProfileActions() {
 					)}
 				</div>
 
+				<div className='w-87.5 md:w-93.75 rounded-2xl border border-gray-100 bg-white px-4 py-3 flex items-center justify-between'>
+					<div className='flex items-center gap-3'>
+						<span className='w-9 h-9 rounded-full bg-violet-50 flex items-center justify-center shrink-0'>
+							<Globe size={16} className='text-violet-600' />
+						</span>
+						<span className='text-sm font-medium text-gray-800'>
+							{t('language')}
+						</span>
+					</div>
+					<LocaleSwitcher />
+				</div>
+
 				<div className='rounded-2xl overflow-hidden border border-gray-100 divide-y divide-gray-100'>
 					<button
 						onClick={() => {
@@ -73,17 +90,19 @@ export function ProfileActions() {
 						</span>
 					</button>
 
-					<button
-						onClick={() => setShowConfirm(true)}
-						className='w-full flex items-center gap-3 px-4 py-4 bg-white hover:bg-red-50 transition-colors cursor-pointer'
-					>
-						<span className='w-9 h-9 rounded-full bg-red-50 flex items-center justify-center shrink-0'>
-							<Trash2 size={16} className='text-red-500' />
-						</span>
-						<span className='flex-1 text-left text-sm font-medium text-red-500'>
-							{t('deleteAccount')}
-						</span>
-					</button>
+					{user && !isDemo && (
+						<button
+							onClick={() => setShowConfirm(true)}
+							className='w-full flex items-center gap-3 px-4 py-4 bg-white hover:bg-red-50 transition-colors cursor-pointer'
+						>
+							<span className='w-9 h-9 rounded-full bg-red-50 flex items-center justify-center shrink-0'>
+								<Trash2 size={16} className='text-red-500' />
+							</span>
+							<span className='flex-1 text-left text-sm font-medium text-red-500'>
+								{t('deleteAccount')}
+							</span>
+						</button>
+					)}
 				</div>
 			</div>
 

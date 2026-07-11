@@ -1,5 +1,7 @@
 import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
+import { HistoryBackButton } from '@/components/buttons/HistoryBackButton'
+import { Footer } from '@/components/landing/Footer'
 
 export default async function TermsPage({
 	params
@@ -13,11 +15,16 @@ export default async function TermsPage({
 		{ title: t('purposeTitle'), body: t('purpose') },
 		{ title: t('inspirationTitle'), body: t('inspiration') },
 		{ title: t('openSourceTitle'), body: t('openSource') },
-		{ title: t('warrantyTitle'), body: t('warranty') }
+		{ title: t('warrantyTitle'), body: t('warranty') },
+		{ title: t('dataNoticeTitle'), body: t('dataNotice') }
 	]
 
 	return (
-		<div className='mx-auto max-w-2xl px-6 py-12'>
+		<>
+			<div className='mx-auto max-w-2xl px-6 py-12'>
+			<div className='mb-6'>
+				<HistoryBackButton />
+			</div>
 			<h1 className='mb-2 text-3xl font-semibold text-gray-900'>
 				{t('title')}
 			</h1>
@@ -41,6 +48,8 @@ export default async function TermsPage({
 			>
 				← {t('back')}
 			</Link>
-		</div>
+			</div>
+			<Footer />
+		</>
 	)
 }

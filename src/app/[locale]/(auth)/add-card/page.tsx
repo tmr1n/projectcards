@@ -8,8 +8,9 @@ import {
 	verticalListSortingStrategy
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import { restrictToVerticalAxis } from '@/lib/dndModifiers'
 import { ChevronLeft, GripVertical, Plus, Trash2 } from 'lucide-react'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { useEffect, useState, useTransition } from 'react'
@@ -84,7 +85,7 @@ function SortableCard({
 			<div className='flex flex-col md:flex-row gap-4'>
 				<div className='flex-1 flex flex-col gap-1'>
 					<input
-						maxLength={1000}
+						maxLength={35}
 						value={card.term}
 						onChange={e => onUpdate('term', e.target.value)}
 						className='w-full border-b border-gray-300 focus:border-violet-500 outline-none pb-1 text-gray-800 text-sm transition'
@@ -95,7 +96,7 @@ function SortableCard({
 				</div>
 				<div className='flex-1 flex flex-col gap-1'>
 					<input
-						maxLength={1000}
+						maxLength={35}
 						value={card.definition}
 						onChange={e => onUpdate('definition', e.target.value)}
 						className='w-full border-b border-gray-300 focus:border-violet-500 outline-none pb-1 text-gray-800 text-sm transition'
@@ -156,6 +157,14 @@ export default function AddCardPage() {
 	const handleDone = () => {
 		if (!deckId) return
 
+		// та же логика, что при создании: без полузаполненных, минимум одна полная карточка
+		if (cards.some(c => (c.term.trim() !== '') !== (c.definition.trim() !== ''))) {
+			setError(t('errorIncompleteCard')); return
+		}
+		const complete = cards.filter(c => c.term.trim() && c.definition.trim())
+		if (complete.length === 0) { setError(t('errorCards')); return }
+		setError('')
+
 		startTransition(async () => {
 			const ops: Promise<unknown>[] = []
 
@@ -165,20 +174,19 @@ export default function AddCardPage() {
 
 			const originalIds = new Set(originalCards.map(c => c.serverId).filter(Boolean))
 
-			for (const card of cards) {
+			// сохраняем только полные карточки; очищенные существующие удалятся ниже
+			for (const card of complete) {
 				if (card.serverId) {
 					const original = originalCards.find(o => o.serverId === card.serverId)
 					if (original && (original.term !== card.term || original.definition !== card.definition)) {
 						ops.push(updateCardAction(card.serverId, { front: card.term, back: card.definition }))
 					}
 				} else {
-					if (card.term.trim() && card.definition.trim()) {
-						ops.push(createCardAction(deckId, { front: card.term, back: card.definition }))
-					}
+					ops.push(createCardAction(deckId, { front: card.term, back: card.definition }))
 				}
 			}
 
-			const currentIds = new Set(cards.map(c => c.serverId).filter(Boolean))
+			const currentIds = new Set(complete.map(c => c.serverId).filter(Boolean))
 			for (const id of originalIds) {
 				if (id && !currentIds.has(id)) {
 					ops.push(deleteCardAction(id))
@@ -217,6 +225,12 @@ export default function AddCardPage() {
 				</button>
 			</div>
 
+			{error && (
+				<div className='max-w-4xl mx-auto px-6 pt-4'>
+					<p className='text-red-500 text-sm'>{error}</p>
+				</div>
+			)}
+
 			{loading ? (
 				<div className='max-w-4xl mx-auto px-6 py-8 flex flex-col gap-4'>
 					{Array.from({ length: 3 }).map((_, i) => (
@@ -228,7 +242,7 @@ export default function AddCardPage() {
 					<div className='bg-white rounded-xl border border-gray-200 px-5 py-4'>
 						<p className='text-xs text-gray-400 mb-1'>{t('titleLabel')}</p>
 						<input
-							maxLength={100}
+							maxLength={25}
 							value={title}
 							onChange={e => setTitle(e.target.value)}
 							placeholder={t('titleLabel')}
@@ -238,7 +252,7 @@ export default function AddCardPage() {
 
 					<div className='bg-white rounded-xl border border-gray-200 px-5 py-4'>
 						<input
-							maxLength={500}
+							maxLength={25}
 							value={description}
 							onChange={e => setDescription(e.target.value)}
 							placeholder={t('descriptionPlaceholder')}
@@ -246,7 +260,11 @@ export default function AddCardPage() {
 						/>
 					</div>
 
-					<DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+					<DndContext
+						collisionDetection={closestCenter}
+						onDragEnd={handleDragEnd}
+						modifiers={[restrictToVerticalAxis]}
+					>
 						<SortableContext
 							items={cards.map(c => c.localId)}
 							strategy={verticalListSortingStrategy}

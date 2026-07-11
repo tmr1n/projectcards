@@ -8,8 +8,9 @@ import {
 	verticalListSortingStrategy
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import { restrictToVerticalAxis } from '@/lib/dndModifiers'
 import { ChevronLeft, GripVertical, Plus, Trash2 } from 'lucide-react'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { useState, useTransition } from 'react'
@@ -77,7 +78,7 @@ function SortableCard({
 			<div className='flex flex-col md:flex-row gap-4'>
 				<div className='flex-1 flex flex-col gap-1'>
 					<input
-						maxLength={1000}
+						maxLength={35}
 						value={card.term}
 						onChange={e => onUpdate('term', e.target.value)}
 						className='w-full border-b border-gray-300 focus:border-violet-500 outline-none pb-1 text-gray-800 text-sm transition'
@@ -88,7 +89,7 @@ function SortableCard({
 				</div>
 				<div className='flex-1 flex flex-col gap-1'>
 					<input
-						maxLength={1000}
+						maxLength={35}
 						value={card.definition}
 						onChange={e => onUpdate('definition', e.target.value)}
 						className='w-full border-b border-gray-300 focus:border-violet-500 outline-none pb-1 text-gray-800 text-sm transition'
@@ -177,7 +178,7 @@ export default function CreateModulePage() {
 				<div className='bg-white rounded-xl border border-gray-200 px-5 py-4'>
 					<p className='text-xs text-gray-400 mb-1'>{t('titleLabel')}</p>
 					<input
-						maxLength={100}
+						maxLength={25}
 						value={title}
 						onChange={e => setTitle(e.target.value)}
 						placeholder={t('titlePlaceholder')}
@@ -187,7 +188,7 @@ export default function CreateModulePage() {
 
 				<div className='bg-white rounded-xl border border-gray-200 px-5 py-4'>
 					<input
-						maxLength={500}
+						maxLength={25}
 						value={description}
 						onChange={e => setDescription(e.target.value)}
 						placeholder={t('descriptionPlaceholder')}
@@ -195,7 +196,11 @@ export default function CreateModulePage() {
 					/>
 				</div>
 
-				<DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+				<DndContext
+						collisionDetection={closestCenter}
+						onDragEnd={handleDragEnd}
+						modifiers={[restrictToVerticalAxis]}
+					>
 					<SortableContext
 						items={cards.map(c => c.localId)}
 						strategy={verticalListSortingStrategy}
@@ -226,8 +231,8 @@ export default function CreateModulePage() {
 					</SortableContext>
 				</DndContext>
 
-				<div className='flex items-center justify-between mt-2 pb-10'>
-					<div className='flex-1' />
+				<div className='flex items-center justify-between gap-3 mt-2 pb-10'>
+					<div className='hidden sm:block flex-1' />
 					<button
 						onClick={() =>
 							setCards(prev => [

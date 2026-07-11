@@ -8,8 +8,9 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Info } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -86,7 +87,7 @@ export function RegistrationForm() {
 
 		if (error) return
 
-		router.push('/login')
+		router.push('/login?registered=1')
 	}
 
 	const emailValue = watch('email') ?? ''
@@ -186,6 +187,12 @@ export function RegistrationForm() {
 				className='w-full max-w-lg flex flex-col gap-4 '
 				aria-hidden='true'
 			>
+				{/* Демо-предупреждение: нет верификации email — не вводить реальные данные */}
+				<div className='flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-800'>
+					<Info size={16} className='mt-0.5 shrink-0' />
+					<span>{t('demoNotice')}</span>
+				</div>
+
 				{/* Email */}
 				<div className='space-y-2'>
 					<LabelComponent
@@ -286,7 +293,7 @@ export function RegistrationForm() {
 									),
 									privacyLink: chunks => (
 										<Link
-											href='/privacy'
+											href='/datenschutz'
 											className='underline text-violet-600 hover:text-violet-800'
 										>
 											{chunks}

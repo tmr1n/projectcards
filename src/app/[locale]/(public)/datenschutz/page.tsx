@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { HistoryBackButton } from '@/components/buttons/HistoryBackButton'
 
 export default async function DatenschutzPage({
 	params
@@ -9,6 +10,9 @@ export default async function DatenschutzPage({
 
 	return (
 		<div className='mx-auto max-w-2xl px-6 py-12 leading-relaxed text-gray-700'>
+			<div className='mb-6'>
+				<HistoryBackButton />
+			</div>
 			<h1 className='mb-2 text-3xl font-semibold text-gray-900'>
 				Datenschutzerklärung
 			</h1>

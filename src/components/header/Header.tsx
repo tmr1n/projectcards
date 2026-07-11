@@ -4,11 +4,12 @@ import { UserRound } from 'lucide-react'
 import { motion, useMotionValueEvent, useScroll } from 'motion/react'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { AnimatedLogo } from './AnimatedLogo'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import SidebarMenu from './SidebarMenu'
+import { LocaleSwitcher } from '@/components/LocaleSwitcher'
 import { useAuthStore } from '@/store/authStore'
 
 const navLinkIds = [
@@ -53,21 +54,33 @@ export function Header() {
 		>
 			<div className='flex items-center justify-between max-w-7xl mx-auto gap-6'>
 				{/* Бургер (mobile) */}
-				<div className='md:hidden w-12 h-12 shrink-0'>
+				<div className='md:hidden shrink-0'>
 					<SidebarMenu />
 				</div>
 
-				{/* Логотип */}
-				<Link href='/' className='shrink-0'>
+				{/* Логотип — на мобилке центрируем абсолютом относительно
+				    fixed-шапки (viewport-центр), чтобы боковые блоки (бургер /
+				    язык+auth) не смещали его. Контейнер НЕ делаем relative —
+				    иначе сместится fixed/absolute-позиционирование бургера. */}
+				<Link
+					href='/'
+					className='shrink-0 absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0'
+				>
 					<AnimatedLogo className='hidden md:block cursor-pointer' />
-					<Image
-						src='/images/Logo-adaptive.svg'
-						alt='Project Cards Logo'
-						width={50}
-						height={50}
-						className='block md:hidden cursor-pointer'
-						priority
-					/>
+					<motion.div
+						className='block md:hidden'
+						whileTap={{ rotate: 360 }}
+						transition={{ duration: 0.6, ease: 'easeInOut' }}
+					>
+						<Image
+							src='/images/Logo-adaptive.svg'
+							alt='Project Cards Logo'
+							width={50}
+							height={50}
+							className='cursor-pointer'
+							priority
+						/>
+					</motion.div>
 				</Link>
 
 				{/* Nav (desktop, только на главной) */}
@@ -90,6 +103,7 @@ export function Header() {
 
 				{/* Right: auth */}
 				<div className='shrink-0 flex items-center gap-2'>
+					<LocaleSwitcher />
 					{isAuthenticated ? (
 						<>
 							<button

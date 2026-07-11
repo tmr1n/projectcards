@@ -12,10 +12,12 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { AnimatePresence, motion } from 'motion/react'
+import { CheckCircle2 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { FcGoogle } from 'react-icons/fc'
 import { useDelayedError } from '@/hooks/useDelayedError'
@@ -41,6 +43,21 @@ export function LoginForm() {
 	const tValidation = useTranslations('auth.validation')
 	// Zod-схемы хранят КЛЮЧИ переводов — переводим их при показе
 	const tv = (key?: string | null) => (key ? tValidation(key) : null)
+
+	// Тост «успешно зарегистрирован»: приходим сюда с ?registered=1 после
+	// регистрации, показываем зелёную плашку и прячем через 4 секунды.
+	// Читаем из window.location (не useSearchParams) — чтобы не требовать
+	// <Suspense> и не ломать next build.
+	const [showToast, setShowToast] = useState(false)
+	useEffect(() => {
+		const registered = new URLSearchParams(window.location.search).get(
+			'registered'
+		)
+		if (!registered) return
+		setShowToast(true)
+		const timer = setTimeout(() => setShowToast(false), 4000)
+		return () => clearTimeout(timer)
+	}, [])
 
 	const {
 		register,
@@ -94,6 +111,25 @@ export function LoginForm() {
 
 	return (
 		<div className='relative bg-white flex items-center justify-center p-8'>
+			{/* Тост успешной регистрации (?registered=1) — центр сверху, авто-скрытие 4с.
+			    Внешний div центрирует, motion.div анимирует, чтобы transform не конфликтовал. */}
+			<div className='fixed top-6 left-1/2 -translate-x-1/2 z-[80] pointer-events-none'>
+				<AnimatePresence>
+					{showToast && (
+						<motion.div
+							initial={{ opacity: 0, y: -20 }}
+							animate={{ opacity: 1, y: 0 }}
+							exit={{ opacity: 0, y: -20 }}
+							transition={{ duration: 0.25 }}
+							className='flex items-center gap-2 rounded-xl bg-green-500 px-5 py-3 text-sm font-medium text-white shadow-lg'
+						>
+							<CheckCircle2 size={18} />
+							{t('registeredSuccess')}
+						</motion.div>
+					)}
+				</AnimatePresence>
+			</div>
+
 			<FormLoader isLoading={isLoading} />
 
 			<form
@@ -119,7 +155,7 @@ export function LoginForm() {
 					}}
 					className='w-full cursor-pointer rounded-xl border border-gray-300 py-3 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50 disabled:opacity-50'
 				>
-					Als Demo ausprobieren — ohne Anmeldung
+					{t('demo')}
 				</button>
 
 				<LineComponent text={t('divider')} />

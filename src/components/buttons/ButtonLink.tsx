@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { buttonStyles } from '@/constants/button'
 import type { IButtonLinkProps } from '@/shared/types/button.types'
 import { cn } from '@/utils/utils'

@@ -3,29 +3,36 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
-import { getDecksAction } from '@/server-actions/decks.actions'
-import type { IDeckWithCount } from '@/shared/types/deck.types'
+import { useUnauthorizedGuard } from '@/hooks/useUnauthorizedGuard'
 import DeckCard from './DeckCard'
 import DeckMini from './DeckMini'
+import {
+	deleteDeckAction,
+	getDecksAction
+} from '@/server-actions/decks.actions'
+import type { IDeckWithCount } from '@/shared/types/deck.types'
 
 export default function DecksList() {
 	const t = useTranslations('dashboard')
 	const [decks, setDecks] = useState<IDeckWithCount[]>([])
+	const [loading, setLoading] = useState(true)
 	const [current, setCurrent] = useState(0)
 	const trackRef = useRef<HTMLDivElement>(null)
-
+	const guard = useUnauthorizedGuard()
 	useEffect(() => {
-		getDecksAction().then(res => {
-			if (res.success) setDecks(res.data ?? [])
-		})
-	}, [])
+		getDecksAction()
+			.then(res => {
+				if (res.success) setDecks(res.data ?? [])
+				else guard(res)
+			})
+			.finally(() => setLoading(false))
+	}, [guard])
 
-	const removeById = (id: string) => {
-		setDecks(prev => {
-			const next = prev.filter(d => d.id !== id)
-			setCurrent(c => Math.min(c, next.length - 1))
-			return next
-		})
+	// Реальное удаление: сперва с сервера, затем из локального состояния
+	const removeById = async (id: string) => {
+		await deleteDeckAction(id)
+		setDecks(prev => prev.filter(d => d.id !== id))
+		setCurrent(0)
 	}
 
 	const goTo = (index: number) => {
@@ -35,11 +42,24 @@ export default function DecksList() {
 		trackRef.current.scrollTo({ left: card.offsetLeft, behavior: 'smooth' })
 	}
 
-	const next = () => goTo(Math.min(current + 1, decks.length - 1))
+	const next = () => goTo(Math.min(current + 1, carousel.length - 1))
 	const prev = () => goTo(Math.max(current - 1, 0))
 
 	const recent = decks.slice(0, 4)
+	// «Продолжить учёбу»: показываем максимум 12, иначе «км точек» при куче колод
+	const carousel = decks.slice(0, 12)
 
+	// СОСТОЯНИЕ 1 — загрузка: показываем скелетон, а НЕ «нет модулей»
+	if (loading) {
+		return (
+			<div className='p-4 md:p-20'>
+				<h2 className='text-2xl font-bold mb-6'>{t('continueLearning')}</h2>
+				<div className='w-full md:w-[60%] h-40 bg-gray-100 rounded-3xl animate-pulse' />
+			</div>
+		)
+	}
+
+	// СОСТОЯНИЕ 2 — загрузка завершена и данных реально нет
 	if (decks.length === 0) {
 		return (
 			<div className='p-4 md:p-20'>
@@ -56,12 +76,12 @@ export default function DecksList() {
 			<div className='relative w-full md:w-[60%]'>
 				<div className='relative'>
 					<div ref={trackRef} className='flex gap-4 overflow-x-hidden'>
-						{decks.map(deck => (
+						{carousel.map(deck => (
 							<DeckCard
 								key={deck.id}
 								id={deck.id}
 								title={deck.title}
-								canRemove={decks.length > 2}
+								canRemove={true}
 								onHide={() => removeById(deck.id)}
 							/>
 						))}
@@ -70,7 +90,7 @@ export default function DecksList() {
 					{current > 0 && (
 						<div className='absolute inset-y-0 left-0 w-16 bg-linear-to-r from-white to-transparent pointer-events-none rounded-l-3xl backdrop-blur-[2px] mask-[linear-gradient(to_right,white_40%,transparent)]' />
 					)}
-					{current < decks.length - 1 && (
+					{current < carousel.length - 1 && (
 						<div className='absolute inset-y-0 right-0 w-16 bg-linear-to-l from-white to-transparent pointer-events-none rounded-r-3xl backdrop-blur-[2px] mask-[linear-gradient(to_left,white_40%,transparent)]' />
 					)}
 				</div>
@@ -83,7 +103,7 @@ export default function DecksList() {
 						<ChevronLeft size={18} />
 					</button>
 				)}
-				{current < decks.length - 1 && (
+				{current < carousel.length - 1 && (
 					<button
 						onClick={next}
 						className='absolute -right-4 top-1/2 -translate-y-1/2 w-9 h-9 bg-white border border-gray-300 shadow rounded-full flex items-center justify-center hover:bg-gray-100 transition cursor-pointer z-10'
@@ -93,7 +113,7 @@ export default function DecksList() {
 				)}
 
 				<div className='flex justify-center gap-2 mt-4'>
-					{decks.map((_, i) => (
+					{carousel.map((_, i) => (
 						<button
 							key={i}
 							onClick={() => goTo(i)}

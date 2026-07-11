@@ -27,6 +27,8 @@
 		"openSource": "Der gesamte Quellcode ist frei zugänglich und dient ausschließlich zu Lern- und Demonstrationszwecken.",
 		"warrantyTitle": "Haftung",
 		"warranty": "Die Anwendung wird ohne Gewähr bereitgestellt. Es besteht kein Anspruch auf Verfügbarkeit, Vollständigkeit oder Fehlerfreiheit.",
+		"dataNoticeTitle": "Testdaten",
+		"dataNotice": "Es findet keine E-Mail-Verifizierung statt. Bitte verwende bei der Registrierung keine echten Passwörter oder personenbezogenen Daten.",
 		"back": "Zurück zur Startseite"
 	},
 	"header": {
@@ -41,13 +43,17 @@
 	"sidebar": {
 		"home": "Startseite",
 		"registration": "Registrieren",
-		"login": "Anmelden"
+		"login": "Anmelden",
+		"terms": "Nutzungsbedingungen",
+		"privacy": "Datenschutz"
 	},
 	"auth": {
 		"login": {
 			"title": "Anmelden",
 			"sideText": "Der beste Weg zu lernen und deinen Fortschritt zu speichern.",
 			"google": "Mit Google fortfahren",
+			"demo": "Als Demo ausprobieren — ohne Anmeldung",
+			"registeredSuccess": "Erfolgreich registriert — bitte melde dich an.",
 			"yandex": "Mit Yandex fortfahren",
 			"divider": "oder E-Mail verwenden",
 			"emailLabel": "E-Mail oder Benutzername",
@@ -69,7 +75,8 @@
 			"newsletter": "Ich möchte Neuigkeiten, Angebote, Updates und Tipps zur Nutzung von LangCards erhalten",
 			"terms": "Ich akzeptiere die <termsLink>Nutzungsbedingungen</termsLink> und die <privacyLink>Datenschutzrichtlinie von LangCards</privacyLink>",
 			"submit": "Registrieren",
-			"loginLink": "Bereits ein Konto? Anmelden"
+			"loginLink": "Bereits ein Konto? Anmelden",
+			"demoNotice": "Lernprojekt ohne E-Mail-Verifizierung — bitte keine echten Passwörter oder persönlichen Daten verwenden."
 		},
 		"forgotPassword": {
 			"sideText": "Das schaffst du!",
@@ -160,7 +167,8 @@
 			"title": "Karteikarten? Karteikarten!",
 			"subtitle": "Merke dir alles!",
 			"description": "Meistere jedes Thema mit interaktiven Karteikarten, Übungstests und Lernaktivitäten.",
-			"cta": "Kostenlos registrieren"
+			"cta": "Kostenlos registrieren",
+			"appCta": "Zur App"
 		},
 		"second": {
 			"label": "Karten",
@@ -173,15 +181,15 @@
 			"label": "Beliebte Stapel",
 			"title": "Fertige Stapel für",
 			"titleEmphasis": "einen schnellen Start.",
-			"deck1Label": "Japanische Sprache",
-			"deck1Count": "120 Karten",
-			"deck1Tag": "@japanisch",
-			"deck2Label": "Menschliche Anatomie",
-			"deck2Count": "84 Karten",
-			"deck2Tag": "@medizin",
-			"deck3Label": "Geschichte Russlands",
-			"deck3Count": "96 Karten",
-			"deck3Tag": "@geschichte"
+			"deck1Label": "Deutsch im Alltag",
+			"deck1Count": "8 Karten",
+			"deck1Tag": "@deutsch",
+			"deck2Label": "IT-Grundbegriffe",
+			"deck2Count": "6 Karten",
+			"deck2Tag": "@it",
+			"deck3Label": "Spanisch Basics",
+			"deck3Count": "6 Karten",
+			"deck3Tag": "@spanisch"
 		},
 		"howItWorks": {
 			"label": "So funktioniert es",
@@ -216,6 +224,7 @@
 		"actions": {
 			"changeName": "Name ändern",
 			"changePassword": "Passwort ändern",
+			"language": "Sprache",
 			"deleteAccount": "Konto löschen",
 			"logout": "Abmelden"
 		},
@@ -271,7 +280,10 @@
 		"searchPlaceholder": "Modul suchen...",
 		"cards": "Karten",
 		"notFound": "Keine Module gefunden",
-		"notFoundHint": "Versuche eine andere Suche oder erstelle ein neues Modul"
+		"notFoundHint": "Versuche eine andere Suche oder erstelle ein neues Modul",
+		"pageOf": "Seite {page} von {total}",
+		"prevPage": "Vorherige Seite",
+		"nextPage": "Nächste Seite"
 	},
 	"flashCard": {
 		"backToHome": "Zur Startseite",
@@ -299,7 +311,8 @@
 		"backToModules": "Zu den Modulen",
 		"save": "Speichern",
 		"cancel": "Abbrechen",
-		"addEditRemoveTerms": "Begriffe hinzufügen, bearbeiten oder entfernen"
+		"addEditRemoveTerms": "Begriffe hinzufügen, bearbeiten oder entfernen",
+		"pronounceTranslation": "Übersetzung vorlesen"
 	},
 	"createModule": {
 		"titleLabel": "Modulname",
@@ -313,7 +326,8 @@
 		"addCard": "Karte hinzufügen",
 		"dragToReorder": "Zum Neuanordnen ziehen",
 		"errorTitle": "Bitte einen Modulnamen eingeben",
-		"errorCards": "Bitte mindestens eine Karte hinzufügen"
+		"errorCards": "Bitte mindestens eine Karte hinzufügen",
+		"errorIncompleteCard": "Bitte fülle bei jeder Karte beide Seiten aus oder entferne die unvollständige Karte."
 	},
 	"addCard": {
 		"titleLabel": "Name",

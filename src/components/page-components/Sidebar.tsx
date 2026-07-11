@@ -2,7 +2,7 @@
 
 import { Folder, House, LogOut, Plus } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { getRecentDecks, type RecentDeck } from '@/hooks/useRecentDecks'

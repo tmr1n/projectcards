@@ -27,6 +27,8 @@
 		"openSource": "All source code is freely available and serves learning and demonstration purposes only.",
 		"warrantyTitle": "Disclaimer",
 		"warranty": "The application is provided as is, without warranty. There is no claim to availability, completeness, or freedom from errors.",
+		"dataNoticeTitle": "Test data",
+		"dataNotice": "There is no email verification. Please do not use real passwords or personal data when registering.",
 		"back": "Back to home"
 	},
 	"header": {
@@ -41,13 +43,17 @@
 	"sidebar": {
 		"home": "Home",
 		"registration": "Sign up",
-		"login": "Log in"
+		"login": "Log in",
+		"terms": "Terms of Use",
+		"privacy": "Privacy"
 	},
 	"auth": {
 		"login": {
 			"title": "Log in",
 			"sideText": "The best way to learn and save your progress.",
 			"google": "Continue with Google",
+			"demo": "Try the demo — no sign-up",
+			"registeredSuccess": "Registered successfully — please log in.",
 			"yandex": "Continue with Yandex",
 			"divider": "or use email",
 			"emailLabel": "Email or username",
@@ -69,7 +75,8 @@
 			"newsletter": "I want to receive news, promotions, updates and tips on how to use LangCards",
 			"terms": "I accept the <termsLink>Terms of Service</termsLink> and <privacyLink>LangCards Privacy Policy</privacyLink>",
 			"submit": "Sign up",
-			"loginLink": "Already have an account? Log in"
+			"loginLink": "Already have an account? Log in",
+			"demoNotice": "Learning project without email verification — please don't use real passwords or personal data."
 		},
 		"forgotPassword": {
 			"sideText": "You've got this!",
@@ -159,7 +166,8 @@
 			"title": "Flashcards? Flashcards!",
 			"subtitle": "Remember anything!",
 			"description": "Master any subject with interactive flashcards, practice tests and study activities.",
-			"cta": "Sign up for free"
+			"cta": "Sign up for free",
+			"appCta": "Go to the app"
 		},
 		"second": {
 			"label": "Cards",
@@ -172,15 +180,15 @@
 			"label": "Popular decks",
 			"title": "Ready-made decks for",
 			"titleEmphasis": "a quick start.",
-			"deck1Label": "Japanese language",
-			"deck1Count": "120 cards",
-			"deck1Tag": "@japanese",
-			"deck2Label": "Human anatomy",
-			"deck2Count": "84 cards",
-			"deck2Tag": "@medicine",
-			"deck3Label": "History of Russia",
-			"deck3Count": "96 cards",
-			"deck3Tag": "@history"
+			"deck1Label": "Deutsch im Alltag",
+			"deck1Count": "8 cards",
+			"deck1Tag": "@deutsch",
+			"deck2Label": "IT-Grundbegriffe",
+			"deck2Count": "6 cards",
+			"deck2Tag": "@it",
+			"deck3Label": "Spanisch Basics",
+			"deck3Count": "6 cards",
+			"deck3Tag": "@spanisch"
 		},
 		"howItWorks": {
 			"label": "How it works",
@@ -215,6 +223,7 @@
 		"actions": {
 			"changeName": "Change name",
 			"changePassword": "Change password",
+			"language": "Language",
 			"deleteAccount": "Delete account",
 			"logout": "Log out"
 		},
@@ -270,7 +279,10 @@
 		"searchPlaceholder": "Search module...",
 		"cards": "cards",
 		"notFound": "No modules found",
-		"notFoundHint": "Try a different query or create a new module"
+		"notFoundHint": "Try a different query or create a new module",
+		"pageOf": "Page {page} of {total}",
+		"prevPage": "Previous page",
+		"nextPage": "Next page"
 	},
 	"flashCard": {
 		"backToHome": "Back to home",
@@ -298,7 +310,8 @@
 		"backToModules": "To modules",
 		"save": "Save",
 		"cancel": "Cancel",
-		"addEditRemoveTerms": "Add, edit or remove terms"
+		"addEditRemoveTerms": "Add, edit or remove terms",
+		"pronounceTranslation": "Read translation aloud"
 	},
 	"createModule": {
 		"titleLabel": "Module name",
@@ -312,7 +325,8 @@
 		"addCard": "Add card",
 		"dragToReorder": "Drag to reorder",
 		"errorTitle": "Enter a module name",
-		"errorCards": "Add at least one card"
+		"errorCards": "Add at least one card",
+		"errorIncompleteCard": "Please fill in both sides of every card or remove the incomplete one."
 	},
 	"addCard": {
 		"titleLabel": "Name",

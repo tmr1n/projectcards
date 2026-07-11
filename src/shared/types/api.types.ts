@@ -7,10 +7,19 @@
 // Универсальный тип успешного ответа от сервера.
 // T — generic-параметр: указывает какие данные придут в поле data.
 // Примеры использования: IApiResponse<IUser>, IApiResponse<IAuthTokens>
+// Мета пагинации — приходит в списочных ответах (напр. GET /decks)
+export interface IPaginationMeta {
+	total: number // всего совпадений (для «Seite X von Y»)
+	page: number // текущая страница
+	limit: number // размер страницы
+	totalPages: number // всего страниц
+}
+
 export interface IApiResponse<T> {
 	data: T
 	message: string
 	success: boolean
+	meta?: IPaginationMeta // есть только у списочных эндпоинтов
 }
 
 // Тип ошибки от сервера (4xx, 5xx)

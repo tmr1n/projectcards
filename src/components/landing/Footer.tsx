@@ -2,8 +2,9 @@
 
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { useTranslations } from 'next-intl'
+import { LocaleSwitcher } from '@/components/LocaleSwitcher'
 
 export function Footer() {
 	const t = useTranslations('landing.footer')
@@ -84,6 +85,7 @@ export function Footer() {
 					<p className='text-gray-300 text-xs font-(family-name:--font-geist-sans)'>
 						{t('copyright', { year: new Date().getFullYear() })}
 					</p>
+					<LocaleSwitcher dropUp />
 				</motion.div>
 			</div>
 		</footer>
